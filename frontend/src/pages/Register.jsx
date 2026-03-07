@@ -11,6 +11,7 @@ function Register() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [photo, setPhoto] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -26,10 +27,20 @@ function Register() {
 
       setLoading(true);
 
-      await API.post("/auth/register", {
-        name,
-        email,
-        password
+      const formData = new FormData();
+
+      formData.append("name", name);
+      formData.append("email", email);
+      formData.append("password", password);
+
+      if (photo) {
+        formData.append("photo", photo);
+      }
+
+      await API.post("/auth/register", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
       });
 
       toast.success("Registration successful 🎉");
@@ -59,8 +70,6 @@ function Register() {
         className="bg-white border border-slate-200 shadow-xl rounded-2xl p-8 w-full max-w-md"
       >
 
-        {/* Header */}
-
         <div className="flex flex-col items-center mb-6">
 
           <div className="bg-green-100 p-3 rounded-full mb-3">
@@ -77,7 +86,6 @@ function Register() {
 
         </div>
 
-
         {/* Name */}
 
         <input
@@ -87,7 +95,6 @@ function Register() {
           onChange={(e) => setName(e.target.value)}
           className="border border-slate-300 p-3 rounded-lg w-full mb-4 focus:ring-2 focus:ring-green-500 outline-none"
         />
-
 
         {/* Email */}
 
@@ -99,7 +106,6 @@ function Register() {
           className="border border-slate-300 p-3 rounded-lg w-full mb-4 focus:ring-2 focus:ring-green-500 outline-none"
         />
 
-
         {/* Password */}
 
         <input
@@ -110,6 +116,13 @@ function Register() {
           className="border border-slate-300 p-3 rounded-lg w-full mb-4 focus:ring-2 focus:ring-green-500 outline-none"
         />
 
+        {/* Photo Upload */}
+
+        <input
+          type="file"
+          onChange={(e) => setPhoto(e.target.files[0])}
+          className="border border-slate-300 p-2 rounded-lg w-full mb-4"
+        />
 
         {/* Button */}
 
@@ -119,9 +132,6 @@ function Register() {
         >
           {loading ? "Creating account..." : "Register"}
         </button>
-
-
-        {/* Login link */}
 
         <p className="text-center text-sm mt-4 text-slate-600">
 

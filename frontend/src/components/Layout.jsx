@@ -46,6 +46,8 @@ export default function Layout({ children }) {
               <Sidebar closeSidebar={() => setOpenSidebar(false)} />
             </motion.div>
 
+            {/* Overlay */}
+
             <div
               className="flex-1 bg-black/40 backdrop-blur-sm"
               onClick={() => setOpenSidebar(false)}
@@ -69,22 +71,23 @@ export default function Layout({ children }) {
           setSearchQuery={setSearchQuery}
         />
 
+        {/* Page Content */}
+
         <main className="flex-1 p-4 md:p-6 lg:p-8 overflow-y-auto">
 
           <div className="max-w-7xl mx-auto">
 
-            {/* IMPORTANT */}
-            {children && 
-              (typeof children === "object"
-                ? (children.type
-                    ? <children.type {...children.props} searchQuery={searchQuery} />
-                    : children)
-                : children)
-            }
+            {children && typeof children === "object"
+              ? children.type
+                ? <children.type {...children.props} searchQuery={searchQuery} />
+                : children
+              : children}
 
           </div>
 
         </main>
+
+        {/* Footer */}
 
         <Footer />
 

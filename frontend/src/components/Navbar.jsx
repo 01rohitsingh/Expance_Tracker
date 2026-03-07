@@ -9,6 +9,8 @@ function Navbar({ setOpenSidebar, setSearchQuery }) {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
 
+  const BASE_URL = import.meta.env.VITE_API_URL;
+
   const [search, setSearch] = useState("");
   const [notifications, setNotifications] = useState([]);
 
@@ -17,10 +19,8 @@ function Navbar({ setOpenSidebar, setSearchQuery }) {
   useEffect(() => {
 
     const interval = setInterval(() => {
-
       const data = getNotifications();
       setNotifications(data);
-
     }, 1000);
 
     return () => clearInterval(interval);
@@ -61,7 +61,6 @@ function Navbar({ setOpenSidebar, setSearchQuery }) {
 
       </div>
 
-
       {/* RIGHT */}
 
       <div className="flex items-center gap-3 relative">
@@ -82,7 +81,6 @@ function Navbar({ setOpenSidebar, setSearchQuery }) {
 
         </div>
 
-
         {/* NOTIFICATION */}
 
         <button
@@ -93,15 +91,12 @@ function Navbar({ setOpenSidebar, setSearchQuery }) {
           <Bell size={20} />
 
           {unreadCount > 0 && (
-
             <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
               {unreadCount}
             </span>
-
           )}
 
         </button>
-
 
         {/* PROFILE */}
 
@@ -110,9 +105,15 @@ function Navbar({ setOpenSidebar, setSearchQuery }) {
           className="flex items-center gap-2 cursor-pointer hover:bg-gray-100 px-2 py-1 rounded-lg"
         >
 
-          <div className="w-9 h-9 rounded-full bg-blue-500 text-white flex items-center justify-center font-semibold text-sm">
-            {user?.name?.charAt(0)?.toUpperCase() || "U"}
-          </div>
+          <img
+            src={
+              user?.photo
+                ? `${BASE_URL}${user.photo}`
+                : `${BASE_URL}/photo/download.png`
+            }
+            alt="profile"
+            className="w-9 h-9 rounded-full object-cover border"
+          />
 
           <span className="hidden md:block text-sm text-gray-700 font-medium">
             {user?.name || "User"}
@@ -125,7 +126,6 @@ function Navbar({ setOpenSidebar, setSearchQuery }) {
     </header>
 
   );
-
 }
 
 export default Navbar;
