@@ -1,12 +1,14 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import API from "../services/api";
 import { useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { UserPlus } from "lucide-react";
+import { AuthContext } from "../context/AuthContext";
 
 function Register() {
 
   const navigate = useNavigate();
+  const { login } = useContext(AuthContext);
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -37,20 +39,27 @@ function Register() {
         formData.append("photo", photo);
       }
 
-      await API.post("/auth/register", formData, {
+      const res = await API.post("/auth/register", formData, {
         headers: {
           "Content-Type": "multipart/form-data"
         }
       });
 
+      // ⭐ TOKEN SAVE
+      localStorage.setItem("token", res.data.data.token);
+
+      // ⭐ AUTO LOGIN (IMPORTANT)
+      login(res.data.data);
+
       toast.success("Registration successful 🎉");
 
-      navigate("/");
+      // ⭐ DIRECT DASHBOARD
+      navigate("/dashboard");
 
     } catch (error) {
 
       toast.error(
-        error.response?.data?.error || "Registration failed ❌"
+        error.response?.data?.message || "Registration failed ❌"
       );
 
     } finally {
@@ -151,6 +160,7 @@ function Register() {
     </div>
 
   );
+
 }
 
 export default Register;
