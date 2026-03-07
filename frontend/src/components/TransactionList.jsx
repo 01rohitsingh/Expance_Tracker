@@ -1,0 +1,120 @@
+import API from "../services/api";
+import { toast } from "react-toastify";
+import { Trash2 } from "lucide-react";
+import Swal from "sweetalert2";
+
+function TransactionList({ transactions = [], refresh }) {
+
+  const deleteTransaction = async (id) => {
+
+    const result = await Swal.fire({
+      title: "Delete transaction?",
+      text: "This action cannot be undone",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Delete",
+      cancelButtonText: "Cancel",
+      confirmButtonColor: "#ef4444",
+      cancelButtonColor: "#6b7280"
+    });
+
+    if (!result.isConfirmed) return;
+
+    try {
+
+      await API.delete(`/transactions/${id}`);
+
+      toast.success("Transaction deleted 🗑");
+
+      refresh();
+
+    } catch (error) {
+
+      console.error("Delete failed", error);
+
+      toast.error("Failed to delete transaction ❌");
+
+    }
+
+  };
+
+  return (
+
+    <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+
+      <h2 className="text-lg font-semibold mb-4 text-slate-800">
+        Transactions
+      </h2>
+
+      {transactions.length === 0 && (
+        <p className="text-slate-500">
+          No transactions yet
+        </p>
+      )}
+
+      {transactions.map((t) => (
+
+        <div
+          key={t._id}
+          className="flex justify-between items-center border-b last:border-none py-3"
+        >
+
+          {/* Left */}
+
+          <div>
+
+            <p className="font-medium text-slate-800 capitalize">
+              {t.category}
+            </p>
+
+            <p className="text-xs text-slate-500">
+              {t.date ? t.date.substring(0, 10) : "No date"}
+            </p>
+
+          </div>
+
+          {/* Right */}
+
+          <div className="flex items-center gap-4">
+
+            <span
+              className={`px-2 py-1 text-xs rounded-full font-medium
+              ${
+                t.type === "income"
+                  ? "bg-green-100 text-green-700"
+                  : "bg-red-100 text-red-600"
+              }`}
+            >
+              {t.type}
+            </span>
+
+            <p
+              className={
+                t.type === "income"
+                  ? "text-green-600 font-semibold"
+                  : "text-red-500 font-semibold"
+              }
+            >
+              ₹ {Number(t.amount).toLocaleString()}
+            </p>
+
+            <button
+              onClick={() => deleteTransaction(t._id)}
+              className="text-red-500 hover:text-red-700 cursor-pointer"
+            >
+              <Trash2 size={18} />
+            </button>
+
+          </div>
+
+        </div>
+
+      ))}
+
+    </div>
+
+  );
+
+}
+
+export default TransactionList;

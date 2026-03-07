@@ -1,0 +1,113 @@
+import { Github, Linkedin, Mail } from "lucide-react";
+import { Link } from "react-router-dom";
+
+export default function Footer() {
+
+  return (
+
+    <footer className="bg-white border-t border-slate-200 mt-auto">
+
+      {/* Gradient Top Line */}
+      <div className="h-[2px] bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500"></div>
+
+      <div className="max-w-7xl mx-auto px-6 py-8">
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+
+          {/* Brand Section */}
+
+          <div>
+
+            <h2 className="text-xl font-bold text-slate-800 tracking-wide">
+              FinTrack
+            </h2>
+
+            <p className="text-sm text-slate-500 mt-2 leading-relaxed">
+              Smart expense tracking dashboard built with modern web
+              technologies to manage your finances easily.
+            </p>
+
+          </div>
+
+          {/* Quick Links */}
+
+          <div className="flex flex-col md:items-center text-sm text-slate-600 space-y-2">
+
+            <Link
+              to="/dashboard"
+              className="hover:text-blue-600 transition"
+            >
+              Dashboard
+            </Link>
+
+            <Link
+              to="/wallets"
+              className="hover:text-blue-600 transition"
+            >
+              Wallets
+            </Link>
+
+            <Link
+              to="/analytics"
+              className="hover:text-blue-600 transition"
+            >
+              Analytics
+            </Link>
+
+            <Link
+              to="/settings"
+              className="hover:text-blue-600 transition"
+            >
+              Settings
+            </Link>
+
+          </div>
+
+          {/* Social Icons */}
+
+          <div className="flex md:justify-end gap-4">
+
+            <a
+              href="#"
+              className="p-2 rounded-lg bg-slate-100 hover:bg-blue-50 hover:text-blue-600 transition-all duration-200"
+            >
+              <Github size={18}/>
+            </a>
+
+            <a
+              href="#"
+              className="p-2 rounded-lg bg-slate-100 hover:bg-blue-50 hover:text-blue-600 transition-all duration-200"
+            >
+              <Linkedin size={18}/>
+            </a>
+
+            <a
+              href="#"
+              className="p-2 rounded-lg bg-slate-100 hover:bg-blue-50 hover:text-blue-600 transition-all duration-200"
+            >
+              <Mail size={18}/>
+            </a>
+
+          </div>
+
+        </div>
+
+        {/* Bottom Copyright */}
+
+        <div className="border-t border-slate-200 mt-8 pt-4 text-center text-sm text-slate-500">
+
+          © {new Date().getFullYear()} 
+          <span className="font-semibold text-slate-700 ml-1">
+            FinTrack
+          </span>
+          • Built with React & Node
+
+        </div>
+
+      </div>
+
+    </footer>
+
+  );
+
+}
