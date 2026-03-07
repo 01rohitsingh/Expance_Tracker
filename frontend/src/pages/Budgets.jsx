@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import BudgetProgress from "../components/BudgetProgress";
 import API from "../services/api";
 import { toast } from "react-toastify";
-import { Target, Wallet, TrendingUp } from "lucide-react";
+import { Target, Wallet } from "lucide-react";
+import { motion } from "framer-motion";
 
 function Budgets() {
 
@@ -142,7 +143,13 @@ function Budgets() {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
 
-        <div className="bg-white border border-slate-200 rounded-xl p-5 flex items-center gap-4 shadow-sm">
+        {/* TOTAL BUDGETS CARD WITH MOTION */}
+
+        <motion.div
+          whileHover={{ y: -6, scale: 1.02 }}
+          transition={{ type: "spring", stiffness: 200 }}
+          className="bg-white border border-slate-200 rounded-xl p-5 flex items-center gap-4 shadow-sm hover:shadow-md"
+        >
 
           <div className="bg-green-100 p-3 rounded-lg">
             <Wallet className="text-green-600"/>
@@ -160,12 +167,7 @@ function Budgets() {
 
           </div>
 
-        </div>
-
-
-
-
-
+        </motion.div>
 
       </div>
 

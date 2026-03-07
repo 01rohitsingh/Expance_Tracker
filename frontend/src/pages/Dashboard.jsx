@@ -22,7 +22,6 @@ function Dashboard() {
 
     try {
 
-      // Wallet fetch
       const walletRes = await API.get("/wallets");
 
       if (!walletRes.data || walletRes.data.length === 0) {
@@ -38,10 +37,8 @@ function Dashboard() {
 
       setWalletBalance(totalBalance);
 
-      // Store walletId
       localStorage.setItem("walletId", walletRes.data[0]._id);
 
-      // Transactions fetch
       const res = await API.get("/transactions");
       const data = res.data;
 
@@ -65,15 +62,12 @@ function Dashboard() {
       setIncome(totalIncome);
       setExpense(totalExpense);
 
-      // Remaining Income
       const remaining = Math.max(totalIncome - totalExpense, 0);
-
       setRemainingIncome(remaining);
 
     } catch (error) {
 
       console.error("Dashboard error:", error);
-
       toast.error("Failed to load dashboard ❌");
 
     }
@@ -84,46 +78,76 @@ function Dashboard() {
 
     <div className="p-4 md:p-6 bg-gray-100 min-h-screen">
 
+      {/* Title Animation */}
+
       <motion.h1
-        initial={{ opacity: 0, y: -20 }}
+        initial={{ opacity: 0, y: -25 }}
         animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
         className="text-2xl md:text-3xl font-bold mb-6"
       >
         Dashboard
       </motion.h1>
 
+
       {/* Summary Cards */}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
 
-        <motion.div whileHover={{ scale: 1.05 }}>
+        <motion.div
+          whileHover={{ y: -8, scale: 1.03 }}
+          transition={{ type: "spring", stiffness: 200 }}
+        >
           <SummaryCard title="Income" amount={income} />
         </motion.div>
 
-        <motion.div whileHover={{ scale: 1.05 }}>
+        <motion.div
+          whileHover={{ y: -8, scale: 1.03 }}
+          transition={{ type: "spring", stiffness: 200 }}
+        >
           <SummaryCard title="Expense" amount={expense} />
         </motion.div>
 
-        <motion.div whileHover={{ scale: 1.05 }}>
+        <motion.div
+          whileHover={{ y: -8, scale: 1.03 }}
+          transition={{ type: "spring", stiffness: 200 }}
+        >
           <SummaryCard title="Remaining Income" amount={remainingIncome} />
         </motion.div>
 
-        <motion.div whileHover={{ scale: 1.05 }}>
+        <motion.div
+          whileHover={{ y: -8, scale: 1.03 }}
+          transition={{ type: "spring", stiffness: 200 }}
+        >
           <SummaryCard title="Wallet Balance" amount={walletBalance} />
         </motion.div>
 
       </div>
 
-      {/* Transaction Form */}
 
-      <TransactionForm refresh={loadDashboard} />
+      {/* Transaction Form Animation */}
 
-      {/* Transaction List */}
+      <motion.div
+        initial={{ opacity: 0, y: 25 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+      >
+        <TransactionForm refresh={loadDashboard} />
+      </motion.div>
 
-      <TransactionList
-        transactions={transactions}
-        refresh={loadDashboard}
-      />
+
+      {/* Transaction List Animation */}
+
+      <motion.div
+        initial={{ opacity: 0, y: 25 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <TransactionList
+          transactions={transactions}
+          refresh={loadDashboard}
+        />
+      </motion.div>
 
     </div>
 

@@ -2,6 +2,7 @@ import API from "../services/api";
 import { toast } from "react-toastify";
 import { Trash2 } from "lucide-react";
 import Swal from "sweetalert2";
+import { motion } from "framer-motion";
 
 function TransactionList({ transactions = [], refresh }) {
 
@@ -52,64 +53,71 @@ function TransactionList({ transactions = [], refresh }) {
         </p>
       )}
 
-      {transactions.map((t) => (
+      <div className="space-y-3">
 
-        <div
-          key={t._id}
-          className="flex justify-between items-center border-b last:border-none py-3"
-        >
+        {transactions.map((t) => (
 
-          {/* Left */}
+          <motion.div
+            key={t._id}
+            whileHover={{ y: -4, scale: 1.01 }}
+            transition={{ type: "spring", stiffness: 200 }}
+            className="flex justify-between items-center border border-slate-200 rounded-lg p-4 hover:shadow-md"
+          >
 
-          <div>
+            {/* Left */}
 
-            <p className="font-medium text-slate-800 capitalize">
-              {t.category}
-            </p>
+            <div>
 
-            <p className="text-xs text-slate-500">
-              {t.date ? t.date.substring(0, 10) : "No date"}
-            </p>
+              <p className="font-medium text-slate-800 capitalize">
+                {t.category}
+              </p>
 
-          </div>
+              <p className="text-xs text-slate-500">
+                {t.date ? t.date.substring(0, 10) : "No date"}
+              </p>
 
-          {/* Right */}
+            </div>
 
-          <div className="flex items-center gap-4">
 
-            <span
-              className={`px-2 py-1 text-xs rounded-full font-medium
-              ${
-                t.type === "income"
-                  ? "bg-green-100 text-green-700"
-                  : "bg-red-100 text-red-600"
-              }`}
-            >
-              {t.type}
-            </span>
+            {/* Right */}
 
-            <p
-              className={
-                t.type === "income"
-                  ? "text-green-600 font-semibold"
-                  : "text-red-500 font-semibold"
-              }
-            >
-              ₹ {Number(t.amount).toLocaleString()}
-            </p>
+            <div className="flex items-center gap-4">
 
-            <button
-              onClick={() => deleteTransaction(t._id)}
-              className="text-red-500 hover:text-red-700 cursor-pointer"
-            >
-              <Trash2 size={18} />
-            </button>
+              <span
+                className={`px-2 py-1 text-xs rounded-full font-medium
+                ${
+                  t.type === "income"
+                    ? "bg-green-100 text-green-700"
+                    : "bg-red-100 text-red-600"
+                }`}
+              >
+                {t.type}
+              </span>
 
-          </div>
+              <p
+                className={
+                  t.type === "income"
+                    ? "text-green-600 font-semibold"
+                    : "text-red-500 font-semibold"
+                }
+              >
+                ₹ {Number(t.amount).toLocaleString()}
+              </p>
 
-        </div>
+              <button
+                onClick={() => deleteTransaction(t._id)}
+                className="text-red-500 hover:text-red-700 cursor-pointer"
+              >
+                <Trash2 size={18} />
+              </button>
 
-      ))}
+            </div>
+
+          </motion.div>
+
+        ))}
+
+      </div>
 
     </div>
 

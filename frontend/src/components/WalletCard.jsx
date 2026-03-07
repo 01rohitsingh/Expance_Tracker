@@ -1,6 +1,7 @@
 import API from "../services/api";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
+import { motion } from "framer-motion";
 import { Wallet, Landmark, CreditCard, Smartphone, Trash2 } from "lucide-react";
 
 function WalletCard({ wallet, refresh }) {
@@ -67,7 +68,11 @@ function WalletCard({ wallet, refresh }) {
 
   return (
 
-    <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm hover:shadow-md transition flex justify-between items-center">
+    <motion.div
+      whileHover={{ y: -6, scale: 1.02 }}
+      transition={{ type: "spring", stiffness: 200 }}
+      className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm hover:shadow-md flex justify-between items-center"
+    >
 
       {/* Left Section */}
 
@@ -91,6 +96,7 @@ function WalletCard({ wallet, refresh }) {
 
       </div>
 
+
       {/* Delete Button */}
 
       <button
@@ -100,7 +106,7 @@ function WalletCard({ wallet, refresh }) {
         <Trash2 size={18} />
       </button>
 
-    </div>
+    </motion.div>
 
   );
 

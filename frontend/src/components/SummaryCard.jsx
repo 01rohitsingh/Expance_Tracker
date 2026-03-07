@@ -1,8 +1,14 @@
+import { motion } from "framer-motion";
+
 function SummaryCard({ title, amount, icon: Icon, color }) {
 
   return (
 
-    <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm hover:shadow-md transition flex items-center justify-between">
+    <motion.div
+      whileHover={{ y: -6, scale: 1.02 }}
+      transition={{ type: "spring", stiffness: 200 }}
+      className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm hover:shadow-md flex items-center justify-between"
+    >
 
       {/* Left */}
 
@@ -30,10 +36,10 @@ function SummaryCard({ title, amount, icon: Icon, color }) {
 
       )}
 
-    </div>
+    </motion.div>
 
   );
 
 }
 
-export default SummaryCard;
+export default SummaryCard

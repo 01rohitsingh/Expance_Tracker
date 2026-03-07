@@ -1,6 +1,7 @@
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
+import { motion } from "framer-motion";
 import {
   LayoutDashboard,
   Wallet,
@@ -31,7 +32,12 @@ function Sidebar({ closeSidebar }) {
 
   return (
 
-    <aside className="w-64 h-screen bg-slate-950 text-slate-300 flex flex-col px-6 py-8 fixed left-0 top-0">
+    <motion.aside
+      initial={{ x: -200, opacity: 0 }}
+      animate={{ x: 0, opacity: 1 }}
+      transition={{ duration: 0.4 }}
+      className="w-64 h-screen bg-slate-950 text-slate-300 flex flex-col px-6 py-8 fixed left-0 top-0"
+    >
 
       {/* Logo */}
       <div className="mb-10">
@@ -58,22 +64,26 @@ function Sidebar({ closeSidebar }) {
 
             <li key={item.name}>
 
-              <Link
-                to={item.path}
-                onClick={closeSidebar}
-                className={`flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200
-                ${
-                  active
-                    ? "bg-blue-600 text-white shadow"
-                    : "hover:bg-slate-800 hover:text-white"
-                }`}
-              >
+              <motion.div whileHover={{ x: 6 }}>
 
-                <Icon size={18} />
+                <Link
+                  to={item.path}
+                  onClick={closeSidebar}
+                  className={`flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200
+                  ${
+                    active
+                      ? "bg-blue-600 text-white shadow"
+                      : "hover:bg-slate-800 hover:text-white"
+                  }`}
+                >
 
-                {item.name}
+                  <Icon size={18} />
 
-              </Link>
+                  {item.name}
+
+                </Link>
+
+              </motion.div>
 
             </li>
 
@@ -86,8 +96,9 @@ function Sidebar({ closeSidebar }) {
       {/* User Section */}
       <div className="border-t border-slate-800 pt-5">
 
-        {/* Profile (clickable) */}
-        <div
+        {/* Profile */}
+        <motion.div
+          whileHover={{ scale: 1.03 }}
           onClick={() => navigate("/settings")}
           className="flex items-center gap-3 mb-4 cursor-pointer hover:bg-slate-800 p-2 rounded-lg transition"
         >
@@ -108,10 +119,12 @@ function Sidebar({ closeSidebar }) {
 
           </div>
 
-        </div>
+        </motion.div>
 
         {/* Logout */}
-        <button
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
           onClick={handleLogout}
           className="flex items-center justify-center gap-2 w-full bg-red-500 hover:bg-red-600 transition px-4 py-2.5 rounded-lg text-white text-sm font-medium"
         >
@@ -120,11 +133,11 @@ function Sidebar({ closeSidebar }) {
 
           Logout
 
-        </button>
+        </motion.button>
 
       </div>
 
-    </aside>
+    </motion.aside>
 
   );
 

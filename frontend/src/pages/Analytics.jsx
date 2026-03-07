@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import API from "../services/api";
+import { motion } from "framer-motion";
 
 import {
   PieChart,
@@ -80,7 +81,6 @@ function Analytics() {
     { name: "Expense", value: expense }
   ];
 
-  // Pie chart colors
   const COLORS = [
     "#3b82f6",
     "#10b981",
@@ -94,9 +94,15 @@ function Analytics() {
 
     <div className="p-6 bg-gray-100 min-h-screen">
 
-      <h1 className="text-3xl font-bold mb-6 text-slate-800">
+      {/* HEADER */}
+
+      <motion.h1
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="text-3xl font-bold mb-6 text-slate-800"
+      >
         Analytics
-      </h1>
+      </motion.h1>
 
       {transactions.length === 0 ? (
 
@@ -110,7 +116,11 @@ function Analytics() {
 
           {/* Expense by Category */}
 
-          <div className="bg-white p-5 shadow rounded-xl">
+          <motion.div
+            whileHover={{ y: -6, scale: 1.02 }}
+            transition={{ type: "spring", stiffness: 200 }}
+            className="bg-white p-5 shadow rounded-xl"
+          >
 
             <h2 className="text-lg font-semibold mb-4">
               Expense by Category
@@ -144,12 +154,16 @@ function Analytics() {
 
             </ResponsiveContainer>
 
-          </div>
+          </motion.div>
 
 
           {/* Income vs Expense */}
 
-          <div className="bg-white p-5 shadow rounded-xl">
+          <motion.div
+            whileHover={{ y: -6, scale: 1.02 }}
+            transition={{ type: "spring", stiffness: 200 }}
+            className="bg-white p-5 shadow rounded-xl"
+          >
 
             <h2 className="text-lg font-semibold mb-4">
               Income vs Expense
@@ -187,7 +201,7 @@ function Analytics() {
 
             </ResponsiveContainer>
 
-          </div>
+          </motion.div>
 
         </div>
 

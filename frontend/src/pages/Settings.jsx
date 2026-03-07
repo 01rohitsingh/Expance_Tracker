@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import API from "../services/api";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
-import { User, Lock, Trash2, Moon } from "lucide-react";
+import { motion } from "framer-motion";
+import { User, Lock, Trash2, Eye, EyeOff } from "lucide-react";
 
 function Settings() {
 
@@ -12,23 +13,8 @@ function Settings() {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
 
-  const [darkMode, setDarkMode] = useState(
-    localStorage.getItem("theme") === "dark"
-  );
-
-  /* DARK MODE */
-
-  useEffect(() => {
-
-    if (darkMode) {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("theme", "dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-      localStorage.setItem("theme", "light");
-    }
-
-  }, [darkMode]);
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
 
   /* UPDATE PROFILE */
 
@@ -132,7 +118,11 @@ function Settings() {
 
         {/* PROFILE */}
 
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border">
+        <motion.div
+          whileHover={{ y: -6, scale: 1.02 }}
+          transition={{ type: "spring", stiffness: 200 }}
+          className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-blue-200 hover:border-blue-500"
+        >
 
           <div className="flex items-center gap-2 mb-5">
 
@@ -164,19 +154,23 @@ function Settings() {
 
             <button
               onClick={updateProfile}
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg cursor-pointer"
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg cursor-pointer transition"
             >
               Update Profile
             </button>
 
           </div>
 
-        </div>
+        </motion.div>
 
 
         {/* PASSWORD */}
 
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border">
+        <motion.div
+          whileHover={{ y: -6, scale: 1.02 }}
+          transition={{ type: "spring", stiffness: 200 }}
+          className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-green-200 hover:border-green-500"
+        >
 
           <div className="flex items-center gap-2 mb-5">
 
@@ -190,65 +184,71 @@ function Settings() {
 
           <div className="space-y-4">
 
-            <input
-              type="password"
-              placeholder="Current Password"
-              value={currentPassword}
-              onChange={(e) => setCurrentPassword(e.target.value)}
-              className="w-full border rounded-lg p-3 dark:bg-gray-700"
-            />
+            {/* CURRENT PASSWORD */}
 
-            <input
-              type="password"
-              placeholder="New Password"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              className="w-full border rounded-lg p-3 dark:bg-gray-700"
-            />
+            <div className="relative">
+
+              <input
+                type={showCurrentPassword ? "text" : "password"}
+                placeholder="Current Password"
+                value={currentPassword}
+                onChange={(e) => setCurrentPassword(e.target.value)}
+                className="w-full border rounded-lg p-3 dark:bg-gray-700"
+              />
+
+              <span
+                onClick={() =>
+                  setShowCurrentPassword(!showCurrentPassword)
+                }
+                className="absolute right-3 top-3 cursor-pointer text-gray-500"
+              >
+                {showCurrentPassword ? <EyeOff size={18}/> : <Eye size={18}/>}
+              </span>
+
+            </div>
+
+
+            {/* NEW PASSWORD */}
+
+            <div className="relative">
+
+              <input
+                type={showNewPassword ? "text" : "password"}
+                placeholder="New Password"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                className="w-full border rounded-lg p-3 dark:bg-gray-700"
+              />
+
+              <span
+                onClick={() =>
+                  setShowNewPassword(!showNewPassword)
+                }
+                className="absolute right-3 top-3 cursor-pointer text-gray-500"
+              >
+                {showNewPassword ? <EyeOff size={18}/> : <Eye size={18}/>}
+              </span>
+
+            </div>
 
             <button
               onClick={changePassword}
-              className="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg cursor-pointer"
+              className="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg cursor-pointer transition"
             >
               Change Password
             </button>
 
           </div>
 
-        </div>
-
-
-        {/* DARK MODE */}
-
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border">
-
-          <div className="flex items-center justify-between">
-
-            <div className="flex items-center gap-2">
-
-              <Moon size={20} />
-
-              <h2 className="text-lg font-semibold">
-                Dark Mode
-              </h2>
-
-            </div>
-
-            <input
-              type="checkbox"
-              checked={darkMode}
-              onChange={() => setDarkMode(!darkMode)}
-              className="cursor-pointer"
-            />
-
-          </div>
-
-        </div>
-
+        </motion.div>
 
         {/* DELETE ACCOUNT */}
 
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-red-200">
+        <motion.div
+          whileHover={{ y: -6, scale: 1.02 }}
+          transition={{ type: "spring", stiffness: 200 }}
+          className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-red-200 hover:border-red-500"
+        >
 
           <div className="flex items-center gap-2 mb-3 text-red-500">
 
@@ -266,12 +266,12 @@ function Settings() {
 
           <button
             onClick={deleteAccount}
-            className="w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded-lg cursor-pointer"
+            className="w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded-lg cursor-pointer transition"
           >
             Delete Account
           </button>
 
-        </div>
+        </motion.div>
 
       </div>
 

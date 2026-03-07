@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import API from "../services/api";
+import { motion } from "framer-motion";
 
 function BudgetProgress({ budget }) {
 
@@ -53,7 +54,11 @@ function BudgetProgress({ budget }) {
 
   return (
 
-    <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-5 hover:shadow-md transition">
+    <motion.div
+      whileHover={{ y: -6, scale: 1.02 }}
+      transition={{ type: "spring", stiffness: 200 }}
+      className="bg-white rounded-xl shadow-sm border border-slate-200 p-5 hover:shadow-md"
+    >
 
       {/* Header */}
 
@@ -96,7 +101,7 @@ function BudgetProgress({ budget }) {
 
       )}
 
-    </div>
+    </motion.div>
 
   );
 
