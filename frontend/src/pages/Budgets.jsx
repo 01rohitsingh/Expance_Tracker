@@ -98,6 +98,10 @@ function Budgets({ searchQuery = "" }) {
 
       toast.success("Budget deleted 🗑");
 
+      /* 🔔 Notification */
+
+      addNotification(`Budget "${budget.category}" deleted`);
+
       fetchBudgets();
 
     } catch (error) {
@@ -249,20 +253,34 @@ function Budgets({ searchQuery = "" }) {
 
           {filteredBudgets.map((budget) => (
 
-            <div key={budget._id} className="relative">
+            <motion.div
+              key={budget._id}
+              whileHover={{ y: -5 }}
+              className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm hover:shadow-md"
+            >
+
+              {/* CARD HEADER */}
+
+              <div className="flex justify-between items-center mb-3">
+
+                <h3 className="text-lg font-semibold capitalize text-slate-800">
+                  {budget.category}
+                </h3>
+
+                <button
+                  onClick={() => deleteBudget(budget)}
+                  className="text-red-500 hover:text-red-700 transition"
+                >
+                  <Trash2 size={18}/>
+                </button>
+
+              </div>
+
+              {/* PROGRESS */}
 
               <BudgetProgress budget={budget} />
 
-              {/* DELETE BUTTON */}
-
-              <button
-                onClick={() => deleteBudget(budget)}
-                className="absolute top-3 right-3 text-red-500 hover:text-red-700"
-              >
-                <Trash2 size={18}/>
-              </button>
-
-            </div>
+            </motion.div>
 
           ))}
 

@@ -12,7 +12,7 @@ function Notifications() {
     const data = getNotifications();
     setNotifications(data);
 
-    // mark as seen when page open
+    // mark all as seen
     markAllSeen();
 
   }, []);
@@ -23,7 +23,7 @@ function Notifications() {
 
       {/* HEADER */}
 
-      <div className="flex items-center gap-3 mb-6">
+      <div className="flex items-center gap-3 mb-8">
 
         <div className="bg-blue-100 p-3 rounded-lg">
           <Bell className="text-blue-600"/>
@@ -44,7 +44,7 @@ function Notifications() {
       </div>
 
 
-      {/* NOTIFICATION LIST */}
+      {/* EMPTY STATE */}
 
       {notifications.length === 0 ? (
 
@@ -62,21 +62,30 @@ function Notifications() {
 
       ) : (
 
-        <div className="space-y-4">
+        <div className="space-y-3">
 
-          {notifications.map((n) => (
+          {notifications.map((n, index) => (
 
             <motion.div
               key={n.id}
-              initial={{ opacity: 0, y: 15 }}
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className={`bg-white p-4 rounded-xl border shadow-sm flex justify-between items-center
-              ${!n.seen ? "border-blue-300" : "border-slate-200"}`}
+              transition={{ delay: index * 0.05 }}
+              whileHover={{ y: -4, scale: 1.01 }}
+              className={`flex justify-between items-center border rounded-lg p-4 shadow-sm cursor-pointer
+              
+              ${
+                !n.seen
+                  ? "bg-blue-50 border-blue-300"
+                  : "bg-white border-slate-200"
+              }
+              
+              hover:shadow-md`}
             >
 
               <div>
 
-                <p className="text-sm text-slate-800">
+                <p className="text-sm font-medium text-slate-800">
                   {n.message}
                 </p>
 

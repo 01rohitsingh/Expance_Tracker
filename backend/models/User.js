@@ -37,6 +37,12 @@ const userSchema = new mongoose.Schema(
   financialScore: {
     type: Number,
     default: 0,
+  },
+
+  // ✅ Profile Photo Field
+  photo: {
+    type: String,
+    default: "/backend/photo/download.png"
   }
 
 },
@@ -63,14 +69,12 @@ userSchema.methods.matchPassword = async function (enteredPassword) {
 };
 
 
-
 // Remove password from response
 userSchema.methods.toJSON = function () {
   const obj = this.toObject();
   delete obj.password;
   return obj;
 };
-
 
 
 module.exports = mongoose.model("User", userSchema);

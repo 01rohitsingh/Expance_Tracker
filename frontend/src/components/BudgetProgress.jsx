@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import API from "../services/api";
-import { motion } from "framer-motion";
 import { addNotification } from "../utils/notifications";
 
 function BudgetProgress({ budget }) {
@@ -53,7 +52,7 @@ function BudgetProgress({ budget }) {
 
   };
 
-  /* 🔔 Budget Exceeded Notification (SAFE VERSION) */
+  /* Budget exceeded notification */
 
   useEffect(() => {
 
@@ -75,19 +74,15 @@ function BudgetProgress({ budget }) {
 
   return (
 
-    <motion.div
-      whileHover={{ y: -6, scale: 1.02 }}
-      transition={{ type: "spring", stiffness: 200 }}
-      className="bg-white rounded-xl shadow-sm border border-slate-200 p-5 hover:shadow-md"
-    >
+    <div>
 
-      {/* Header */}
+      {/* PRICE + DATE */}
 
-      <div className="flex justify-between items-center mb-3">
+      <div className="flex justify-between text-sm text-slate-600 mb-2">
 
-        <h3 className="text-lg font-semibold capitalize text-slate-800">
-          {budget?.category}
-        </h3>
+        <span>
+          ₹ {spent.toLocaleString()} / ₹ {budget?.limit?.toLocaleString()}
+        </span>
 
         <span className="text-xs text-slate-500">
           {budget?.month}/{budget?.year}
@@ -95,13 +90,7 @@ function BudgetProgress({ budget }) {
 
       </div>
 
-      {/* Amount */}
-
-      <p className="text-sm text-slate-600 mb-3">
-        ₹ {spent.toLocaleString()} / ₹ {budget?.limit?.toLocaleString()}
-      </p>
-
-      {/* Progress Bar */}
+      {/* PROGRESS BAR */}
 
       <div className="w-full bg-slate-200 rounded-full h-3 overflow-hidden">
 
@@ -112,7 +101,7 @@ function BudgetProgress({ budget }) {
 
       </div>
 
-      {/* Warning */}
+      {/* WARNING */}
 
       {percentage > 100 && (
 
@@ -122,7 +111,7 @@ function BudgetProgress({ budget }) {
 
       )}
 
-    </motion.div>
+    </div>
 
   );
 
