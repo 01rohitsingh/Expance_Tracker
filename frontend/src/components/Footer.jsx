@@ -29,68 +29,59 @@ export default function Footer() {
 
           </div>
 
+
           {/* Quick Links */}
 
           <div className="flex flex-col md:items-center text-sm text-slate-600 space-y-2">
 
-            <Link
-              to="/dashboard"
-              className="hover:text-blue-600 transition"
-            >
+            <Link to="/dashboard" className="hover:text-blue-600 transition">
               Dashboard
             </Link>
 
-            <Link
-              to="/wallets"
-              className="hover:text-blue-600 transition"
-            >
+            <Link to="/wallets" className="hover:text-blue-600 transition">
               Wallets
             </Link>
 
-            <Link
-              to="/analytics"
-              className="hover:text-blue-600 transition"
-            >
+            <Link to="/analytics" className="hover:text-blue-600 transition">
               Analytics
             </Link>
 
-            <Link
-              to="/settings"
-              className="hover:text-blue-600 transition"
-            >
+            <Link to="/settings" className="hover:text-blue-600 transition">
               Settings
             </Link>
 
           </div>
 
+
           {/* Social Icons */}
 
-          <div className="flex md:justify-end gap-4">
+          <div className="flex md:justify-end gap-5">
 
             <a
-              href="#"
-              className="p-2 rounded-lg bg-slate-100 hover:bg-blue-50 hover:text-blue-600 transition-all duration-200"
+              href="https://github.com/01rohitsingh"
+              className="p-3 rounded-lg bg-slate-100 hover:bg-blue-50 hover:text-blue-600 transition-all duration-300 hover:scale-125"
             >
-              <Github size={18}/>
+              <Github size={22}/>
             </a>
 
             <a
-              href="#"
-              className="p-2 rounded-lg bg-slate-100 hover:bg-blue-50 hover:text-blue-600 transition-all duration-200"
+              href="https://www.linkedin.com/in/01rohitsingh"
+              className="p-3 rounded-lg bg-slate-100 hover:bg-blue-50 hover:text-blue-600 transition-all duration-300 hover:scale-125"
             >
-              <Linkedin size={18}/>
+              <Linkedin size={22}/>
             </a>
 
             <a
-              href="#"
-              className="p-2 rounded-lg bg-slate-100 hover:bg-blue-50 hover:text-blue-600 transition-all duration-200"
+              href="https://mail.google.com/mail/u/0/?tab=rm&ogbl#inbox"
+              className="p-3 rounded-lg bg-slate-100 hover:bg-blue-50 hover:text-blue-600 transition-all duration-300 hover:scale-125"
             >
-              <Mail size={18}/>
+              <Mail size={22}/>
             </a>
 
           </div>
 
         </div>
+
 
         {/* Bottom Copyright */}
 

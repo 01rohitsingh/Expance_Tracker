@@ -14,8 +14,6 @@ function Navbar({ setOpenSidebar, setSearchQuery }) {
   const [search, setSearch] = useState("");
   const [notifications, setNotifications] = useState([]);
 
-  /* REAL TIME BADGE UPDATE */
-
   useEffect(() => {
 
     const interval = setInterval(() => {
@@ -40,11 +38,13 @@ function Navbar({ setOpenSidebar, setSearchQuery }) {
 
   const unreadCount = notifications.filter((n) => !n.seen).length;
 
+  const profileImage = user?.photo
+    ? `${BASE_URL}${user.photo}`
+    : `${BASE_URL}/photo/download.png`;
+
   return (
 
     <header className="bg-white border-b border-gray-200 px-4 md:px-6 py-3 flex items-center justify-between">
-
-      {/* LEFT */}
 
       <div className="flex items-center gap-3">
 
@@ -61,11 +61,7 @@ function Navbar({ setOpenSidebar, setSearchQuery }) {
 
       </div>
 
-      {/* RIGHT */}
-
       <div className="flex items-center gap-3 relative">
-
-        {/* SEARCH */}
 
         <div className="hidden md:flex items-center bg-gray-100 px-4 py-2 rounded-lg w-56 lg:w-64">
 
@@ -80,8 +76,6 @@ function Navbar({ setOpenSidebar, setSearchQuery }) {
           <Search size={18} className="text-gray-500 ml-2" />
 
         </div>
-
-        {/* NOTIFICATION */}
 
         <button
           onClick={() => navigate("/notifications")}
@@ -98,19 +92,13 @@ function Navbar({ setOpenSidebar, setSearchQuery }) {
 
         </button>
 
-        {/* PROFILE */}
-
         <div
           onClick={() => navigate("/settings")}
           className="flex items-center gap-2 cursor-pointer hover:bg-gray-100 px-2 py-1 rounded-lg"
         >
 
           <img
-            src={
-              user?.photo
-                ? `${BASE_URL}${user.photo}`
-                : `${BASE_URL}/photo/download.png`
-            }
+            src={profileImage}
             alt="profile"
             className="w-9 h-9 rounded-full object-cover border"
           />

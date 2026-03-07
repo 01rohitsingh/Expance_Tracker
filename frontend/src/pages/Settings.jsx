@@ -1,16 +1,18 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import API from "../services/api";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 import { motion } from "framer-motion";
 import { User, Lock, Trash2, Eye, EyeOff, Image } from "lucide-react";
+import { AuthContext } from "../context/AuthContext";
 
 function Settings() {
 
 const BASE_URL = import.meta.env.VITE_API_URL;
+const { user, updateUser } = useContext(AuthContext);
 
-const [name, setName] = useState(localStorage.getItem("name") || "");
-const [email, setEmail] = useState(localStorage.getItem("email") || "");
+const [name, setName] = useState(user?.name || "");
+const [email, setEmail] = useState(user?.email || "");
 const [photo, setPhoto] = useState(null);
 
 const [currentPassword, setCurrentPassword] = useState("");
@@ -19,136 +21,132 @@ const [newPassword, setNewPassword] = useState("");
 const [showCurrentPassword, setShowCurrentPassword] = useState(false);
 const [showNewPassword, setShowNewPassword] = useState(false);
 
+
 /* UPDATE PHOTO */
 
 const updatePhoto = async () => {
 
+  if (!photo) {
+    toast.error("Please select image");
+    return;
+  }
 
-if (!photo) {
-  toast.error("Please select image");
-  return;
-}
+  try {
 
-try {
+    const formData = new FormData();
+    formData.append("photo", photo);
 
-  const formData = new FormData();
-  formData.append("photo", photo);
+    const res = await API.put("/auth/upload-photo", formData, {
+      headers: { "Content-Type": "multipart/form-data" }
+    });
 
-  const res = await API.put("/auth/upload-photo", formData, {
-    headers: { "Content-Type": "multipart/form-data" }
-  });
+    updateUser({ photo: res.data.photo });
 
-  localStorage.setItem("photo", res.data.photo);
+    toast.success("Profile photo updated");
 
-  toast.success("Profile photo updated");
+  } catch (error) {
 
-  window.location.reload();
+    console.error(error);
+    toast.error("Photo upload failed");
 
-} catch (error) {
-
-  console.error(error);
-  toast.error("Photo upload failed");
-
-}
-
+  }
 
 };
+
 
 /* UPDATE PROFILE */
 
 const updateProfile = async () => {
 
+  try {
 
-try {
+    const res = await API.put("/auth/profile", {
+      name,
+      email
+    });
 
-  const res = await API.put("/auth/profile", {
-    name,
-    email
-  });
+    updateUser({
+      name: res.data.data.name,
+      email: res.data.data.email
+    });
 
-  localStorage.setItem("name", res.data.data.name);
-  localStorage.setItem("email", res.data.data.email);
+    toast.success("Profile updated");
 
-  toast.success("Profile updated");
+  } catch (error) {
 
-} catch (error) {
+    toast.error("Profile update failed");
 
-  toast.error("Profile update failed");
-
-}
-
+  }
 
 };
+
 
 /* CHANGE PASSWORD */
 
 const changePassword = async () => {
 
+  if (!currentPassword || !newPassword) {
+    toast.error("Please fill all fields");
+    return;
+  }
 
-if (!currentPassword || !newPassword) {
-  toast.error("Please fill all fields");
-  return;
-}
+  try {
 
-try {
+    await API.put("/auth/change-password", {
+      currentPassword,
+      newPassword
+    });
 
-  await API.put("/auth/change-password", {
-    currentPassword,
-    newPassword
-  });
+    toast.success("Password changed");
 
-  toast.success("Password changed");
+    setCurrentPassword("");
+    setNewPassword("");
 
-  setCurrentPassword("");
-  setNewPassword("");
+  } catch (error) {
 
-} catch (error) {
+    toast.error("Password change failed");
 
-  toast.error("Password change failed");
-
-}
-
+  }
 
 };
+
 
 /* DELETE ACCOUNT */
 
 const deleteAccount = async () => {
 
+  const result = await Swal.fire({
+    title: "Delete Account?",
+    text: "This action cannot be undone",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#ef4444",
+    cancelButtonColor: "#6b7280",
+    confirmButtonText: "Delete"
+  });
 
-const result = await Swal.fire({
-  title: "Delete Account?",
-  text: "This action cannot be undone",
-  icon: "warning",
-  showCancelButton: true,
-  confirmButtonColor: "#ef4444",
-  cancelButtonColor: "#6b7280",
-  confirmButtonText: "Delete"
-});
+  if (!result.isConfirmed) return;
 
-if (!result.isConfirmed) return;
+  try {
 
-try {
+    await API.delete("/auth/delete-account");
 
-  await API.delete("/auth/delete-account");
+    localStorage.clear();
 
-  localStorage.clear();
+    toast.success("Account deleted");
 
-  toast.success("Account deleted");
+    window.location.href = "/";
 
-  window.location.href = "/";
+  } catch (error) {
 
-} catch (error) {
+    toast.error("Account deletion failed");
 
-  toast.error("Account deletion failed");
-
-}
-
+  }
 
 };
 
-return (
 
+return (
 
 <div className="p-6">
 
@@ -177,15 +175,12 @@ return (
 
         <img
           src={
-            localStorage.getItem("photo")
-              ? `${BASE_URL}${localStorage.getItem("photo")}`
+            user?.photo
+              ? `${BASE_URL}${user.photo}`
               : `${BASE_URL}/photo/download.png`
           }
           alt="profile"
           className="w-20 h-20 rounded-full object-cover border"
-          onError={(e)=>{
-            e.target.src = `${BASE_URL}/photo/download.png`
-          }}
         />
 
         <input
@@ -346,7 +341,6 @@ return (
   </div>
 
 </div>
-
 
 );
 

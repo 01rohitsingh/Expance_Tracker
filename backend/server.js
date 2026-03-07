@@ -71,7 +71,7 @@ cron.schedule("*/5 * * * *", async () => {
 
 try {
 
-```
+
 const now = new Date();
 
 const recurringItems = await Recurring.find({
@@ -136,13 +136,13 @@ for (let item of recurringItems) {
 }
 
 console.log("✅ Recurring transactions processed");
-```
+
 
 } catch (error) {
 
-```
+
 console.error("❌ Recurring Cron Error:", error.message);
-```
+
 
 }
 
