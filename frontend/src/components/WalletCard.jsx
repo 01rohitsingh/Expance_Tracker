@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 import { motion } from "framer-motion";
 import { Wallet, Landmark, CreditCard, Smartphone, Trash2 } from "lucide-react";
+import { addNotification } from "../utils/notifications";   // ⭐ NEW
 
 function WalletCard({ wallet, refresh }) {
 
@@ -28,6 +29,10 @@ function WalletCard({ wallet, refresh }) {
       await API.delete(`/wallets/${wallet._id}`);
 
       toast.success("Wallet deleted successfully 🗑");
+
+      /* 🔔 ADD NOTIFICATION */
+
+      addNotification(`Wallet "${wallet.name}" deleted`);
 
       refresh();
 

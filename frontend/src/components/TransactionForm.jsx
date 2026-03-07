@@ -1,6 +1,7 @@
 import { useState } from "react";
 import API from "../services/api";
 import { toast } from "react-toastify";
+import { addNotification } from "../utils/notifications";
 
 function TransactionForm({ refresh }) {
 
@@ -40,6 +41,10 @@ function TransactionForm({ refresh }) {
       console.log("Transaction Added:", res.data);
 
       toast.success("Transaction added successfully 💰");
+
+      /* 🔔 ADD NOTIFICATION */
+
+      addNotification(`Transaction "${title}" ₹${amount} added`);
 
       // reset form
       setTitle("");

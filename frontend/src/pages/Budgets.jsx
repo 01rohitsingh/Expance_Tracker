@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import BudgetProgress from "../components/BudgetProgress";
 import API from "../services/api";
 import { toast } from "react-toastify";
-import { Target, Wallet } from "lucide-react";
+import { Target, Wallet, Trash2 } from "lucide-react";
 import { motion } from "framer-motion";
+import Swal from "sweetalert2";
+import { addNotification } from "../utils/notifications";
 
 function Budgets({ searchQuery = "" }) {
 
@@ -31,6 +33,8 @@ function Budgets({ searchQuery = "" }) {
 
   };
 
+  /* ADD BUDGET */
+
   const addBudget = async (e) => {
 
     e.preventDefault();
@@ -53,6 +57,10 @@ function Budgets({ searchQuery = "" }) {
 
       toast.success("Budget added successfully");
 
+      /* 🔔 Notification */
+
+      addNotification(`Budget "${category}" added with limit ₹${limit}`);
+
       setCategory("");
       setLimit("");
 
@@ -67,6 +75,39 @@ function Budgets({ searchQuery = "" }) {
 
   };
 
+  /* DELETE BUDGET */
+
+  const deleteBudget = async (budget) => {
+
+    const result = await Swal.fire({
+      title: "Delete budget?",
+      text: "This action cannot be undone",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Delete",
+      cancelButtonText: "Cancel",
+      confirmButtonColor: "#ef4444",
+      cancelButtonColor: "#6b7280"
+    });
+
+    if (!result.isConfirmed) return;
+
+    try {
+
+      await API.delete(`/budgets/${budget._id}`);
+
+      toast.success("Budget deleted 🗑");
+
+      fetchBudgets();
+
+    } catch (error) {
+
+      console.error(error);
+      toast.error("Failed to delete budget");
+
+    }
+
+  };
 
   /* SEARCH FILTER */
 
@@ -85,7 +126,6 @@ function Budgets({ searchQuery = "" }) {
     );
 
   });
-
 
   return (
 
@@ -116,7 +156,6 @@ function Budgets({ searchQuery = "" }) {
         </div>
 
       </div>
-
 
       {/* ADD BUDGET CARD */}
 
@@ -158,7 +197,6 @@ function Budgets({ searchQuery = "" }) {
 
       </div>
 
-
       {/* SUMMARY */}
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
@@ -189,7 +227,6 @@ function Budgets({ searchQuery = "" }) {
 
       </div>
 
-
       {/* BUDGET LIST */}
 
       {filteredBudgets.length === 0 ? (
@@ -212,10 +249,20 @@ function Budgets({ searchQuery = "" }) {
 
           {filteredBudgets.map((budget) => (
 
-            <BudgetProgress
-              key={budget._id}
-              budget={budget}
-            />
+            <div key={budget._id} className="relative">
+
+              <BudgetProgress budget={budget} />
+
+              {/* DELETE BUTTON */}
+
+              <button
+                onClick={() => deleteBudget(budget)}
+                className="absolute top-3 right-3 text-red-500 hover:text-red-700"
+              >
+                <Trash2 size={18}/>
+              </button>
+
+            </div>
 
           ))}
 

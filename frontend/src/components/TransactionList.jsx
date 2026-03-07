@@ -3,10 +3,11 @@ import { toast } from "react-toastify";
 import { Trash2 } from "lucide-react";
 import Swal from "sweetalert2";
 import { motion } from "framer-motion";
+import { addNotification } from "../utils/notifications";   // ⭐ NEW
 
 function TransactionList({ transactions = [], refresh }) {
 
-  const deleteTransaction = async (id) => {
+  const deleteTransaction = async (id, category, amount) => {
 
     const result = await Swal.fire({
       title: "Delete transaction?",
@@ -26,6 +27,10 @@ function TransactionList({ transactions = [], refresh }) {
       await API.delete(`/transactions/${id}`);
 
       toast.success("Transaction deleted 🗑");
+
+      /* 🔔 ADD NOTIFICATION */
+
+      addNotification(`Transaction "${category}" ₹${amount} deleted`);
 
       refresh();
 
@@ -105,7 +110,7 @@ function TransactionList({ transactions = [], refresh }) {
               </p>
 
               <button
-                onClick={() => deleteTransaction(t._id)}
+                onClick={() => deleteTransaction(t._id, t.category, t.amount)}
                 className="text-red-500 hover:text-red-700 cursor-pointer"
               >
                 <Trash2 size={18} />

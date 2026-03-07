@@ -1,6 +1,7 @@
 import { useState } from "react";
 import API from "../services/api";
 import { toast } from "react-toastify";
+import { addNotification } from "../utils/notifications";
 
 function WalletForm({ refresh }) {
 
@@ -26,6 +27,10 @@ function WalletForm({ refresh }) {
       });
 
       toast.success("Wallet created successfully 💰");
+
+      /* 🔔 ADD NOTIFICATION */
+
+      addNotification(`Wallet "${name}" added successfully`);
 
       setName("");
       setType("cash");

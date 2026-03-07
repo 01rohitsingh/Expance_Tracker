@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import API from "../services/api";
 import { motion } from "framer-motion";
+import { addNotification } from "../utils/notifications";
 
 function BudgetProgress({ budget }) {
 
@@ -51,6 +52,26 @@ function BudgetProgress({ budget }) {
     return "bg-red-500";
 
   };
+
+  /* 🔔 Budget Exceeded Notification (SAFE VERSION) */
+
+  useEffect(() => {
+
+    if (percentage > 100) {
+
+      const key = `budget_exceeded_${budget?.category}_${budget?.month}_${budget?.year}`;
+
+      if (!localStorage.getItem(key)) {
+
+        addNotification(`Budget exceeded in ${budget?.category} ⚠`);
+
+        localStorage.setItem(key, "true");
+
+      }
+
+    }
+
+  }, [percentage, budget]);
 
   return (
 

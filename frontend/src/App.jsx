@@ -11,12 +11,14 @@ import Wallets from "./pages/Wallets";
 import Budgets from "./pages/Budgets";
 import Analytics from "./pages/Analytics";
 import Settings from "./pages/Settings";
+import Notifications from "./pages/Notifications";   // ⭐ NEW
 
 function App() {
 
   return (
 
     <BrowserRouter>
+
       {/* Toast Container */}
       <ToastContainer
         position="top-right"
@@ -39,9 +41,10 @@ function App() {
         <Route path="/analytics" element={<Layout><Analytics /></Layout>} />
         <Route path="/settings" element={<Layout><Settings /></Layout>} />
 
+        {/* ⭐ Notification Page */}
+        <Route path="/notifications" element={<Layout><Notifications /></Layout>} />
+
       </Routes>
-
-
 
     </BrowserRouter>
 
