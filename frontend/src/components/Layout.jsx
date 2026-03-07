@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-
 import Sidebar from "./Sidebar";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
@@ -9,6 +8,9 @@ import Footer from "./Footer";
 export default function Layout({ children }) {
 
   const [openSidebar, setOpenSidebar] = useState(false);
+
+  // SEARCH STATE
+  const [searchQuery, setSearchQuery] = useState("");
 
   return (
 
@@ -19,6 +21,7 @@ export default function Layout({ children }) {
       <div className="hidden md:flex w-64 border-r border-slate-200 bg-slate-900">
         <Sidebar />
       </div>
+
 
       {/* Mobile Sidebar */}
 
@@ -54,16 +57,31 @@ export default function Layout({ children }) {
 
       </AnimatePresence>
 
+
       {/* Main Content */}
 
       <div className="flex flex-col flex-1">
 
-        <Navbar setOpenSidebar={setOpenSidebar} />
+        {/* Navbar */}
+
+        <Navbar
+          setOpenSidebar={setOpenSidebar}
+          setSearchQuery={setSearchQuery}
+        />
 
         <main className="flex-1 p-4 md:p-6 lg:p-8 overflow-y-auto">
 
           <div className="max-w-7xl mx-auto">
-            {children}
+
+            {/* IMPORTANT */}
+            {children && 
+              (typeof children === "object"
+                ? (children.type
+                    ? <children.type {...children.props} searchQuery={searchQuery} />
+                    : children)
+                : children)
+            }
+
           </div>
 
         </main>
@@ -71,8 +89,6 @@ export default function Layout({ children }) {
         <Footer />
 
       </div>
-
-
 
     </div>
 

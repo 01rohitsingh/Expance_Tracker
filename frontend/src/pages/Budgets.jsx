@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { Target, Wallet } from "lucide-react";
 import { motion } from "framer-motion";
 
-function Budgets() {
+function Budgets({ searchQuery = "" }) {
 
   const [budgets, setBudgets] = useState([]);
   const [category, setCategory] = useState("");
@@ -66,6 +66,26 @@ function Budgets() {
     }
 
   };
+
+
+  /* SEARCH FILTER */
+
+  const filteredBudgets = budgets.filter((budget) => {
+
+    if (!searchQuery) return true;
+
+    const search = searchQuery.toLowerCase();
+
+    const category = budget.category?.toLowerCase() || "";
+    const limit = String(budget.limit || "");
+
+    return (
+      category.includes(search) ||
+      limit.includes(search)
+    );
+
+  });
+
 
   return (
 
@@ -139,11 +159,9 @@ function Budgets() {
       </div>
 
 
-      {/* SUMMARY STATS */}
+      {/* SUMMARY */}
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-
-        {/* TOTAL BUDGETS CARD WITH MOTION */}
 
         <motion.div
           whileHover={{ y: -6, scale: 1.02 }}
@@ -162,7 +180,7 @@ function Budgets() {
             </p>
 
             <p className="text-xl font-bold text-slate-800">
-              {budgets.length}
+              {filteredBudgets.length}
             </p>
 
           </div>
@@ -172,18 +190,18 @@ function Budgets() {
       </div>
 
 
-      {/* BUDGET CARDS */}
+      {/* BUDGET LIST */}
 
-      {budgets.length === 0 ? (
+      {filteredBudgets.length === 0 ? (
 
         <div className="bg-white p-10 rounded-xl shadow text-center text-gray-500">
 
           <p className="text-lg font-medium">
-            No budgets created yet
+            No budgets found
           </p>
 
           <p className="text-sm mt-2">
-            Add your first budget to track spending
+            Try another search
           </p>
 
         </div>
@@ -192,7 +210,7 @@ function Budgets() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
-          {budgets.map((budget) => (
+          {filteredBudgets.map((budget) => (
 
             <BudgetProgress
               key={budget._id}

@@ -3,7 +3,7 @@ import WalletCard from "../components/WalletCard";
 import WalletForm from "../components/WalletForm";
 import API from "../services/api";
 
-function Wallets() {
+function Wallets({ searchQuery = "" }) {
 
   const [wallets, setWallets] = useState([]);
 
@@ -26,6 +26,26 @@ function Wallets() {
 
   };
 
+
+  /* SEARCH FILTER */
+
+  const filteredWallets = wallets.filter((wallet) => {
+
+    if (!searchQuery) return true;
+
+    const search = searchQuery.toLowerCase();
+
+    const name = wallet.name?.toLowerCase() || "";
+    const balance = String(wallet.balance || "");
+
+    return (
+      name.includes(search) ||
+      balance.includes(search)
+    );
+
+  });
+
+
   return (
 
     <div className="p-6 bg-gray-100 min-h-screen">
@@ -36,17 +56,18 @@ function Wallets() {
 
       <WalletForm refresh={fetchWallets} />
 
-      {wallets.length === 0 ? (
+
+      {filteredWallets.length === 0 ? (
 
         <p className="text-gray-500 mt-4">
-          No wallets created yet
+          No wallets found
         </p>
 
       ) : (
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
 
-          {wallets.map((wallet) => (
+          {filteredWallets.map((wallet) => (
 
             <WalletCard
               key={wallet._id}
