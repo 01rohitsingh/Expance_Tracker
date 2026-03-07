@@ -29,7 +29,7 @@ const upload = multer({ storage });
 
 
 /* REGISTER */
-router.post("/register", register);
+router.post("/register", upload.single("photo"), register);
 
 
 /* LOGIN */

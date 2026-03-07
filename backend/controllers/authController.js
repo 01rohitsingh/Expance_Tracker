@@ -19,6 +19,8 @@ exports.register = async (req, res) => {
 
     const { name, email, password } = req.body;
 
+    const photo = req.file ? `/photo/${req.file.filename}` : null;
+
     if (!name || !email || !password) {
       return res.status(400).json({
         success: false,
@@ -35,10 +37,13 @@ exports.register = async (req, res) => {
       });
     }
 
-    // Create user
-    const user = await User.create({ name, email, password });
+    const user = await User.create({
+      name,
+      email,
+      password,
+      photo
+    });
 
-    // 🔥 Automatically create default wallet
     await Wallet.create({
       user: user._id,
       name: "Cash",
@@ -53,7 +58,7 @@ exports.register = async (req, res) => {
         _id: user._id,
         name: user.name,
         email: user.email,
-        role: user.role,
+        photo: user.photo,
         token: generateToken(user._id)
       }
     });
