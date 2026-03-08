@@ -90,10 +90,12 @@ function BudgetProgress({ budget }) {
       <div className="w-full bg-slate-200 rounded-full h-3 overflow-hidden">
 
         <motion.div
-          className={`${getColor()} h-3 rounded-full`}
-          initial={{ width: 0 }}
-          animate={{ width: `${progress}%` }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
+          key={progress}
+          className={`${getColor()} h-3 rounded-full origin-left`}
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: progress / 100 }}
+          transition={{ duration: 0.9, ease: "easeOut" }}
+          style={{ width: "100%" }}
         />
 
       </div>
