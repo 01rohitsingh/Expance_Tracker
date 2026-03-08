@@ -44,24 +44,7 @@ function TransactionList({ transactions = [], refresh }) {
 
   return (
 
-    <motion.div
-      initial={{ opacity: 0, y: 25 }}
-      animate={{ opacity: 1, y: 0 }}
-
-      whileTap={{ scale: 0.99 }}
-
-      onTouchStart={(e)=>{
-        e.currentTarget.style.transform="scale(0.99)";
-      }}
-
-      onTouchEnd={(e)=>{
-        e.currentTarget.style.transform="scale(1)";
-      }}
-
-      transition={{ duration: 0.35 }}
-
-      className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm"
-    >
+    <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
 
       <h2 className="text-lg font-semibold mb-4 text-slate-800">
         Transactions
@@ -85,16 +68,8 @@ function TransactionList({ transactions = [], refresh }) {
 
             transition={{ delay: index * 0.03 }}
 
-            whileHover={{ y: -4, scale: 1.01 }}  // PC same
-            whileTap={{ scale: 0.97 }}           // mobile
-
-            onTouchStart={(e)=>{
-              e.currentTarget.style.transform="scale(0.97)";
-            }}
-
-            onTouchEnd={(e)=>{
-              e.currentTarget.style.transform="scale(1)";
-            }}
+            whileHover={{ y: -4, scale: 1.01 }}   // PC hover animation
+            whileTap={{ scale: 0.97 }}            // mobile tap animation
 
             className="flex justify-between items-center border border-slate-200 rounded-lg p-4 hover:shadow-md"
           >
@@ -135,17 +110,8 @@ function TransactionList({ transactions = [], refresh }) {
               </p>
 
               <motion.button
-                whileHover={{ scale: 1.15 }}   // PC same
-                whileTap={{ scale: 0.9 }}      // mobile
-
-                onTouchStart={(e)=>{
-                  e.currentTarget.style.transform="scale(0.9)";
-                }}
-
-                onTouchEnd={(e)=>{
-                  e.currentTarget.style.transform="scale(1)";
-                }}
-
+                whileHover={{ scale: 1.15 }}
+                whileTap={{ scale: 0.9 }}
                 onClick={() => deleteTransaction(t._id, t.category, t.amount)}
                 className="text-red-500 hover:text-red-700 cursor-pointer"
               >
@@ -160,7 +126,7 @@ function TransactionList({ transactions = [], refresh }) {
 
       </div>
 
-    </motion.div>
+    </div>
 
   );
 
