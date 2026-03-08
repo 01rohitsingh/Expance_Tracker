@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 import { motion } from "framer-motion";
 import { Wallet, Landmark, CreditCard, Smartphone, Trash2 } from "lucide-react";
-import { addNotification } from "../utils/notifications";   // ⭐ NEW
+import { addNotification } from "../utils/notifications";
 
 function WalletCard({ wallet, refresh }) {
 
@@ -30,8 +30,6 @@ function WalletCard({ wallet, refresh }) {
 
       toast.success("Wallet deleted successfully 🗑");
 
-      /* 🔔 ADD NOTIFICATION */
-
       addNotification(`Wallet "${wallet.name}" deleted`);
 
       refresh();
@@ -45,8 +43,6 @@ function WalletCard({ wallet, refresh }) {
     }
 
   };
-
-  // wallet icon based on type
 
   const getWalletIcon = () => {
 
@@ -74,18 +70,23 @@ function WalletCard({ wallet, refresh }) {
   return (
 
     <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
       whileHover={{ y: -6, scale: 1.02 }}
-      transition={{ type: "spring", stiffness: 200 }}
+      whileTap={{ scale: 0.97 }}
+      transition={{ duration: 0.3 }}
       className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm hover:shadow-md flex justify-between items-center"
     >
 
-      {/* Left Section */}
-
       <div className="flex items-center gap-3">
 
-        <div className="bg-slate-100 p-3 rounded-lg">
+        <motion.div
+          className="bg-slate-100 p-3 rounded-lg"
+          whileHover={{ rotate: 8, scale: 1.05 }}
+          transition={{ duration: 0.2 }}
+        >
           {getWalletIcon()}
-        </div>
+        </motion.div>
 
         <div>
 
@@ -101,15 +102,14 @@ function WalletCard({ wallet, refresh }) {
 
       </div>
 
-
-      {/* Delete Button */}
-
-      <button
+      <motion.button
         onClick={deleteWallet}
+        whileHover={{ scale: 1.15 }}
+        whileTap={{ scale: 0.9 }}
         className="text-red-500 hover:text-red-700 cursor-pointer transition"
       >
         <Trash2 size={18} />
-      </button>
+      </motion.button>
 
     </motion.div>
 

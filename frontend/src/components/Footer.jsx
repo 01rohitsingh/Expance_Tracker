@@ -1,5 +1,6 @@
 import { Github, Linkedin, Mail } from "lucide-react";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 
 export default function Footer() {
 
@@ -7,16 +8,17 @@ export default function Footer() {
 
     <footer className="bg-white border-t border-slate-200 mt-auto">
 
-      {/* Gradient Top Line */}
       <div className="h-[2px] bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500"></div>
 
       <div className="max-w-7xl mx-auto px-6 py-8">
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
 
-          {/* Brand Section */}
-
-          <div>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
 
             <h2 className="text-xl font-bold text-slate-800 tracking-wide">
               FinTrack
@@ -27,12 +29,15 @@ export default function Footer() {
               technologies to manage your finances easily.
             </p>
 
-          </div>
+          </motion.div>
 
 
-          {/* Quick Links */}
-
-          <div className="flex flex-col md:items-center text-sm text-slate-600 space-y-2">
+          <motion.div
+            className="flex flex-col md:items-center text-sm text-slate-600 space-y-2"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7 }}
+          >
 
             <Link to="/dashboard" className="hover:text-blue-600 transition">
               Dashboard
@@ -50,50 +55,62 @@ export default function Footer() {
               Settings
             </Link>
 
-          </div>
+          </motion.div>
 
 
-          {/* Social Icons */}
+          <motion.div
+            className="flex md:justify-end gap-5"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
 
-          <div className="flex md:justify-end gap-5">
-
-            <a
+            <motion.a
               href="https://github.com/01rohitsingh"
-              className="p-3 rounded-lg bg-slate-100 hover:bg-blue-50 hover:text-blue-600 transition-all duration-300 hover:scale-125"
+              className="p-3 rounded-lg bg-slate-100 hover:bg-blue-50 hover:text-blue-600 transition"
+              whileHover={{ scale: 1.25 }}
+              whileTap={{ scale: 0.9 }}
             >
               <Github size={22}/>
-            </a>
+            </motion.a>
 
-            <a
+            <motion.a
               href="https://www.linkedin.com/in/01rohitsingh"
-              className="p-3 rounded-lg bg-slate-100 hover:bg-blue-50 hover:text-blue-600 transition-all duration-300 hover:scale-125"
+              className="p-3 rounded-lg bg-slate-100 hover:bg-blue-50 hover:text-blue-600 transition"
+              whileHover={{ scale: 1.25 }}
+              whileTap={{ scale: 0.9 }}
             >
               <Linkedin size={22}/>
-            </a>
+            </motion.a>
 
-            <a
+            <motion.a
               href="https://mail.google.com/mail/u/0/?tab=rm&ogbl#inbox"
-              className="p-3 rounded-lg bg-slate-100 hover:bg-blue-50 hover:text-blue-600 transition-all duration-300 hover:scale-125"
+              className="p-3 rounded-lg bg-slate-100 hover:bg-blue-50 hover:text-blue-600 transition"
+              whileHover={{ scale: 1.25 }}
+              whileTap={{ scale: 0.9 }}
             >
               <Mail size={22}/>
-            </a>
+            </motion.a>
 
-          </div>
+          </motion.div>
 
         </div>
 
 
-        {/* Bottom Copyright */}
+        <motion.div
+          className="border-t border-slate-200 mt-8 pt-4 text-center text-sm text-slate-500"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1 }}
+        >
 
-        <div className="border-t border-slate-200 mt-8 pt-4 text-center text-sm text-slate-500">
-
-          © {new Date().getFullYear()} 
+          © {new Date().getFullYear()}
           <span className="font-semibold text-slate-700 ml-1">
             FinTrack
           </span>
           • Built with React & Node
 
-        </div>
+        </motion.div>
 
       </div>
 

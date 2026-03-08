@@ -12,26 +12,36 @@ function Notifications() {
     const data = getNotifications();
     setNotifications(data);
 
-    // mark all as seen
     markAllSeen();
 
   }, []);
 
   return (
 
-    <div className="p-6 bg-slate-100 min-h-screen">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="p-4 md:p-6 bg-slate-100 min-h-screen"
+    >
 
-      {/* HEADER */}
+      <motion.div
+        initial={{ opacity: 0, y: -25 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.35 }}
+        className="flex items-center gap-3 mb-8"
+      >
 
-      <div className="flex items-center gap-3 mb-8">
-
-        <div className="bg-blue-100 p-3 rounded-lg">
+        <motion.div
+          className="bg-blue-100 p-3 rounded-lg"
+          whileHover={{ scale: 1.08 }}
+          whileTap={{ scale: 0.95 }}
+        >
           <Bell className="text-blue-600"/>
-        </div>
+        </motion.div>
 
         <div>
 
-          <h1 className="text-3xl font-bold text-slate-800">
+          <h1 className="text-2xl md:text-3xl font-bold text-slate-800">
             Notifications
           </h1>
 
@@ -41,14 +51,15 @@ function Notifications() {
 
         </div>
 
-      </div>
-
-
-      {/* EMPTY STATE */}
+      </motion.div>
 
       {notifications.length === 0 ? (
 
-        <div className="bg-white rounded-xl shadow-sm p-10 text-center text-gray-500">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="bg-white rounded-xl shadow-sm p-10 text-center text-gray-500"
+        >
 
           <p className="text-lg font-medium">
             No notifications yet
@@ -58,7 +69,7 @@ function Notifications() {
             Your activity notifications will appear here
           </p>
 
-        </div>
+        </motion.div>
 
       ) : (
 
@@ -68,10 +79,11 @@ function Notifications() {
 
             <motion.div
               key={n.id}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 25 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.05 }}
               whileHover={{ y: -4, scale: 1.01 }}
+              whileTap={{ scale: 0.98 }}
               className={`flex justify-between items-center border rounded-lg p-4 shadow-sm cursor-pointer
               
               ${
@@ -103,7 +115,7 @@ function Notifications() {
 
       )}
 
-    </div>
+    </motion.div>
 
   );
 

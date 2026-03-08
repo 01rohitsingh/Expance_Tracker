@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import API from "../services/api";
 import { addNotification } from "../utils/notifications";
 
@@ -52,8 +53,6 @@ function BudgetProgress({ budget }) {
 
   };
 
-  /* Budget exceeded notification */
-
   useEffect(() => {
 
     if (percentage > 100) {
@@ -76,8 +75,6 @@ function BudgetProgress({ budget }) {
 
     <div>
 
-      {/* PRICE + DATE */}
-
       <div className="flex justify-between text-sm text-slate-600 mb-2">
 
         <span>
@@ -90,18 +87,16 @@ function BudgetProgress({ budget }) {
 
       </div>
 
-      {/* PROGRESS BAR */}
-
       <div className="w-full bg-slate-200 rounded-full h-3 overflow-hidden">
 
-        <div
-          className={`${getColor()} h-3 rounded-full transition-all duration-500`}
-          style={{ width: `${progress}%` }}
+        <motion.div
+          className={`${getColor()} h-3 rounded-full`}
+          initial={{ width: 0 }}
+          animate={{ width: `${progress}%` }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
         />
 
       </div>
-
-      {/* WARNING */}
 
       {percentage > 100 && (
 

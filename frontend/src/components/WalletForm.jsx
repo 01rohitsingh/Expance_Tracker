@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { motion } from "framer-motion";
 import API from "../services/api";
 import { toast } from "react-toastify";
 import { addNotification } from "../utils/notifications";
@@ -28,8 +29,6 @@ function WalletForm({ refresh }) {
 
       toast.success("Wallet created successfully 💰");
 
-      /* 🔔 ADD NOTIFICATION */
-
       addNotification(`Wallet "${name}" added successfully`);
 
       setName("");
@@ -50,8 +49,11 @@ function WalletForm({ refresh }) {
 
   return (
 
-    <form
+    <motion.form
       onSubmit={handleSubmit}
+      initial={{ opacity: 0, y: 25 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.35 }}
       className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm mb-6"
     >
 
@@ -90,14 +92,16 @@ function WalletForm({ refresh }) {
 
       </div>
 
-      <button
+      <motion.button
         type="submit"
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
         className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 mt-4 rounded-lg cursor-pointer transition"
       >
         Add Wallet
-      </button>
+      </motion.button>
 
-    </form>
+    </motion.form>
 
   );
 

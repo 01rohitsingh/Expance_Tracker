@@ -39,7 +39,6 @@ function Analytics() {
 
   };
 
-  // Category wise expense
   const categoryData = {};
 
   transactions.forEach((t) => {
@@ -61,8 +60,6 @@ function Analytics() {
     value: categoryData[key],
   }));
 
-
-  // Income vs Expense
   let income = 0;
   let expense = 0;
 
@@ -92,33 +89,40 @@ function Analytics() {
 
   return (
 
-    <div className="p-6 bg-gray-100 min-h-screen">
-
-      {/* HEADER */}
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="p-4 md:p-6 bg-gray-100 min-h-screen"
+    >
 
       <motion.h1
-        initial={{ opacity: 0, y: -20 }}
+        initial={{ opacity: 0, y: -25 }}
         animate={{ opacity: 1, y: 0 }}
-        className="text-3xl font-bold mb-6 text-slate-800"
+        transition={{ duration: 0.4 }}
+        className="text-2xl md:text-3xl font-bold mb-6 text-slate-800"
       >
         Analytics
       </motion.h1>
 
       {transactions.length === 0 ? (
 
-        <div className="bg-white p-10 rounded-xl shadow text-center text-gray-500">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="bg-white p-10 rounded-xl shadow text-center text-gray-500"
+        >
           No data available for analytics
-        </div>
+        </motion.div>
 
       ) : (
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-          {/* Expense by Category */}
-
           <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
             whileHover={{ y: -6, scale: 1.02 }}
-            transition={{ type: "spring", stiffness: 200 }}
+            transition={{ duration: 0.35 }}
             className="bg-white p-5 shadow rounded-xl"
           >
 
@@ -157,11 +161,11 @@ function Analytics() {
           </motion.div>
 
 
-          {/* Income vs Expense */}
-
           <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
             whileHover={{ y: -6, scale: 1.02 }}
-            transition={{ type: "spring", stiffness: 200 }}
+            transition={{ duration: 0.35 }}
             className="bg-white p-5 shadow rounded-xl"
           >
 
@@ -207,7 +211,7 @@ function Analytics() {
 
       )}
 
-    </div>
+    </motion.div>
 
   );
 

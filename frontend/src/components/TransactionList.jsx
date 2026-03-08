@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 import { Trash2 } from "lucide-react";
 import Swal from "sweetalert2";
 import { motion } from "framer-motion";
-import { addNotification } from "../utils/notifications";   // ⭐ NEW
+import { addNotification } from "../utils/notifications";
 
 function TransactionList({ transactions = [], refresh }) {
 
@@ -28,8 +28,6 @@ function TransactionList({ transactions = [], refresh }) {
 
       toast.success("Transaction deleted 🗑");
 
-      /* 🔔 ADD NOTIFICATION */
-
       addNotification(`Transaction "${category}" ₹${amount} deleted`);
 
       refresh();
@@ -46,7 +44,12 @@ function TransactionList({ transactions = [], refresh }) {
 
   return (
 
-    <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+    <motion.div
+      initial={{ opacity: 0, y: 25 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.35 }}
+      className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm"
+    >
 
       <h2 className="text-lg font-semibold mb-4 text-slate-800">
         Transactions
@@ -60,16 +63,16 @@ function TransactionList({ transactions = [], refresh }) {
 
       <div className="space-y-3">
 
-        {transactions.map((t) => (
+        {transactions.map((t, index) => (
 
           <motion.div
             key={t._id}
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.03 }}
             whileHover={{ y: -4, scale: 1.01 }}
-            transition={{ type: "spring", stiffness: 200 }}
             className="flex justify-between items-center border border-slate-200 rounded-lg p-4 hover:shadow-md"
           >
-
-            {/* Left */}
 
             <div>
 
@@ -82,9 +85,6 @@ function TransactionList({ transactions = [], refresh }) {
               </p>
 
             </div>
-
-
-            {/* Right */}
 
             <div className="flex items-center gap-4">
 
@@ -109,12 +109,14 @@ function TransactionList({ transactions = [], refresh }) {
                 ₹ {Number(t.amount).toLocaleString()}
               </p>
 
-              <button
+              <motion.button
+                whileHover={{ scale: 1.15 }}
+                whileTap={{ scale: 0.9 }}
                 onClick={() => deleteTransaction(t._id, t.category, t.amount)}
                 className="text-red-500 hover:text-red-700 cursor-pointer"
               >
                 <Trash2 size={18} />
-              </button>
+              </motion.button>
 
             </div>
 
@@ -124,7 +126,7 @@ function TransactionList({ transactions = [], refresh }) {
 
       </div>
 
-    </div>
+    </motion.div>
 
   );
 

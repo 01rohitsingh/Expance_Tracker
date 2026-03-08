@@ -148,19 +148,28 @@ const deleteAccount = async () => {
 
 return (
 
-<div className="p-6">
+<motion.div
+initial={{opacity:0}}
+animate={{opacity:1}}
+className="p-4 md:p-6"
+>
 
-  <h1 className="text-2xl font-bold mb-6">
+  <motion.h1
+  initial={{y:-20,opacity:0}}
+  animate={{y:0,opacity:1}}
+  transition={{duration:0.3}}
+  className="text-2xl font-bold mb-6"
+  >
     Settings
-  </h1>
+  </motion.h1>
 
   <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
 
-    {/* PROFILE PHOTO */}
-
     <motion.div
-      whileHover={{ y: -4 }}
+      initial={{opacity:0,y:20}}
+      animate={{opacity:1,y:0}}
+      whileHover={{y:-4}}
       className="bg-white p-5 rounded-xl shadow-sm border border-purple-200 hover:border-purple-500"
     >
 
@@ -189,22 +198,24 @@ return (
           className="border p-2 rounded-lg w-full"
         />
 
-        <button
+        <motion.button
+          whileHover={{scale:1.04}}
+          whileTap={{scale:0.96}}
           onClick={updatePhoto}
           className="w-full bg-purple-600 hover:bg-purple-700 text-white py-2.5 rounded-lg"
         >
           Update Photo
-        </button>
+        </motion.button>
 
       </div>
 
     </motion.div>
 
 
-    {/* PROFILE INFO */}
-
     <motion.div
-      whileHover={{ y: -4 }}
+      initial={{opacity:0,y:20}}
+      animate={{opacity:1,y:0}}
+      whileHover={{y:-4}}
       className="bg-white p-5 rounded-xl shadow-sm border border-blue-200 hover:border-blue-500"
     >
 
@@ -233,22 +244,24 @@ return (
           placeholder="Email"
         />
 
-        <button
+        <motion.button
+          whileHover={{scale:1.04}}
+          whileTap={{scale:0.96}}
           onClick={updateProfile}
           className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-lg"
         >
           Update Profile
-        </button>
+        </motion.button>
 
       </div>
 
     </motion.div>
 
 
-    {/* PASSWORD */}
-
     <motion.div
-      whileHover={{ y: -4 }}
+      initial={{opacity:0,y:20}}
+      animate={{opacity:1,y:0}}
+      whileHover={{y:-4}}
       className="bg-white p-5 rounded-xl shadow-sm border border-green-200 hover:border-green-500"
     >
 
@@ -299,22 +312,24 @@ return (
 
         </div>
 
-        <button
+        <motion.button
+          whileHover={{scale:1.04}}
+          whileTap={{scale:0.96}}
           onClick={changePassword}
           className="w-full bg-green-600 hover:bg-green-700 text-white py-2.5 rounded-lg"
         >
           Change Password
-        </button>
+        </motion.button>
 
       </div>
 
     </motion.div>
 
 
-    {/* DELETE ACCOUNT */}
-
     <motion.div
-      whileHover={{ y: -4 }}
+      initial={{opacity:0,y:20}}
+      animate={{opacity:1,y:0}}
+      whileHover={{y:-4}}
       className="bg-white p-5 rounded-xl shadow-sm border border-red-200 hover:border-red-500"
     >
 
@@ -329,18 +344,20 @@ return (
         Deleting your account will permanently remove your data.
       </p>
 
-      <button
+      <motion.button
+        whileHover={{scale:1.04}}
+        whileTap={{scale:0.96}}
         onClick={deleteAccount}
         className="w-full bg-red-500 hover:bg-red-600 text-white py-2.5 rounded-lg"
       >
         Delete Account
-      </button>
+      </motion.button>
 
     </motion.div>
 
   </div>
 
-</div>
+</motion.div>
 
 );
 

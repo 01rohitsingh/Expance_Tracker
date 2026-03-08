@@ -5,12 +5,13 @@ function SummaryCard({ title, amount, icon: Icon, color }) {
   return (
 
     <motion.div
+      initial={{ opacity: 0, y: 25 }}
+      animate={{ opacity: 1, y: 0 }}
       whileHover={{ y: -6, scale: 1.02 }}
-      transition={{ type: "spring", stiffness: 200 }}
+      whileTap={{ scale: 0.97 }}
+      transition={{ duration: 0.35 }}
       className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm hover:shadow-md flex items-center justify-between"
     >
-
-      {/* Left */}
 
       <div>
 
@@ -24,15 +25,18 @@ function SummaryCard({ title, amount, icon: Icon, color }) {
 
       </div>
 
-      {/* Icon */}
-
       {Icon && (
 
-        <div className={`p-3 rounded-lg ${color || "bg-blue-100"}`}>
+        <motion.div
+          className={`p-3 rounded-lg ${color || "bg-blue-100"}`}
+          whileHover={{ rotate: 8, scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          transition={{ duration: 0.25 }}
+        >
 
           <Icon size={22} className="text-blue-600" />
 
-        </div>
+        </motion.div>
 
       )}
 
@@ -42,4 +46,4 @@ function SummaryCard({ title, amount, icon: Icon, color }) {
 
 }
 
-export default SummaryCard
+export default SummaryCard;

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import WalletCard from "../components/WalletCard";
 import WalletForm from "../components/WalletForm";
 import API from "../services/api";
@@ -26,9 +27,6 @@ function Wallets({ searchQuery = "" }) {
 
   };
 
-
-  /* SEARCH FILTER */
-
   const filteredWallets = wallets.filter((wallet) => {
 
     if (!searchQuery) return true;
@@ -45,35 +43,54 @@ function Wallets({ searchQuery = "" }) {
 
   });
 
-
   return (
 
-    <div className="p-6 bg-gray-100 min-h-screen">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="p-4 md:p-6 bg-gray-100 min-h-screen"
+    >
 
-      <h1 className="text-3xl font-bold mb-6">
+      <motion.h1
+        initial={{ opacity: 0, y: -25 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.35 }}
+        className="text-2xl md:text-3xl font-bold mb-6"
+      >
         Wallets
-      </h1>
+      </motion.h1>
 
       <WalletForm refresh={fetchWallets} />
 
-
       {filteredWallets.length === 0 ? (
 
-        <p className="text-gray-500 mt-4">
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="text-gray-500 mt-4"
+        >
           No wallets found
-        </p>
+        </motion.p>
 
       ) : (
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
 
-          {filteredWallets.map((wallet) => (
+          {filteredWallets.map((wallet, index) => (
 
-            <WalletCard
+            <motion.div
               key={wallet._id}
-              wallet={wallet}
-              refresh={fetchWallets}
-            />
+              initial={{ opacity: 0, y: 25 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.05 }}
+            >
+
+              <WalletCard
+                wallet={wallet}
+                refresh={fetchWallets}
+              />
+
+            </motion.div>
 
           ))}
 
@@ -81,7 +98,7 @@ function Wallets({ searchQuery = "" }) {
 
       )}
 
-    </div>
+    </motion.div>
 
   );
 

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { motion } from "framer-motion";
 import API from "../services/api";
 import { toast } from "react-toastify";
 import { addNotification } from "../utils/notifications";
@@ -42,11 +43,8 @@ function TransactionForm({ refresh }) {
 
       toast.success("Transaction added successfully 💰");
 
-      /* 🔔 ADD NOTIFICATION */
-
       addNotification(`Transaction "${title}" ₹${amount} added`);
 
-      // reset form
       setTitle("");
       setAmount("");
       setCategory("");
@@ -67,8 +65,11 @@ function TransactionForm({ refresh }) {
 
   return (
 
-    <form
+    <motion.form
       onSubmit={handleSubmit}
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.35 }}
       className="bg-white border border-slate-200 p-5 rounded-xl shadow-sm mb-6"
     >
 
@@ -120,14 +121,16 @@ function TransactionForm({ refresh }) {
 
       </div>
 
-      <button
+      <motion.button
         type="submit"
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
         className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 mt-4 rounded-lg transition"
       >
         Add Transaction
-      </button>
+      </motion.button>
 
-    </form>
+    </motion.form>
 
   );
 

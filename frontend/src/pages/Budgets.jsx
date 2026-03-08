@@ -33,8 +33,6 @@ function Budgets({ searchQuery = "" }) {
 
   };
 
-  /* ADD BUDGET */
-
   const addBudget = async (e) => {
 
     e.preventDefault();
@@ -57,8 +55,6 @@ function Budgets({ searchQuery = "" }) {
 
       toast.success("Budget added successfully");
 
-      /* 🔔 Notification */
-
       addNotification(`Budget "${category}" added with limit ₹${limit}`);
 
       setCategory("");
@@ -74,8 +70,6 @@ function Budgets({ searchQuery = "" }) {
     }
 
   };
-
-  /* DELETE BUDGET */
 
   const deleteBudget = async (budget) => {
 
@@ -98,8 +92,6 @@ function Budgets({ searchQuery = "" }) {
 
       toast.success("Budget deleted 🗑");
 
-      /* 🔔 Notification */
-
       addNotification(`Budget "${budget.category}" deleted`);
 
       fetchBudgets();
@@ -112,8 +104,6 @@ function Budgets({ searchQuery = "" }) {
     }
 
   };
-
-  /* SEARCH FILTER */
 
   const filteredBudgets = budgets.filter((budget) => {
 
@@ -133,11 +123,18 @@ function Budgets({ searchQuery = "" }) {
 
   return (
 
-    <div className="p-6 bg-slate-100 min-h-screen">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="p-4 md:p-6 bg-slate-100 min-h-screen"
+    >
 
-      {/* HEADER */}
-
-      <div className="flex items-center justify-between mb-8">
+      <motion.div
+        initial={{ opacity: 0, y: -25 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+        className="flex items-center justify-between mb-8"
+      >
 
         <div className="flex items-center gap-3">
 
@@ -147,7 +144,7 @@ function Budgets({ searchQuery = "" }) {
 
           <div>
 
-            <h1 className="text-3xl font-bold text-slate-800">
+            <h1 className="text-2xl md:text-3xl font-bold text-slate-800">
               Budget Planning
             </h1>
 
@@ -159,11 +156,15 @@ function Budgets({ searchQuery = "" }) {
 
         </div>
 
-      </div>
+      </motion.div>
 
-      {/* ADD BUDGET CARD */}
 
-      <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 mb-8">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.35 }}
+        className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 mb-8"
+      >
 
         <h2 className="font-semibold text-slate-700 mb-4">
           Create Budget
@@ -190,24 +191,27 @@ function Budgets({ searchQuery = "" }) {
             className="border border-slate-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
           />
 
-          <button
+          <motion.button
             type="submit"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             className="bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-3 rounded-lg cursor-pointer transition"
           >
             Add Budget
-          </button>
+          </motion.button>
 
         </form>
 
-      </div>
+      </motion.div>
 
-      {/* SUMMARY */}
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
 
         <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
           whileHover={{ y: -6, scale: 1.02 }}
-          transition={{ type: "spring", stiffness: 200 }}
+          transition={{ duration: 0.35 }}
           className="bg-white border border-slate-200 rounded-xl p-5 flex items-center gap-4 shadow-sm hover:shadow-md"
         >
 
@@ -231,11 +235,14 @@ function Budgets({ searchQuery = "" }) {
 
       </div>
 
-      {/* BUDGET LIST */}
 
       {filteredBudgets.length === 0 ? (
 
-        <div className="bg-white p-10 rounded-xl shadow text-center text-gray-500">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="bg-white p-10 rounded-xl shadow text-center text-gray-500"
+        >
 
           <p className="text-lg font-medium">
             No budgets found
@@ -245,21 +252,22 @@ function Budgets({ searchQuery = "" }) {
             Try another search
           </p>
 
-        </div>
+        </motion.div>
 
       ) : (
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
-          {filteredBudgets.map((budget) => (
+          {filteredBudgets.map((budget, index) => (
 
             <motion.div
               key={budget._id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.05 }}
               whileHover={{ y: -5 }}
               className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm hover:shadow-md"
             >
-
-              {/* CARD HEADER */}
 
               <div className="flex justify-between items-center mb-3">
 
@@ -267,16 +275,16 @@ function Budgets({ searchQuery = "" }) {
                   {budget.category}
                 </h3>
 
-                <button
+                <motion.button
+                  whileHover={{ scale: 1.15 }}
+                  whileTap={{ scale: 0.9 }}
                   onClick={() => deleteBudget(budget)}
                   className="text-red-500 hover:text-red-700 transition"
                 >
                   <Trash2 size={18}/>
-                </button>
+                </motion.button>
 
               </div>
-
-              {/* PROGRESS */}
 
               <BudgetProgress budget={budget} />
 
@@ -288,7 +296,7 @@ function Budgets({ searchQuery = "" }) {
 
       )}
 
-    </div>
+    </motion.div>
 
   );
 

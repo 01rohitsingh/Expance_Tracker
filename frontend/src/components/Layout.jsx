@@ -8,13 +8,11 @@ import Footer from "./Footer";
 export default function Layout({ children }) {
 
   const [openSidebar, setOpenSidebar] = useState(false);
-
-  // SEARCH STATE
   const [searchQuery, setSearchQuery] = useState("");
 
   return (
 
-    <div className="flex min-h-screen bg-slate-50 text-slate-800">
+    <div className="flex min-h-screen bg-slate-50 text-slate-800 overflow-hidden">
 
       {/* Desktop Sidebar */}
 
@@ -34,22 +32,24 @@ export default function Layout({ children }) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
           >
 
             <motion.div
-              initial={{ x: -260 }}
+              initial={{ x: -300 }}
               animate={{ x: 0 }}
-              exit={{ x: -260 }}
-              transition={{ duration: 0.25 }}
+              exit={{ x: -300 }}
+              transition={{ duration: 0.35, ease: "easeOut" }}
               className="w-64 bg-slate-900 shadow-2xl"
             >
               <Sidebar closeSidebar={() => setOpenSidebar(false)} />
             </motion.div>
 
-            {/* Overlay */}
-
-            <div
+            <motion.div
               className="flex-1 bg-black/40 backdrop-blur-sm"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
               onClick={() => setOpenSidebar(false)}
             />
 
@@ -62,7 +62,7 @@ export default function Layout({ children }) {
 
       {/* Main Content */}
 
-      <div className="flex flex-col flex-1">
+      <div className="flex flex-col flex-1 min-w-0">
 
         {/* Navbar */}
 
@@ -71,9 +71,15 @@ export default function Layout({ children }) {
           setSearchQuery={setSearchQuery}
         />
 
+
         {/* Page Content */}
 
-        <main className="flex-1 p-4 md:p-6 lg:p-8 overflow-y-auto">
+        <motion.main
+          className="flex-1 p-4 md:p-6 lg:p-8 overflow-y-auto"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.35 }}
+        >
 
           <div className="max-w-7xl mx-auto">
 
@@ -85,7 +91,8 @@ export default function Layout({ children }) {
 
           </div>
 
-        </main>
+        </motion.main>
+
 
         {/* Footer */}
 

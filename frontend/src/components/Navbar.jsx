@@ -3,6 +3,7 @@ import { AuthContext } from "../context/AuthContext";
 import { Bell, Search, Menu } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { getNotifications } from "../utils/notifications";
+import { motion } from "framer-motion";
 
 function Navbar({ setOpenSidebar, setSearchQuery }) {
 
@@ -44,14 +45,24 @@ function Navbar({ setOpenSidebar, setSearchQuery }) {
 
   return (
 
-    <header className="bg-white border-b border-gray-200 px-4 md:px-6 py-3 flex items-center justify-between">
+    <motion.header
+      className="bg-white border-b border-gray-200 px-4 md:px-6 py-3 flex items-center justify-between"
+      initial={{ y: -40, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.4 }}
+    >
 
       {/* LEFT SIDE */}
       <div className="flex items-center gap-3">
 
-        <h1 className="text-lg md:text-xl font-semibold text-gray-800">
+        <motion.h1
+          className="text-lg md:text-xl font-semibold text-gray-800"
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.4 }}
+        >
           FinTrack
-        </h1>
+        </motion.h1>
 
       </div>
 
@@ -76,9 +87,11 @@ function Navbar({ setOpenSidebar, setSearchQuery }) {
 
 
         {/* NOTIFICATION */}
-        <button
+        <motion.button
           onClick={() => navigate("/notifications")}
           className="p-2 rounded-lg hover:bg-gray-100 relative"
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
         >
 
           <Bell size={20} />
@@ -89,13 +102,15 @@ function Navbar({ setOpenSidebar, setSearchQuery }) {
             </span>
           )}
 
-        </button>
+        </motion.button>
 
 
         {/* PROFILE */}
-        <div
+        <motion.div
           onClick={() => navigate("/settings")}
           className="flex items-center gap-2 cursor-pointer hover:bg-gray-100 px-2 py-1 rounded-lg"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
         >
 
           <img
@@ -108,20 +123,21 @@ function Navbar({ setOpenSidebar, setSearchQuery }) {
             {user?.name || "User"}
           </span>
 
-        </div>
+        </motion.div>
 
 
         {/* MOBILE MENU BUTTON */}
-        <button
+        <motion.button
           onClick={() => setOpenSidebar(true)}
           className="p-2 rounded-lg hover:bg-gray-100 md:hidden"
+          whileTap={{ scale: 0.9 }}
         >
           <Menu size={20} />
-        </button>
+        </motion.button>
 
       </div>
 
-    </header>
+    </motion.header>
 
   );
 

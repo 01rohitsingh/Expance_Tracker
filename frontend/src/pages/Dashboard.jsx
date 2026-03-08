@@ -74,9 +74,6 @@ function Dashboard({ searchQuery = "" }) {
 
   };
 
-
-  /* SEARCH FILTER */
-
   const filteredTransactions = transactions.filter((t) => {
 
     if (!searchQuery) return true;
@@ -97,12 +94,13 @@ function Dashboard({ searchQuery = "" }) {
 
   });
 
-
   return (
 
-    <div className="p-4 md:p-6 bg-gray-100 min-h-screen">
-
-      {/* TITLE */}
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="p-4 md:p-6 bg-gray-100 min-h-screen"
+    >
 
       <motion.h1
         initial={{ opacity: 0, y: -25 }}
@@ -113,31 +111,45 @@ function Dashboard({ searchQuery = "" }) {
         Dashboard
       </motion.h1>
 
-
-      {/* SUMMARY CARDS */}
-
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
 
-        <motion.div whileHover={{ y: -8, scale: 1.03 }}>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.05 }}
+          whileHover={{ y: -8, scale: 1.03 }}
+        >
           <SummaryCard title="Income" amount={income} />
         </motion.div>
 
-        <motion.div whileHover={{ y: -8, scale: 1.03 }}>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          whileHover={{ y: -8, scale: 1.03 }}
+        >
           <SummaryCard title="Expense" amount={expense} />
         </motion.div>
 
-        <motion.div whileHover={{ y: -8, scale: 1.03 }}>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.15 }}
+          whileHover={{ y: -8, scale: 1.03 }}
+        >
           <SummaryCard title="Remaining Income" amount={remainingIncome} />
         </motion.div>
 
-        <motion.div whileHover={{ y: -8, scale: 1.03 }}>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          whileHover={{ y: -8, scale: 1.03 }}
+        >
           <SummaryCard title="Wallet Balance" amount={walletBalance} />
         </motion.div>
 
       </div>
-
-
-      {/* TRANSACTION FORM */}
 
       <motion.div
         initial={{ opacity: 0, y: 25 }}
@@ -146,9 +158,6 @@ function Dashboard({ searchQuery = "" }) {
       >
         <TransactionForm refresh={loadDashboard} />
       </motion.div>
-
-
-      {/* TRANSACTION LIST */}
 
       <motion.div
         initial={{ opacity: 0, y: 25 }}
@@ -163,7 +172,7 @@ function Dashboard({ searchQuery = "" }) {
 
       </motion.div>
 
-    </div>
+    </motion.div>
 
   );
 
