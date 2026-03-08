@@ -10,6 +10,8 @@ export default function Layout({ children }) {
   const [openSidebar, setOpenSidebar] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
+  const isMobile = window.innerWidth < 768;
+
   return (
 
     <div className="flex min-h-screen bg-slate-50 text-slate-800 overflow-hidden">
@@ -42,15 +44,7 @@ export default function Layout({ children }) {
               transition={{ duration: 0.35, ease: "easeOut" }}
               className="w-64 bg-slate-900 shadow-2xl"
 
-              whileTap={{ scale: 0.98 }}
-
-              onTouchStart={(e)=>{
-                e.currentTarget.style.transform="scale(0.98)";
-              }}
-
-              onTouchEnd={(e)=>{
-                e.currentTarget.style.transform="scale(1)";
-              }}
+              whileTap={isMobile ? { scale: 0.98 } : {}}
             >
               <Sidebar closeSidebar={() => setOpenSidebar(false)} />
             </motion.div>
@@ -62,15 +56,7 @@ export default function Layout({ children }) {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
 
-              whileTap={{ opacity: 0.6 }}
-
-              onTouchStart={(e)=>{
-                e.currentTarget.style.opacity="0.6";
-              }}
-
-              onTouchEnd={(e)=>{
-                e.currentTarget.style.opacity="1";
-              }}
+              whileTap={isMobile ? { opacity: 0.6 } : {}}
 
               onClick={() => setOpenSidebar(false)}
             />
@@ -102,15 +88,7 @@ export default function Layout({ children }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.35 }}
 
-          whileTap={{ scale: 0.995 }}
-
-          onTouchStart={(e)=>{
-            e.currentTarget.style.transform="scale(0.995)";
-          }}
-
-          onTouchEnd={(e)=>{
-            e.currentTarget.style.transform="scale(1)";
-          }}
+          whileTap={isMobile ? { scale: 0.995 } : {}}
         >
 
           <div className="max-w-7xl mx-auto">

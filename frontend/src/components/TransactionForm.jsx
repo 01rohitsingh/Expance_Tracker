@@ -12,6 +12,8 @@ function TransactionForm({ refresh }) {
   const [type, setType] = useState("expense");
   const [date, setDate] = useState("");
 
+  const isMobile = window.innerWidth < 768;
+
   const handleSubmit = async (e) => {
 
     e.preventDefault();
@@ -71,15 +73,7 @@ function TransactionForm({ refresh }) {
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
 
-      whileTap={{ scale: 0.98 }}
-
-      onTouchStart={(e)=>{
-        e.currentTarget.style.transform="scale(0.98)";
-      }}
-
-      onTouchEnd={(e)=>{
-        e.currentTarget.style.transform="scale(1)";
-      }}
+      whileTap={isMobile ? { scale: 0.98 } : {}}
 
       transition={{ duration: 0.35 }}
 
@@ -137,16 +131,8 @@ function TransactionForm({ refresh }) {
       <motion.button
         type="submit"
 
-        whileHover={{ scale: 1.05 }}   // PC same
-        whileTap={{ scale: 0.95 }}     // mobile
-
-        onTouchStart={(e)=>{
-          e.currentTarget.style.transform="scale(0.95)";
-        }}
-
-        onTouchEnd={(e)=>{
-          e.currentTarget.style.transform="scale(1)";
-        }}
+        whileHover={{ scale: 1.05 }}   // PC hover same
+        whileTap={isMobile ? { scale: 0.95 } : {}}
 
         className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 mt-4 rounded-lg transition"
       >

@@ -8,6 +8,8 @@ function Wallets({ searchQuery = "" }) {
 
   const [wallets, setWallets] = useState([]);
 
+  const isMobile = window.innerWidth < 768;
+
   useEffect(() => {
     fetchWallets();
   }, []);
@@ -48,6 +50,7 @@ function Wallets({ searchQuery = "" }) {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
+      whileTap={isMobile ? { scale: 0.99 } : {}}
       className="p-4 md:p-6 bg-gray-100 min-h-screen"
     >
 
@@ -55,6 +58,7 @@ function Wallets({ searchQuery = "" }) {
         initial={{ opacity: 0, y: -25 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.35 }}
+        whileTap={isMobile ? { scale: 0.97 } : {}}
         className="text-2xl md:text-3xl font-bold mb-6"
       >
         Wallets
@@ -83,6 +87,7 @@ function Wallets({ searchQuery = "" }) {
               initial={{ opacity: 0, y: 25 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.05 }}
+              whileTap={isMobile ? { scale: 0.97 } : {}}
             >
 
               <WalletCard
