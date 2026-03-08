@@ -34,8 +34,6 @@ function TransactionList({ transactions = [], refresh }) {
 
     } catch (error) {
 
-      console.error("Delete failed", error);
-
       toast.error("Failed to delete transaction ❌");
 
     }
@@ -44,52 +42,39 @@ function TransactionList({ transactions = [], refresh }) {
 
   return (
 
-    <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+    <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
 
-      <h2 className="text-lg font-semibold mb-4 text-slate-800">
+      <h2 className="text-2xl font-medium mb-6 text-slate-800">
         Transactions
       </h2>
 
       {transactions.length === 0 && (
-        <p className="text-slate-500">
-          No transactions yet
-        </p>
+        <p className="text-slate-500">No transactions yet</p>
       )}
 
-      <div className="space-y-3">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
 
         {transactions.map((t, index) => (
 
           <motion.div
             key={t._id}
-
-            initial={{ opacity: 0, y: 15 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-
-            transition={{ delay: index * 0.03 }}
-
-            whileHover={{ y: -4, scale: 1.01 }}   // PC hover animation
-            whileTap={{ scale: 0.97 }}            // mobile tap animation
-
-            className="flex justify-between items-center border border-slate-200 rounded-lg p-4 hover:shadow-md"
+            transition={{ delay: index * 0.05 }}
+            whileHover={{ y: -6, scale: 1.02 }}
+            whileTap={{ scale: 0.97 }}
+            className="border border-slate-200 rounded-xl p-5 hover:shadow-lg transition bg-white flex flex-col gap-4"
           >
 
-            <div>
+            {/* TOP */}
+            <div className="flex justify-between items-center">
 
-              <p className="font-medium text-slate-800 capitalize">
+              <p className="text-xl font-semibold text-slate-800 capitalize">
                 {t.category}
               </p>
 
-              <p className="text-xs text-slate-500">
-                {t.date ? t.date.substring(0, 10) : "No date"}
-              </p>
-
-            </div>
-
-            <div className="flex items-center gap-4">
-
               <span
-                className={`px-2 py-1 text-xs rounded-full font-medium
+                className={`px-4 py-1.5 text-sm rounded-full font-semibold
                 ${
                   t.type === "income"
                     ? "bg-green-100 text-green-700"
@@ -99,11 +84,21 @@ function TransactionList({ transactions = [], refresh }) {
                 {t.type}
               </span>
 
+            </div>
+
+            {/* DATE */}
+            <p className="text-base text-slate-500 font-medium">
+              {t.date ? t.date.substring(0, 10) : "No date"}
+            </p>
+
+            {/* AMOUNT + DELETE */}
+            <div className="flex justify-between items-center">
+
               <p
                 className={
                   t.type === "income"
-                    ? "text-green-600 font-semibold"
-                    : "text-red-500 font-semibold"
+                    ? "text-green-600 text-xl font-bold"
+                    : "text-red-500 text-xl font-bold"
                 }
               >
                 ₹ {Number(t.amount).toLocaleString()}
@@ -115,7 +110,7 @@ function TransactionList({ transactions = [], refresh }) {
                 onClick={() => deleteTransaction(t._id, t.category, t.amount)}
                 className="text-red-500 hover:text-red-700 cursor-pointer"
               >
-                <Trash2 size={18} />
+                <Trash2 size={22} />
               </motion.button>
 
             </div>
