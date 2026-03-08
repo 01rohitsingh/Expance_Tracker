@@ -92,19 +92,7 @@ function Analytics() {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-
-      whileTap={{ scale: 0.99 }}
-
-      onTouchStart={(e)=>{
-        e.currentTarget.style.transform="scale(0.99)";
-      }}
-
-      onTouchEnd={(e)=>{
-        e.currentTarget.style.transform="scale(1)";
-      }}
-
       transition={{ duration: 0.4 }}
-
       className="p-4 md:p-6 bg-gray-100 min-h-screen"
     >
 
@@ -112,17 +100,6 @@ function Analytics() {
         initial={{ opacity: 0, y: -40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-
-        whileTap={{ scale: 0.97 }}
-
-        onTouchStart={(e)=>{
-          e.currentTarget.style.transform="scale(0.97)";
-        }}
-
-        onTouchEnd={(e)=>{
-          e.currentTarget.style.transform="scale(1)";
-        }}
-
         className="text-2xl md:text-3xl font-bold mb-6 text-slate-800"
       >
         Analytics
@@ -149,16 +126,8 @@ function Analytics() {
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
 
-            whileHover={{ y: -10, scale: 1.05 }} // PC same
-            whileTap={{ scale: 0.92 }} // mobile
-
-            onTouchStart={(e)=>{
-              e.currentTarget.style.transform="scale(0.92)";
-            }}
-
-            onTouchEnd={(e)=>{
-              e.currentTarget.style.transform="scale(1)";
-            }}
+            whileHover={{ y: -10, scale: 1.05 }}
+            whileTap={{ scale: 0.92 }}
 
             transition={{
               type: "spring",
@@ -210,16 +179,8 @@ function Analytics() {
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
 
-            whileHover={{ y: -10, scale: 1.05 }} // PC same
-            whileTap={{ scale: 0.92 }} // mobile
-
-            onTouchStart={(e)=>{
-              e.currentTarget.style.transform="scale(0.92)";
-            }}
-
-            onTouchEnd={(e)=>{
-              e.currentTarget.style.transform="scale(1)";
-            }}
+            whileHover={{ y: -10, scale: 1.05 }}
+            whileTap={{ scale: 0.92 }}
 
             transition={{
               type: "spring",

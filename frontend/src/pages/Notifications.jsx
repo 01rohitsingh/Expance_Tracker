@@ -21,17 +21,6 @@ function Notifications() {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-
-      whileTap={{ scale: 0.99 }}
-
-      onTouchStart={(e)=>{
-        e.currentTarget.style.transform="scale(0.99)";
-      }}
-
-      onTouchEnd={(e)=>{
-        e.currentTarget.style.transform="scale(1)";
-      }}
-
       className="p-4 md:p-6 bg-slate-100 min-h-screen"
     >
 
@@ -39,33 +28,13 @@ function Notifications() {
         initial={{ opacity: 0, y: -25 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.35 }}
-
-        whileTap={{ scale: 0.97 }}
-
-        onTouchStart={(e)=>{
-          e.currentTarget.style.transform="scale(0.97)";
-        }}
-
-        onTouchEnd={(e)=>{
-          e.currentTarget.style.transform="scale(1)";
-        }}
-
         className="flex items-center gap-3 mb-8"
       >
 
         <motion.div
           className="bg-blue-100 p-3 rounded-lg"
-
-          whileHover={{ scale: 1.08 }} // PC same
-          whileTap={{ scale: 0.95 }}   // mobile
-
-          onTouchStart={(e)=>{
-            e.currentTarget.style.transform="scale(0.95)";
-          }}
-
-          onTouchEnd={(e)=>{
-            e.currentTarget.style.transform="scale(1)";
-          }}
+          whileHover={{ scale: 1.08 }}
+          whileTap={{ scale: 0.95 }}
         >
           <Bell className="text-blue-600"/>
         </motion.div>
@@ -110,23 +79,11 @@ function Notifications() {
 
             <motion.div
               key={n.id}
-
               initial={{ opacity: 0, y: 25 }}
               animate={{ opacity: 1, y: 0 }}
-
               transition={{ delay: index * 0.05 }}
-
-              whileHover={{ y: -4, scale: 1.01 }} // PC same
-              whileTap={{ scale: 0.98 }} // mobile
-
-              onTouchStart={(e)=>{
-                e.currentTarget.style.transform="scale(0.98)";
-              }}
-
-              onTouchEnd={(e)=>{
-                e.currentTarget.style.transform="scale(1)";
-              }}
-
+              whileHover={{ y: -4, scale: 1.01 }}
+              whileTap={{ scale: 0.98 }}
               className={`flex justify-between items-center border rounded-lg p-4 shadow-sm cursor-pointer
               
               ${

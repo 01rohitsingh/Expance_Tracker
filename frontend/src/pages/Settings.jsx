@@ -150,22 +150,12 @@ return (
 <motion.div
 initial={{opacity:0}}
 animate={{opacity:1}}
-
-whileTap={{scale:0.99}}
-onTouchStart={(e)=>{e.currentTarget.style.transform="scale(0.99)";}}
-onTouchEnd={(e)=>{e.currentTarget.style.transform="scale(1)";}}
-
 className="p-4 md:p-6"
 >
 
 <motion.h1
 initial={{y:-20,opacity:0}}
 animate={{y:0,opacity:1}}
-
-whileTap={{scale:0.97}}
-onTouchStart={(e)=>{e.currentTarget.style.transform="scale(0.97)";}}
-onTouchEnd={(e)=>{e.currentTarget.style.transform="scale(1)";}}
-
 transition={{duration:0.3}}
 className="text-2xl font-bold mb-6"
 >
@@ -180,13 +170,7 @@ Settings
 <motion.div
 initial={{opacity:0,y:20}}
 animate={{opacity:1,y:0}}
-
 whileHover={{y:-4}}
-whileTap={{scale:0.97}}
-
-onTouchStart={(e)=>{e.currentTarget.style.transform="scale(0.97)";}}
-onTouchEnd={(e)=>{e.currentTarget.style.transform="scale(1)";}}
-
 className="bg-purple-50 p-5 rounded-xl shadow-sm border border-purple-300 hover:border-purple-500 focus-within:border-purple-600 transition"
 >
 
@@ -216,10 +200,6 @@ className="w-full border border-gray-300 rounded-lg p-2.5 focus:outline-none foc
 <motion.button
 whileHover={{scale:1.04}}
 whileTap={{scale:0.96}}
-
-onTouchStart={(e)=>{e.currentTarget.style.transform="scale(0.96)";}}
-onTouchEnd={(e)=>{e.currentTarget.style.transform="scale(1)";}}
-
 onClick={updatePhoto}
 className="w-full bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white py-2.5 rounded-lg"
 >
@@ -236,13 +216,7 @@ Update Photo
 <motion.div
 initial={{opacity:0,y:20}}
 animate={{opacity:1,y:0}}
-
 whileHover={{y:-4}}
-whileTap={{scale:0.97}}
-
-onTouchStart={(e)=>{e.currentTarget.style.transform="scale(0.97)";}}
-onTouchEnd={(e)=>{e.currentTarget.style.transform="scale(1)";}}
-
 className="bg-blue-50 p-5 rounded-xl shadow-sm border border-blue-300 hover:border-blue-500 focus-within:border-blue-600 transition"
 >
 
@@ -272,10 +246,6 @@ placeholder="Email"
 <motion.button
 whileHover={{scale:1.04}}
 whileTap={{scale:0.96}}
-
-onTouchStart={(e)=>{e.currentTarget.style.transform="scale(0.96)";}}
-onTouchEnd={(e)=>{e.currentTarget.style.transform="scale(1)";}}
-
 onClick={updateProfile}
 className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-lg"
 >
@@ -292,13 +262,7 @@ Update Profile
 <motion.div
 initial={{opacity:0,y:20}}
 animate={{opacity:1,y:0}}
-
 whileHover={{y:-4}}
-whileTap={{scale:0.97}}
-
-onTouchStart={(e)=>{e.currentTarget.style.transform="scale(0.97)";}}
-onTouchEnd={(e)=>{e.currentTarget.style.transform="scale(1)";}}
-
 className="bg-green-50 p-5 rounded-xl shadow-sm border border-green-300 hover:border-green-500 focus-within:border-green-600 transition"
 >
 
@@ -350,10 +314,6 @@ className="absolute right-3 top-3 cursor-pointer text-gray-500"
 <motion.button
 whileHover={{scale:1.04}}
 whileTap={{scale:0.96}}
-
-onTouchStart={(e)=>{e.currentTarget.style.transform="scale(0.96)";}}
-onTouchEnd={(e)=>{e.currentTarget.style.transform="scale(1)";}}
-
 onClick={changePassword}
 className="w-full bg-green-600 hover:bg-green-700 text-white py-2.5 rounded-lg"
 >
@@ -370,13 +330,7 @@ Change Password
 <motion.div
 initial={{opacity:0,y:20}}
 animate={{opacity:1,y:0}}
-
 whileHover={{y:-4}}
-whileTap={{scale:0.97}}
-
-onTouchStart={(e)=>{e.currentTarget.style.transform="scale(0.97)";}}
-onTouchEnd={(e)=>{e.currentTarget.style.transform="scale(1)";}}
-
 className="bg-red-50 p-5 rounded-xl shadow-sm border border-red-300 hover:border-red-500 transition"
 >
 
@@ -392,10 +346,6 @@ Deleting your account will permanently remove your data.
 <motion.button
 whileHover={{scale:1.04}}
 whileTap={{scale:0.96}}
-
-onTouchStart={(e)=>{e.currentTarget.style.transform="scale(0.96)";}}
-onTouchEnd={(e)=>{e.currentTarget.style.transform="scale(1)";}}
-
 onClick={deleteAccount}
 className="w-full bg-red-500 hover:bg-red-600 text-white py-2.5 rounded-lg"
 >
