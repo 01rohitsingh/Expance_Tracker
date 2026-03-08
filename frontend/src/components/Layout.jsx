@@ -12,31 +12,21 @@ export default function Layout({ children }) {
 
   return (
 
-    <div className="flex min-h-screen bg-slate-50 text-slate-800 overflow-hidden">
+    <div className="flex min-h-screen bg-slate-50 text-slate-800 text-[17px] md:text-[18px] lg:text-[19px] rounded-2xl overflow-hidden">
 
       {/* Desktop Sidebar */}
-
       <div className="hidden md:flex w-64 border-r border-slate-200 bg-slate-900">
         <Sidebar />
       </div>
 
-
       {/* Mobile Sidebar */}
-
       <AnimatePresence>
-
         {openSidebar && (
+          <div className="fixed inset-0 z-50 flex md:hidden">
 
-          <div
-            className="fixed inset-0 z-50 flex md:hidden"
-          >
-
-            <div
-              className="w-64 bg-slate-900 shadow-2xl"
-            >
+            <div className="w-64 bg-slate-900 shadow-2xl">
               <Sidebar closeSidebar={() => setOpenSidebar(false)} />
             </div>
-
 
             <div
               className="flex-1 bg-black/40 backdrop-blur-sm"
@@ -44,29 +34,20 @@ export default function Layout({ children }) {
             />
 
           </div>
-
         )}
-
       </AnimatePresence>
 
-
       {/* Main Content */}
-
       <div className="flex flex-col flex-1 min-w-0">
-
-        {/* Navbar */}
 
         <Navbar
           setOpenSidebar={setOpenSidebar}
           setSearchQuery={setSearchQuery}
         />
 
+        <main className="flex-1 p-8 md:p-10 lg:p-12 overflow-y-auto">
 
-        {/* Page Content */}
-
-        <main className="flex-1 p-4 md:p-6 lg:p-8 overflow-y-auto">
-
-          <div className="max-w-7xl mx-auto">
+          <div className="w-full max-w-[1700px] mx-auto">
 
             {children && typeof children === "object"
               ? children.type
@@ -78,9 +59,6 @@ export default function Layout({ children }) {
 
         </main>
 
-
-        {/* Footer */}
-
         <Footer />
 
       </div>
@@ -88,5 +66,4 @@ export default function Layout({ children }) {
     </div>
 
   );
-
 }

@@ -46,30 +46,18 @@ function Navbar({ setOpenSidebar, setSearchQuery }) {
   return (
 
     <motion.header
-      className="bg-white border-b border-gray-200 px-4 md:px-6 py-3 flex items-center justify-between"
+      className="bg-white border-b border-slate-200 px-8 lg:px-12 py-2.5 flex items-center justify-between shadow-sm"
       initial={{ y: -40, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.4 }}
     >
 
       {/* LEFT SIDE */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-6">
 
         <motion.h1
-          className="text-lg md:text-xl font-semibold text-gray-800"
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.4 }}
-
+          className="text-3xl font-bold text-slate-800 tracking-tight"
           whileTap={{ scale: 0.95 }}
-
-          onTouchStart={(e)=>{
-            e.currentTarget.style.transform="scale(0.95)";
-          }}
-
-          onTouchEnd={(e)=>{
-            e.currentTarget.style.transform="scale(1)";
-          }}
         >
           FinTrack
         </motion.h1>
@@ -78,20 +66,20 @@ function Navbar({ setOpenSidebar, setSearchQuery }) {
 
 
       {/* RIGHT SIDE */}
-      <div className="flex items-center gap-3 relative">
+      <div className="flex items-center gap-6">
 
-        {/* SEARCH BAR (PC ONLY) */}
-        <div className="hidden md:flex items-center bg-gray-100 px-4 py-2 rounded-lg w-56 lg:w-64">
+        {/* SEARCH BAR */}
+        <div className="hidden md:flex items-center bg-slate-100 px-5 py-3 rounded-xl w-[340px] lg:w-[420px]">
+
+          <Search size={26} className="text-gray-500 mr-3" />
 
           <input
             type="text"
-            placeholder="Search..."
+            placeholder="Search transactions..."
             value={search}
             onChange={handleSearch}
-            className="bg-transparent outline-none text-sm w-full"
+            className="bg-transparent outline-none text-lg w-full"
           />
-
-          <Search size={18} className="text-gray-500 ml-2" />
 
         </div>
 
@@ -99,21 +87,11 @@ function Navbar({ setOpenSidebar, setSearchQuery }) {
         {/* NOTIFICATION */}
         <motion.button
           onClick={() => navigate("/notifications")}
-          className="p-2 rounded-lg hover:bg-gray-100 relative"
-
-          whileHover={{ scale: 1.1 }}   // PC same
-          whileTap={{ scale: 0.9 }}     // mobile
-
-          onTouchStart={(e)=>{
-            e.currentTarget.style.transform="scale(0.9)";
-          }}
-
-          onTouchEnd={(e)=>{
-            e.currentTarget.style.transform="scale(1)";
-          }}
+          className="p-3 rounded-xl hover:bg-slate-100 relative"
+          whileTap={{ scale: 0.9 }}
         >
 
-          <Bell size={20} />
+          <Bell size={28} className="text-slate-700" />
 
           {unreadCount > 0 && (
             <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
@@ -127,49 +105,30 @@ function Navbar({ setOpenSidebar, setSearchQuery }) {
         {/* PROFILE */}
         <motion.div
           onClick={() => navigate("/settings")}
-          className="flex items-center gap-2 cursor-pointer hover:bg-gray-100 px-2 py-1 rounded-lg"
-
-          whileHover={{ scale: 1.05 }}  // PC same
-          whileTap={{ scale: 0.95 }}    // mobile
-
-          onTouchStart={(e)=>{
-            e.currentTarget.style.transform="scale(0.95)";
-          }}
-
-          onTouchEnd={(e)=>{
-            e.currentTarget.style.transform="scale(1)";
-          }}
+          className="flex items-center gap-3 cursor-pointer hover:bg-slate-100 px-4 py-2 rounded-xl"
+          whileTap={{ scale: 0.95 }}
         >
 
           <img
             src={profileImage}
             alt="profile"
-            className="w-9 h-9 rounded-full object-cover border"
+            className="w-12 h-12 rounded-full object-cover border"
           />
 
-          <span className="hidden md:block text-sm text-gray-700 font-medium">
+          <span className="hidden md:block text-lg font-semibold tracking-wide text-slate-800">
             {user?.name || "User"}
           </span>
 
         </motion.div>
 
 
-        {/* MOBILE MENU BUTTON */}
+        {/* MOBILE MENU */}
         <motion.button
           onClick={() => setOpenSidebar(true)}
-          className="p-2 rounded-lg hover:bg-gray-100 md:hidden"
-
+          className="p-3 rounded-xl hover:bg-slate-100 md:hidden"
           whileTap={{ scale: 0.9 }}
-
-          onTouchStart={(e)=>{
-            e.currentTarget.style.transform="scale(0.9)";
-          }}
-
-          onTouchEnd={(e)=>{
-            e.currentTarget.style.transform="scale(1)";
-          }}
         >
-          <Menu size={20} />
+          <Menu size={28} />
         </motion.button>
 
       </div>
