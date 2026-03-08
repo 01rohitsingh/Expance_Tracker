@@ -60,6 +60,16 @@ function Navbar({ setOpenSidebar, setSearchQuery }) {
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.4 }}
+
+          whileTap={{ scale: 0.95 }}
+
+          onTouchStart={(e)=>{
+            e.currentTarget.style.transform="scale(0.95)";
+          }}
+
+          onTouchEnd={(e)=>{
+            e.currentTarget.style.transform="scale(1)";
+          }}
         >
           FinTrack
         </motion.h1>
@@ -90,8 +100,17 @@ function Navbar({ setOpenSidebar, setSearchQuery }) {
         <motion.button
           onClick={() => navigate("/notifications")}
           className="p-2 rounded-lg hover:bg-gray-100 relative"
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
+
+          whileHover={{ scale: 1.1 }}   // PC same
+          whileTap={{ scale: 0.9 }}     // mobile
+
+          onTouchStart={(e)=>{
+            e.currentTarget.style.transform="scale(0.9)";
+          }}
+
+          onTouchEnd={(e)=>{
+            e.currentTarget.style.transform="scale(1)";
+          }}
         >
 
           <Bell size={20} />
@@ -109,8 +128,17 @@ function Navbar({ setOpenSidebar, setSearchQuery }) {
         <motion.div
           onClick={() => navigate("/settings")}
           className="flex items-center gap-2 cursor-pointer hover:bg-gray-100 px-2 py-1 rounded-lg"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
+
+          whileHover={{ scale: 1.05 }}  // PC same
+          whileTap={{ scale: 0.95 }}    // mobile
+
+          onTouchStart={(e)=>{
+            e.currentTarget.style.transform="scale(0.95)";
+          }}
+
+          onTouchEnd={(e)=>{
+            e.currentTarget.style.transform="scale(1)";
+          }}
         >
 
           <img
@@ -130,7 +158,16 @@ function Navbar({ setOpenSidebar, setSearchQuery }) {
         <motion.button
           onClick={() => setOpenSidebar(true)}
           className="p-2 rounded-lg hover:bg-gray-100 md:hidden"
+
           whileTap={{ scale: 0.9 }}
+
+          onTouchStart={(e)=>{
+            e.currentTarget.style.transform="scale(0.9)";
+          }}
+
+          onTouchEnd={(e)=>{
+            e.currentTarget.style.transform="scale(1)";
+          }}
         >
           <Menu size={20} />
         </motion.button>

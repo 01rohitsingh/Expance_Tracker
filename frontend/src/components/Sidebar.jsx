@@ -32,7 +32,6 @@ function Sidebar({ closeSidebar }) {
     { name: "Settings", path: "/settings", icon: Settings }
   ];
 
-  // ✅ FIXED IMAGE URL
   const profileImage = user?.photo
     ? `${BASE_URL}${user.photo}`
     : `${BASE_URL}/photo/download.png`;
@@ -43,6 +42,17 @@ function Sidebar({ closeSidebar }) {
       initial={{ x: -200, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
       transition={{ duration: 0.4 }}
+
+      whileTap={{ scale: 0.99 }}
+
+      onTouchStart={(e)=>{
+        e.currentTarget.style.transform="scale(0.99)";
+      }}
+
+      onTouchEnd={(e)=>{
+        e.currentTarget.style.transform="scale(1)";
+      }}
+
       className="w-64 h-screen bg-slate-950 text-slate-300 flex flex-col px-6 py-8 fixed left-0 top-0"
     >
 
@@ -74,7 +84,16 @@ function Sidebar({ closeSidebar }) {
 
             <li key={item.name}>
 
-              <motion.div whileHover={{ x: 6 }}>
+              <motion.div
+                whileHover={{ x: 6 }}   // PC same
+                whileTap={{ scale: 0.95 }} // mobile
+                onTouchStart={(e)=>{
+                  e.currentTarget.style.transform="scale(0.95)";
+                }}
+                onTouchEnd={(e)=>{
+                  e.currentTarget.style.transform="scale(1)";
+                }}
+              >
 
                 <Link
                   to={item.path}
@@ -110,6 +129,16 @@ function Sidebar({ closeSidebar }) {
 
         <motion.div
           whileHover={{ scale: 1.03 }}
+          whileTap={{ scale: 0.95 }}
+
+          onTouchStart={(e)=>{
+            e.currentTarget.style.transform="scale(0.95)";
+          }}
+
+          onTouchEnd={(e)=>{
+            e.currentTarget.style.transform="scale(1)";
+          }}
+
           onClick={() => navigate("/settings")}
           className="flex items-center gap-3 mb-4 cursor-pointer hover:bg-slate-800 p-2 rounded-lg transition"
         >
@@ -141,8 +170,17 @@ function Sidebar({ closeSidebar }) {
         {/* LOGOUT */}
 
         <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
+          whileHover={{ scale: 1.05 }}  // PC same
+          whileTap={{ scale: 0.95 }}    // mobile
+
+          onTouchStart={(e)=>{
+            e.currentTarget.style.transform="scale(0.95)";
+          }}
+
+          onTouchEnd={(e)=>{
+            e.currentTarget.style.transform="scale(1)";
+          }}
+
           onClick={handleLogout}
           className="flex items-center justify-center gap-2 w-full bg-red-500 hover:bg-red-600 transition px-4 py-2.5 rounded-lg text-white text-sm font-medium"
         >

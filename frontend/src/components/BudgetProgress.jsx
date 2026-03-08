@@ -73,7 +73,19 @@ function BudgetProgress({ budget }) {
 
   return (
 
-    <div>
+    <motion.div
+
+      whileTap={{ scale: 0.97 }}   // mobile tap animation
+
+      onTouchStart={(e) => {
+        e.currentTarget.style.transform = "scale(0.97)";
+      }}
+
+      onTouchEnd={(e) => {
+        e.currentTarget.style.transform = "scale(1)";
+      }}
+
+    >
 
       <div className="flex justify-between text-sm text-slate-600 mb-2">
 
@@ -108,7 +120,7 @@ function BudgetProgress({ budget }) {
 
       )}
 
-    </div>
+    </motion.div>
 
   );
 

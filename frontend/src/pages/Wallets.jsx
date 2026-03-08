@@ -48,12 +48,34 @@ function Wallets({ searchQuery = "" }) {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
+
+      whileTap={{ scale: 0.99 }}
+
+      onTouchStart={(e)=>{
+        e.currentTarget.style.transform="scale(0.99)";
+      }}
+
+      onTouchEnd={(e)=>{
+        e.currentTarget.style.transform="scale(1)";
+      }}
+
       className="p-4 md:p-6 bg-gray-100 min-h-screen"
     >
 
       <motion.h1
         initial={{ opacity: 0, y: -25 }}
         animate={{ opacity: 1, y: 0 }}
+
+        whileTap={{ scale: 0.97 }}
+
+        onTouchStart={(e)=>{
+          e.currentTarget.style.transform="scale(0.97)";
+        }}
+
+        onTouchEnd={(e)=>{
+          e.currentTarget.style.transform="scale(1)";
+        }}
+
         transition={{ duration: 0.35 }}
         className="text-2xl md:text-3xl font-bold mb-6"
       >
@@ -80,8 +102,20 @@ function Wallets({ searchQuery = "" }) {
 
             <motion.div
               key={wallet._id}
+
               initial={{ opacity: 0, y: 25 }}
               animate={{ opacity: 1, y: 0 }}
+
+              whileTap={{ scale: 0.97 }}
+
+              onTouchStart={(e)=>{
+                e.currentTarget.style.transform="scale(0.97)";
+              }}
+
+              onTouchEnd={(e)=>{
+                e.currentTarget.style.transform="scale(1)";
+              }}
+
               transition={{ delay: index * 0.05 }}
             >
 

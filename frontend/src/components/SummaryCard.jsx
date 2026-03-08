@@ -7,9 +7,20 @@ function SummaryCard({ title, amount, icon: Icon, color }) {
     <motion.div
       initial={{ opacity: 0, y: 25 }}
       animate={{ opacity: 1, y: 0 }}
-      whileHover={{ y: -6, scale: 1.02 }}
-      whileTap={{ scale: 0.97 }}
+
+      whileHover={{ y: -6, scale: 1.02 }}   // PC same
+      whileTap={{ scale: 0.97 }}            // mobile
+
+      onTouchStart={(e)=>{
+        e.currentTarget.style.transform="scale(0.97)";
+      }}
+
+      onTouchEnd={(e)=>{
+        e.currentTarget.style.transform="scale(1)";
+      }}
+
       transition={{ duration: 0.35 }}
+
       className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm hover:shadow-md flex items-center justify-between"
     >
 
@@ -29,8 +40,18 @@ function SummaryCard({ title, amount, icon: Icon, color }) {
 
         <motion.div
           className={`p-3 rounded-lg ${color || "bg-blue-100"}`}
-          whileHover={{ rotate: 8, scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
+
+          whileHover={{ rotate: 8, scale: 1.05 }}  // PC same
+          whileTap={{ scale: 0.95 }}               // mobile
+
+          onTouchStart={(e)=>{
+            e.currentTarget.style.transform="scale(0.95)";
+          }}
+
+          onTouchEnd={(e)=>{
+            e.currentTarget.style.transform="scale(1)";
+          }}
+
           transition={{ duration: 0.25 }}
         >
 

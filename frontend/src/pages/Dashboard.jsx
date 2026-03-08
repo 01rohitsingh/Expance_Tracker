@@ -99,13 +99,36 @@ function Dashboard({ searchQuery = "" }) {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
+
+      whileTap={{ scale: 0.99 }}
+
+      onTouchStart={(e)=>{
+        e.currentTarget.style.transform="scale(0.99)";
+      }}
+
+      onTouchEnd={(e)=>{
+        e.currentTarget.style.transform="scale(1)";
+      }}
+
       className="p-4 md:p-6 bg-gray-100 min-h-screen"
     >
 
       <motion.h1
         initial={{ opacity: 0, y: -25 }}
         animate={{ opacity: 1, y: 0 }}
+
+        whileTap={{ scale: 0.97 }}
+
+        onTouchStart={(e)=>{
+          e.currentTarget.style.transform="scale(0.97)";
+        }}
+
+        onTouchEnd={(e)=>{
+          e.currentTarget.style.transform="scale(1)";
+        }}
+
         transition={{ duration: 0.4 }}
+
         className="text-2xl md:text-3xl font-bold mb-6"
       >
         Dashboard
@@ -116,8 +139,19 @@ function Dashboard({ searchQuery = "" }) {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
+
           transition={{ delay: 0.05 }}
-          whileHover={{ y: -8, scale: 1.03 }}
+
+          whileHover={{ y: -8, scale: 1.03 }} // PC same
+          whileTap={{ scale: 0.97 }}
+
+          onTouchStart={(e)=>{
+            e.currentTarget.style.transform="scale(0.97)";
+          }}
+
+          onTouchEnd={(e)=>{
+            e.currentTarget.style.transform="scale(1)";
+          }}
         >
           <SummaryCard title="Income" amount={income} />
         </motion.div>
@@ -125,8 +159,19 @@ function Dashboard({ searchQuery = "" }) {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
+
           transition={{ delay: 0.1 }}
+
           whileHover={{ y: -8, scale: 1.03 }}
+          whileTap={{ scale: 0.97 }}
+
+          onTouchStart={(e)=>{
+            e.currentTarget.style.transform="scale(0.97)";
+          }}
+
+          onTouchEnd={(e)=>{
+            e.currentTarget.style.transform="scale(1)";
+          }}
         >
           <SummaryCard title="Expense" amount={expense} />
         </motion.div>
@@ -134,8 +179,19 @@ function Dashboard({ searchQuery = "" }) {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
+
           transition={{ delay: 0.15 }}
+
           whileHover={{ y: -8, scale: 1.03 }}
+          whileTap={{ scale: 0.97 }}
+
+          onTouchStart={(e)=>{
+            e.currentTarget.style.transform="scale(0.97)";
+          }}
+
+          onTouchEnd={(e)=>{
+            e.currentTarget.style.transform="scale(1)";
+          }}
         >
           <SummaryCard title="Remaining Income" amount={remainingIncome} />
         </motion.div>
@@ -143,8 +199,19 @@ function Dashboard({ searchQuery = "" }) {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
+
           transition={{ delay: 0.2 }}
+
           whileHover={{ y: -8, scale: 1.03 }}
+          whileTap={{ scale: 0.97 }}
+
+          onTouchStart={(e)=>{
+            e.currentTarget.style.transform="scale(0.97)";
+          }}
+
+          onTouchEnd={(e)=>{
+            e.currentTarget.style.transform="scale(1)";
+          }}
         >
           <SummaryCard title="Wallet Balance" amount={walletBalance} />
         </motion.div>
@@ -154,6 +221,17 @@ function Dashboard({ searchQuery = "" }) {
       <motion.div
         initial={{ opacity: 0, y: 25 }}
         animate={{ opacity: 1, y: 0 }}
+
+        whileTap={{ scale: 0.99 }}
+
+        onTouchStart={(e)=>{
+          e.currentTarget.style.transform="scale(0.99)";
+        }}
+
+        onTouchEnd={(e)=>{
+          e.currentTarget.style.transform="scale(1)";
+        }}
+
         transition={{ duration: 0.4 }}
       >
         <TransactionForm refresh={loadDashboard} />
@@ -162,6 +240,17 @@ function Dashboard({ searchQuery = "" }) {
       <motion.div
         initial={{ opacity: 0, y: 25 }}
         animate={{ opacity: 1, y: 0 }}
+
+        whileTap={{ scale: 0.99 }}
+
+        onTouchStart={(e)=>{
+          e.currentTarget.style.transform="scale(0.99)";
+        }}
+
+        onTouchEnd={(e)=>{
+          e.currentTarget.style.transform="scale(1)";
+        }}
+
         transition={{ duration: 0.5 }}
       >
 

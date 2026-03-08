@@ -72,9 +72,20 @@ function WalletCard({ wallet, refresh }) {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      whileHover={{ y: -6, scale: 1.02 }}
-      whileTap={{ scale: 0.97 }}
+
+      whileHover={{ y: -6, scale: 1.02 }}   // PC same
+      whileTap={{ scale: 0.97 }}            // mobile
+
+      onTouchStart={(e)=>{
+        e.currentTarget.style.transform="scale(0.97)";
+      }}
+
+      onTouchEnd={(e)=>{
+        e.currentTarget.style.transform="scale(1)";
+      }}
+
       transition={{ duration: 0.3 }}
+
       className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm hover:shadow-md flex justify-between items-center"
     >
 
@@ -82,7 +93,18 @@ function WalletCard({ wallet, refresh }) {
 
         <motion.div
           className="bg-slate-100 p-3 rounded-lg"
+
           whileHover={{ rotate: 8, scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+
+          onTouchStart={(e)=>{
+            e.currentTarget.style.transform="scale(0.95)";
+          }}
+
+          onTouchEnd={(e)=>{
+            e.currentTarget.style.transform="scale(1)";
+          }}
+
           transition={{ duration: 0.2 }}
         >
           {getWalletIcon()}
@@ -104,8 +126,18 @@ function WalletCard({ wallet, refresh }) {
 
       <motion.button
         onClick={deleteWallet}
-        whileHover={{ scale: 1.15 }}
-        whileTap={{ scale: 0.9 }}
+
+        whileHover={{ scale: 1.15 }}   // PC same
+        whileTap={{ scale: 0.9 }}      // mobile
+
+        onTouchStart={(e)=>{
+          e.currentTarget.style.transform="scale(0.9)";
+        }}
+
+        onTouchEnd={(e)=>{
+          e.currentTarget.style.transform="scale(1)";
+        }}
+
         className="text-red-500 hover:text-red-700 cursor-pointer transition"
       >
         <Trash2 size={18} />

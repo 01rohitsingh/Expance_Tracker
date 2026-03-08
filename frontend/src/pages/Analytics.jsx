@@ -92,13 +92,37 @@ function Analytics() {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
+
+      whileTap={{ scale: 0.99 }}
+
+      onTouchStart={(e)=>{
+        e.currentTarget.style.transform="scale(0.99)";
+      }}
+
+      onTouchEnd={(e)=>{
+        e.currentTarget.style.transform="scale(1)";
+      }}
+
+      transition={{ duration: 0.4 }}
+
       className="p-4 md:p-6 bg-gray-100 min-h-screen"
     >
 
       <motion.h1
-        initial={{ opacity: 0, y: -25 }}
+        initial={{ opacity: 0, y: -40 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
+        transition={{ duration: 0.5 }}
+
+        whileTap={{ scale: 0.97 }}
+
+        onTouchStart={(e)=>{
+          e.currentTarget.style.transform="scale(0.97)";
+        }}
+
+        onTouchEnd={(e)=>{
+          e.currentTarget.style.transform="scale(1)";
+        }}
+
         className="text-2xl md:text-3xl font-bold mb-6 text-slate-800"
       >
         Analytics
@@ -109,6 +133,7 @@ function Analytics() {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
+          transition={{ duration: 0.4 }}
           className="bg-white p-10 rounded-xl shadow text-center text-gray-500"
         >
           No data available for analytics
@@ -118,11 +143,29 @@ function Analytics() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
+          {/* Expense Category Chart */}
+
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
-            whileHover={{ y: -6, scale: 1.02 }}
-            transition={{ duration: 0.35 }}
+
+            whileHover={{ y: -10, scale: 1.05 }} // PC same
+            whileTap={{ scale: 0.92 }} // mobile
+
+            onTouchStart={(e)=>{
+              e.currentTarget.style.transform="scale(0.92)";
+            }}
+
+            onTouchEnd={(e)=>{
+              e.currentTarget.style.transform="scale(1)";
+            }}
+
+            transition={{
+              type: "spring",
+              stiffness: 300,
+              damping: 18
+            }}
+
             className="bg-white p-5 shadow rounded-xl"
           >
 
@@ -161,11 +204,29 @@ function Analytics() {
           </motion.div>
 
 
+          {/* Income vs Expense */}
+
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
-            whileHover={{ y: -6, scale: 1.02 }}
-            transition={{ duration: 0.35 }}
+
+            whileHover={{ y: -10, scale: 1.05 }} // PC same
+            whileTap={{ scale: 0.92 }} // mobile
+
+            onTouchStart={(e)=>{
+              e.currentTarget.style.transform="scale(0.92)";
+            }}
+
+            onTouchEnd={(e)=>{
+              e.currentTarget.style.transform="scale(1)";
+            }}
+
+            transition={{
+              type: "spring",
+              stiffness: 300,
+              damping: 18
+            }}
+
             className="bg-white p-5 shadow rounded-xl"
           >
 

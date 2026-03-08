@@ -41,15 +41,37 @@ export default function Layout({ children }) {
               exit={{ x: -300 }}
               transition={{ duration: 0.35, ease: "easeOut" }}
               className="w-64 bg-slate-900 shadow-2xl"
+
+              whileTap={{ scale: 0.98 }}
+
+              onTouchStart={(e)=>{
+                e.currentTarget.style.transform="scale(0.98)";
+              }}
+
+              onTouchEnd={(e)=>{
+                e.currentTarget.style.transform="scale(1)";
+              }}
             >
               <Sidebar closeSidebar={() => setOpenSidebar(false)} />
             </motion.div>
+
 
             <motion.div
               className="flex-1 bg-black/40 backdrop-blur-sm"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
+
+              whileTap={{ opacity: 0.6 }}
+
+              onTouchStart={(e)=>{
+                e.currentTarget.style.opacity="0.6";
+              }}
+
+              onTouchEnd={(e)=>{
+                e.currentTarget.style.opacity="1";
+              }}
+
               onClick={() => setOpenSidebar(false)}
             />
 
@@ -79,6 +101,16 @@ export default function Layout({ children }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.35 }}
+
+          whileTap={{ scale: 0.995 }}
+
+          onTouchStart={(e)=>{
+            e.currentTarget.style.transform="scale(0.995)";
+          }}
+
+          onTouchEnd={(e)=>{
+            e.currentTarget.style.transform="scale(1)";
+          }}
         >
 
           <div className="max-w-7xl mx-auto">

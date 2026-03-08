@@ -47,7 +47,19 @@ function TransactionList({ transactions = [], refresh }) {
     <motion.div
       initial={{ opacity: 0, y: 25 }}
       animate={{ opacity: 1, y: 0 }}
+
+      whileTap={{ scale: 0.99 }}
+
+      onTouchStart={(e)=>{
+        e.currentTarget.style.transform="scale(0.99)";
+      }}
+
+      onTouchEnd={(e)=>{
+        e.currentTarget.style.transform="scale(1)";
+      }}
+
       transition={{ duration: 0.35 }}
+
       className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm"
     >
 
@@ -67,10 +79,23 @@ function TransactionList({ transactions = [], refresh }) {
 
           <motion.div
             key={t._id}
+
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
+
             transition={{ delay: index * 0.03 }}
-            whileHover={{ y: -4, scale: 1.01 }}
+
+            whileHover={{ y: -4, scale: 1.01 }}  // PC same
+            whileTap={{ scale: 0.97 }}           // mobile
+
+            onTouchStart={(e)=>{
+              e.currentTarget.style.transform="scale(0.97)";
+            }}
+
+            onTouchEnd={(e)=>{
+              e.currentTarget.style.transform="scale(1)";
+            }}
+
             className="flex justify-between items-center border border-slate-200 rounded-lg p-4 hover:shadow-md"
           >
 
@@ -110,8 +135,17 @@ function TransactionList({ transactions = [], refresh }) {
               </p>
 
               <motion.button
-                whileHover={{ scale: 1.15 }}
-                whileTap={{ scale: 0.9 }}
+                whileHover={{ scale: 1.15 }}   // PC same
+                whileTap={{ scale: 0.9 }}      // mobile
+
+                onTouchStart={(e)=>{
+                  e.currentTarget.style.transform="scale(0.9)";
+                }}
+
+                onTouchEnd={(e)=>{
+                  e.currentTarget.style.transform="scale(1)";
+                }}
+
                 onClick={() => deleteTransaction(t._id, t.category, t.amount)}
                 className="text-red-500 hover:text-red-700 cursor-pointer"
               >
