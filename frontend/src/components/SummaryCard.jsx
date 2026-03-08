@@ -8,8 +8,8 @@ function SummaryCard({ title, amount, icon: Icon, color }) {
       initial={{ opacity: 0, y: 25 }}
       animate={{ opacity: 1, y: 0 }}
 
-      whileHover={{ y: -6, scale: 1.02 }}   // PC same
-      whileTap={{ scale: 0.97 }}            // mobile
+      whileHover={{ y: -6, scale: 1.02 }}
+      whileTap={{ scale: 0.97 }}
 
       onTouchStart={(e)=>{
         e.currentTarget.style.transform="scale(0.97)";
@@ -26,7 +26,7 @@ function SummaryCard({ title, amount, icon: Icon, color }) {
 
       <div>
 
-        <h3 className="text-sm text-slate-500 font-medium">
+        <h3 className="text-lg text-slate-500 font-semibold">
           {title}
         </h3>
 
@@ -41,8 +41,8 @@ function SummaryCard({ title, amount, icon: Icon, color }) {
         <motion.div
           className={`p-3 rounded-lg ${color || "bg-blue-100"}`}
 
-          whileHover={{ rotate: 8, scale: 1.05 }}  // PC same
-          whileTap={{ scale: 0.95 }}               // mobile
+          whileHover={{ rotate: 8, scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
 
           onTouchStart={(e)=>{
             e.currentTarget.style.transform="scale(0.95)";

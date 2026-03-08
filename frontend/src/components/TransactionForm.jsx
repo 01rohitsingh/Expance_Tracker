@@ -41,8 +41,6 @@ function TransactionForm({ refresh }) {
         date
       });
 
-      console.log("Transaction Added:", res.data);
-
       toast.success("Transaction added successfully 💰");
 
       addNotification(`Transaction "${title}" ₹${amount} added`);
@@ -57,8 +55,6 @@ function TransactionForm({ refresh }) {
 
     } catch (error) {
 
-      console.error("Transaction create error:", error.response?.data || error);
-
       toast.error(error.response?.data?.message || "Failed to add transaction ❌");
 
     }
@@ -69,18 +65,14 @@ function TransactionForm({ refresh }) {
 
     <motion.form
       onSubmit={handleSubmit}
-
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
-
       whileTap={isMobile ? { scale: 0.98 } : {}}
-
       transition={{ duration: 0.35 }}
-
       className="bg-white border border-slate-200 p-5 rounded-xl shadow-sm mb-6"
     >
 
-      <h2 className="text-lg font-semibold mb-4 text-slate-800">
+      <h2 className="text-2xl font-medium mb-4 text-slate-800">
         Add Transaction
       </h2>
 
@@ -130,10 +122,8 @@ function TransactionForm({ refresh }) {
 
       <motion.button
         type="submit"
-
-        whileHover={{ scale: 1.05 }}   // PC hover same
+        whileHover={{ scale: 1.05 }}
         whileTap={isMobile ? { scale: 0.95 } : {}}
-
         className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 mt-4 rounded-lg transition"
       >
         Add Transaction
