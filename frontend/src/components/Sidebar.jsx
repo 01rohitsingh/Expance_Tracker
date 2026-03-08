@@ -19,8 +19,6 @@ function Sidebar({ closeSidebar }) {
 
   const BASE_URL = import.meta.env.VITE_API_URL;
 
-  const isMobile = window.innerWidth < 768;
-
   const handleLogout = () => {
     logout();
     navigate("/");
@@ -44,9 +42,6 @@ function Sidebar({ closeSidebar }) {
       initial={{ x: -200, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
       transition={{ duration: 0.4 }}
-
-      whileTap={isMobile ? { scale: 0.99 } : {}}
-
       className="w-64 h-screen bg-slate-950 text-slate-300 flex flex-col px-6 py-8 fixed left-0 top-0"
     >
 
@@ -78,29 +73,22 @@ function Sidebar({ closeSidebar }) {
 
             <li key={item.name}>
 
-              <motion.div
-                whileHover={{ x: 6 }}   // PC hover
-                whileTap={isMobile ? { scale: 0.95 } : {}}
+              <Link
+                to={item.path}
+                onClick={closeSidebar}
+                className={`flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200
+                ${
+                  active
+                    ? "bg-blue-600 text-white shadow"
+                    : "hover:bg-slate-800 hover:text-white"
+                }`}
               >
 
-                <Link
-                  to={item.path}
-                  onClick={closeSidebar}
-                  className={`flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200
-                  ${
-                    active
-                      ? "bg-blue-600 text-white shadow"
-                      : "hover:bg-slate-800 hover:text-white"
-                  }`}
-                >
+                <Icon size={18} />
 
-                  <Icon size={18} />
+                {item.name}
 
-                  {item.name}
-
-                </Link>
-
-              </motion.div>
+              </Link>
 
             </li>
 
@@ -115,10 +103,7 @@ function Sidebar({ closeSidebar }) {
 
       <div className="border-t border-slate-800 pt-5">
 
-        <motion.div
-          whileHover={{ scale: 1.03 }}
-          whileTap={isMobile ? { scale: 0.95 } : {}}
-
+        <div
           onClick={() => navigate("/settings")}
           className="flex items-center gap-3 mb-4 cursor-pointer hover:bg-slate-800 p-2 rounded-lg transition"
         >
@@ -144,15 +129,12 @@ function Sidebar({ closeSidebar }) {
 
           </div>
 
-        </motion.div>
+        </div>
 
 
         {/* LOGOUT */}
 
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={isMobile ? { scale: 0.95 } : {}}
-
+        <button
           onClick={handleLogout}
           className="flex items-center justify-center gap-2 w-full bg-red-500 hover:bg-red-600 transition px-4 py-2.5 rounded-lg text-white text-sm font-medium"
         >
@@ -161,7 +143,7 @@ function Sidebar({ closeSidebar }) {
 
           Logout
 
-        </motion.button>
+        </button>
 
       </div>
 

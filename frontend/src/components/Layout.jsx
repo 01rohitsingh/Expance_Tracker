@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 
 import Sidebar from "./Sidebar";
 import Navbar from "./Navbar";
@@ -9,8 +9,6 @@ export default function Layout({ children }) {
 
   const [openSidebar, setOpenSidebar] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-
-  const isMobile = window.innerWidth < 768;
 
   return (
 
@@ -29,39 +27,23 @@ export default function Layout({ children }) {
 
         {openSidebar && (
 
-          <motion.div
+          <div
             className="fixed inset-0 z-50 flex md:hidden"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
           >
 
-            <motion.div
-              initial={{ x: -300 }}
-              animate={{ x: 0 }}
-              exit={{ x: -300 }}
-              transition={{ duration: 0.35, ease: "easeOut" }}
+            <div
               className="w-64 bg-slate-900 shadow-2xl"
-
-              whileTap={isMobile ? { scale: 0.98 } : {}}
             >
               <Sidebar closeSidebar={() => setOpenSidebar(false)} />
-            </motion.div>
+            </div>
 
 
-            <motion.div
+            <div
               className="flex-1 bg-black/40 backdrop-blur-sm"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-
-              whileTap={isMobile ? { opacity: 0.6 } : {}}
-
               onClick={() => setOpenSidebar(false)}
             />
 
-          </motion.div>
+          </div>
 
         )}
 
@@ -82,14 +64,7 @@ export default function Layout({ children }) {
 
         {/* Page Content */}
 
-        <motion.main
-          className="flex-1 p-4 md:p-6 lg:p-8 overflow-y-auto"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.35 }}
-
-          whileTap={isMobile ? { scale: 0.995 } : {}}
-        >
+        <main className="flex-1 p-4 md:p-6 lg:p-8 overflow-y-auto">
 
           <div className="max-w-7xl mx-auto">
 
@@ -101,7 +76,7 @@ export default function Layout({ children }) {
 
           </div>
 
-        </motion.main>
+        </main>
 
 
         {/* Footer */}
