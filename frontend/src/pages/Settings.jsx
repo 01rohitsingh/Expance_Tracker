@@ -46,7 +46,6 @@ const updatePhoto = async () => {
 
   } catch (error) {
 
-    console.error(error);
     toast.error("Photo upload failed");
 
   }
@@ -154,208 +153,208 @@ animate={{opacity:1}}
 className="p-4 md:p-6"
 >
 
-  <motion.h1
-  initial={{y:-20,opacity:0}}
-  animate={{y:0,opacity:1}}
-  transition={{duration:0.3}}
-  className="text-2xl font-bold mb-6"
-  >
-    Settings
-  </motion.h1>
+<motion.h1
+initial={{y:-20,opacity:0}}
+animate={{y:0,opacity:1}}
+transition={{duration:0.3}}
+className="text-2xl font-bold mb-6"
+>
+Settings
+</motion.h1>
 
-  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-
-
-    <motion.div
-      initial={{opacity:0,y:20}}
-      animate={{opacity:1,y:0}}
-      whileHover={{y:-4}}
-      className="bg-white p-5 rounded-xl shadow-sm border border-purple-200 hover:border-purple-500"
-    >
-
-      <div className="flex items-center gap-2 mb-4">
-        <Image size={18}/>
-        <h2 className="text-base font-semibold">
-          Profile Photo
-        </h2>
-      </div>
-
-      <div className="flex flex-col items-center gap-3">
-
-        <img
-          src={
-            user?.photo
-              ? `${BASE_URL}${user.photo}`
-              : `${BASE_URL}/photo/download.png`
-          }
-          alt="profile"
-          className="w-20 h-20 rounded-full object-cover border"
-        />
-
-        <input
-          type="file"
-          onChange={(e)=>setPhoto(e.target.files[0])}
-          className="border p-2 rounded-lg w-full"
-        />
-
-        <motion.button
-          whileHover={{scale:1.04}}
-          whileTap={{scale:0.96}}
-          onClick={updatePhoto}
-          className="w-full bg-purple-600 hover:bg-purple-700 text-white py-2.5 rounded-lg"
-        >
-          Update Photo
-        </motion.button>
-
-      </div>
-
-    </motion.div>
+<div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
 
-    <motion.div
-      initial={{opacity:0,y:20}}
-      animate={{opacity:1,y:0}}
-      whileHover={{y:-4}}
-      className="bg-white p-5 rounded-xl shadow-sm border border-blue-200 hover:border-blue-500"
-    >
+{/* Profile Photo */}
 
-      <div className="flex items-center gap-2 mb-4">
-        <User size={18}/>
-        <h2 className="text-base font-semibold">
-          Profile Information
-        </h2>
-      </div>
+<motion.div
+initial={{opacity:0,y:20}}
+animate={{opacity:1,y:0}}
+whileHover={{y:-4}}
+className="bg-purple-50 p-5 rounded-xl shadow-sm border border-purple-300 hover:border-purple-500 focus-within:border-purple-600 transition"
+>
 
-      <div className="space-y-3">
+<div className="flex items-center gap-2 mb-4">
+<Image size={18}/>
+<h2 className="text-base font-semibold">Profile Photo</h2>
+</div>
 
-        <input
-          type="text"
-          value={name}
-          onChange={(e)=>setName(e.target.value)}
-          className="w-full border rounded-lg p-2.5"
-          placeholder="Full Name"
-        />
+<div className="flex flex-col items-center gap-3">
 
-        <input
-          type="email"
-          value={email}
-          onChange={(e)=>setEmail(e.target.value)}
-          className="w-full border rounded-lg p-2.5"
-          placeholder="Email"
-        />
+<img
+src={
+user?.photo
+? `${BASE_URL}${user.photo}`
+: `${BASE_URL}/photo/download.png`
+}
+alt="profile"
+className="w-20 h-20 rounded-full object-cover border"
+/>
 
-        <motion.button
-          whileHover={{scale:1.04}}
-          whileTap={{scale:0.96}}
-          onClick={updateProfile}
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-lg"
-        >
-          Update Profile
-        </motion.button>
+<input
+type="file"
+onChange={(e)=>setPhoto(e.target.files[0])}
+className="w-full border border-gray-300 rounded-lg p-2.5 focus:outline-none focus:border-purple-500"
+/>
 
-      </div>
+<motion.button
+whileHover={{scale:1.04}}
+whileTap={{scale:0.96}}
+onClick={updatePhoto}
+className="w-full bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white py-2.5 rounded-lg"
+>
+Update Photo
+</motion.button>
 
-    </motion.div>
+</div>
 
-
-    <motion.div
-      initial={{opacity:0,y:20}}
-      animate={{opacity:1,y:0}}
-      whileHover={{y:-4}}
-      className="bg-white p-5 rounded-xl shadow-sm border border-green-200 hover:border-green-500"
-    >
-
-      <div className="flex items-center gap-2 mb-4">
-        <Lock size={18}/>
-        <h2 className="text-base font-semibold">
-          Change Password
-        </h2>
-      </div>
-
-      <div className="space-y-3">
-
-        <div className="relative">
-
-          <input
-            type={showCurrentPassword ? "text" : "password"}
-            placeholder="Current Password"
-            value={currentPassword}
-            onChange={(e)=>setCurrentPassword(e.target.value)}
-            className="w-full border rounded-lg p-2.5"
-          />
-
-          <span
-            onClick={()=>setShowCurrentPassword(!showCurrentPassword)}
-            className="absolute right-3 top-3 cursor-pointer text-gray-500"
-          >
-            {showCurrentPassword ? <EyeOff size={18}/> : <Eye size={18}/>}
-          </span>
-
-        </div>
-
-        <div className="relative">
-
-          <input
-            type={showNewPassword ? "text" : "password"}
-            placeholder="New Password"
-            value={newPassword}
-            onChange={(e)=>setNewPassword(e.target.value)}
-            className="w-full border rounded-lg p-2.5"
-          />
-
-          <span
-            onClick={()=>setShowNewPassword(!showNewPassword)}
-            className="absolute right-3 top-3 cursor-pointer text-gray-500"
-          >
-            {showNewPassword ? <EyeOff size={18}/> : <Eye size={18}/>}
-          </span>
-
-        </div>
-
-        <motion.button
-          whileHover={{scale:1.04}}
-          whileTap={{scale:0.96}}
-          onClick={changePassword}
-          className="w-full bg-green-600 hover:bg-green-700 text-white py-2.5 rounded-lg"
-        >
-          Change Password
-        </motion.button>
-
-      </div>
-
-    </motion.div>
+</motion.div>
 
 
-    <motion.div
-      initial={{opacity:0,y:20}}
-      animate={{opacity:1,y:0}}
-      whileHover={{y:-4}}
-      className="bg-white p-5 rounded-xl shadow-sm border border-red-200 hover:border-red-500"
-    >
+{/* Profile Info */}
 
-      <div className="flex items-center gap-2 mb-3 text-red-500">
-        <Trash2 size={18}/>
-        <h2 className="text-base font-semibold">
-          Danger Zone
-        </h2>
-      </div>
+<motion.div
+initial={{opacity:0,y:20}}
+animate={{opacity:1,y:0}}
+whileHover={{y:-4}}
+className="bg-blue-50 p-5 rounded-xl shadow-sm border border-blue-300 hover:border-blue-500 focus-within:border-blue-600 transition"
+>
 
-      <p className="text-gray-500 mb-3 text-sm">
-        Deleting your account will permanently remove your data.
-      </p>
+<div className="flex items-center gap-2 mb-4">
+<User size={18}/>
+<h2 className="text-base font-semibold">Profile Information</h2>
+</div>
 
-      <motion.button
-        whileHover={{scale:1.04}}
-        whileTap={{scale:0.96}}
-        onClick={deleteAccount}
-        className="w-full bg-red-500 hover:bg-red-600 text-white py-2.5 rounded-lg"
-      >
-        Delete Account
-      </motion.button>
+<div className="space-y-3">
 
-    </motion.div>
+<input
+type="text"
+value={name}
+onChange={(e)=>setName(e.target.value)}
+className="w-full border border-gray-300 rounded-lg p-2.5 focus:outline-none focus:border-blue-500"
+placeholder="Full Name"
+/>
 
-  </div>
+<input
+type="email"
+value={email}
+onChange={(e)=>setEmail(e.target.value)}
+className="w-full border border-gray-300 rounded-lg p-2.5 focus:outline-none focus:border-blue-500"
+placeholder="Email"
+/>
+
+<motion.button
+whileHover={{scale:1.04}}
+whileTap={{scale:0.96}}
+onClick={updateProfile}
+className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-lg"
+>
+Update Profile
+</motion.button>
+
+</div>
+
+</motion.div>
+
+
+{/* Change Password */}
+
+<motion.div
+initial={{opacity:0,y:20}}
+animate={{opacity:1,y:0}}
+whileHover={{y:-4}}
+className="bg-green-50 p-5 rounded-xl shadow-sm border border-green-300 hover:border-green-500 focus-within:border-green-600 transition"
+>
+
+<div className="flex items-center gap-2 mb-4">
+<Lock size={18}/>
+<h2 className="text-base font-semibold">Change Password</h2>
+</div>
+
+<div className="space-y-3">
+
+<div className="relative">
+
+<input
+type={showCurrentPassword ? "text" : "password"}
+placeholder="Current Password"
+value={currentPassword}
+onChange={(e)=>setCurrentPassword(e.target.value)}
+className="w-full border border-gray-300 rounded-lg p-2.5 focus:outline-none focus:border-green-500"
+/>
+
+<span
+onClick={()=>setShowCurrentPassword(!showCurrentPassword)}
+className="absolute right-3 top-3 cursor-pointer text-gray-500"
+>
+{showCurrentPassword ? <EyeOff size={18}/> : <Eye size={18}/>}
+</span>
+
+</div>
+
+<div className="relative">
+
+<input
+type={showNewPassword ? "text" : "password"}
+placeholder="New Password"
+value={newPassword}
+onChange={(e)=>setNewPassword(e.target.value)}
+className="w-full border border-gray-300 rounded-lg p-2.5 focus:outline-none focus:border-green-500"
+/>
+
+<span
+onClick={()=>setShowNewPassword(!showNewPassword)}
+className="absolute right-3 top-3 cursor-pointer text-gray-500"
+>
+{showNewPassword ? <EyeOff size={18}/> : <Eye size={18}/>}
+</span>
+
+</div>
+
+<motion.button
+whileHover={{scale:1.04}}
+whileTap={{scale:0.96}}
+onClick={changePassword}
+className="w-full bg-green-600 hover:bg-green-700 text-white py-2.5 rounded-lg"
+>
+Change Password
+</motion.button>
+
+</div>
+
+</motion.div>
+
+
+{/* Danger Zone */}
+
+<motion.div
+initial={{opacity:0,y:20}}
+animate={{opacity:1,y:0}}
+whileHover={{y:-4}}
+className="bg-red-50 p-5 rounded-xl shadow-sm border border-red-300 hover:border-red-500 transition"
+>
+
+<div className="flex items-center gap-2 mb-3 text-red-500">
+<Trash2 size={18}/>
+<h2 className="text-base font-semibold">Danger Zone</h2>
+</div>
+
+<p className="text-gray-500 mb-3 text-sm">
+Deleting your account will permanently remove your data.
+</p>
+
+<motion.button
+whileHover={{scale:1.04}}
+whileTap={{scale:0.96}}
+onClick={deleteAccount}
+className="w-full bg-red-500 hover:bg-red-600 text-white py-2.5 rounded-lg"
+>
+Delete Account
+</motion.button>
+
+</motion.div>
+
+</div>
 
 </motion.div>
 
