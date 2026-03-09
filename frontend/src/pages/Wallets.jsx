@@ -64,7 +64,7 @@ function Wallets({ searchQuery = "" }) {
 
           {filteredWallets.map((wallet) => (
 
-            <div key={wallet._id}>
+            <div key={wallet._id} className="cursor-pointer">
 
               <WalletCard
                 wallet={wallet}
