@@ -19,7 +19,7 @@ exports.register = async (req, res) => {
 
     const { name, email, password } = req.body;
 
-    const photo = req.file ? `/photo/${req.file.filename}` : null;
+    const photo = req.file ? req.file.path : null;
 
     if (!name || !email || !password) {
       return res.status(400).json({
@@ -65,7 +65,7 @@ exports.register = async (req, res) => {
 
   } catch (error) {
 
-    console.log(error);
+    console.log("REGISTER ERROR:", error);
 
     res.status(500).json({
       success: false,
