@@ -21,83 +21,86 @@ function Notifications() {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="p-4 md:p-6 bg-slate-100 min-h-screen"
+      className="p-4 md:p-6 bg-slate-100 min-h-screen flex justify-center"
     >
 
-      <motion.div
-        initial={{ opacity: 0, y: -25 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.35 }}
-        className="flex items-center gap-3 mb-8"
-      >
+      {/* CENTER CONTAINER */}
+
+      <div className="w-full max-w-xl">
+
+        {/* HEADER */}
 
         <motion.div
-          className="bg-blue-100 p-3 rounded-lg"
-          whileHover={{ scale: 1.08 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          <Bell className="text-blue-600"/>
-        </motion.div>
-
-        <div>
-
-          <h1 className="text-2xl md:text-3xl font-bold text-slate-800">
-            Notifications
-          </h1>
-
-          <p className="text-sm text-slate-500">
-            Your recent activity updates
-          </p>
-
-        </div>
-
-      </motion.div>
-
-      {notifications.length === 0 ? (
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="bg-white rounded-xl shadow-sm p-10 text-center text-gray-500"
+          initial={{ opacity: 0, y: -25 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.35 }}
+          className="flex items-center gap-3 mb-6"
         >
 
-          <p className="text-lg font-medium">
-            No notifications yet
-          </p>
+          <motion.div
+            className="bg-blue-100 p-3 rounded-lg"
+            whileHover={{ scale: 1.08 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <Bell className="text-blue-600"/>
+          </motion.div>
 
-          <p className="text-sm mt-2">
-            Your activity notifications will appear here
-          </p>
+          <div>
+
+            <h1 className="text-xl md:text-3xl font-bold text-slate-800">
+              Notifications
+            </h1>
+
+            <p className="text-xs md:text-sm text-slate-500">
+              Your recent activity updates
+            </p>
+
+          </div>
 
         </motion.div>
 
-      ) : (
 
-        <div className="space-y-3">
+        {notifications.length === 0 ? (
 
-          {notifications.map((n, index) => (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="bg-white rounded-xl shadow-sm p-8 text-center text-gray-500"
+          >
 
-            <motion.div
-              key={n.id}
-              initial={{ opacity: 0, y: 25 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.05 }}
-              whileHover={{ y: -4, scale: 1.01 }}
-              whileTap={{ scale: 0.98 }}
-              className={`flex justify-between items-center border rounded-lg p-4 shadow-sm cursor-pointer
-              
-              ${
-                !n.seen
-                  ? "bg-blue-50 border-blue-300"
-                  : "bg-white border-slate-200"
-              }
-              
-              hover:shadow-md`}
-            >
+            <p className="text-lg font-medium">
+              No notifications yet
+            </p>
 
-              <div>
+            <p className="text-sm mt-2">
+              Your activity notifications will appear here
+            </p>
 
-                <p className="text-sm font-medium text-slate-800">
+          </motion.div>
+
+        ) : (
+
+          <div className="space-y-3">
+
+            {notifications.map((n, index) => (
+
+              <motion.div
+                key={n.id}
+                initial={{ opacity: 0, y: 25 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.05 }}
+                whileHover={{ y: -3 }}
+                whileTap={{ scale: 0.98 }}
+                className={`border rounded-xl p-4 shadow-sm transition
+                ${
+                  !n.seen
+                    ? "bg-blue-50 border-blue-300"
+                    : "bg-white border-slate-200"
+                }
+                hover:shadow-md`}
+              >
+
+                <p className="text-sm md:text-base font-medium text-slate-800">
                   {n.message}
                 </p>
 
@@ -105,15 +108,15 @@ function Notifications() {
                   {formatTime(n.timestamp)}
                 </p>
 
-              </div>
+              </motion.div>
 
-            </motion.div>
+            ))}
 
-          ))}
+          </div>
 
-        </div>
+        )}
 
-      )}
+      </div>
 
     </motion.div>
 

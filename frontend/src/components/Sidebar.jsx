@@ -39,127 +39,113 @@ function Sidebar({ closeSidebar }) {
   return (
 
     <motion.aside
-      initial={{ x: -250, opacity: 0 }}
-      animate={{ x: 0, opacity: 1 }}
-      transition={{ duration: 0.4, ease: "easeOut" }}
-      className="w-64 h-screen bg-slate-950 text-slate-300 flex flex-col px-6 py-8 fixed left-0 top-0"
+      initial={{ x: -250 }}
+      animate={{ x: 0 }}
+      transition={{ duration: 0.4 }}
+      className="w-64 h-screen bg-slate-950 text-slate-300 flex flex-col fixed left-0 top-0 px-5 py-6"
     >
 
-      {/* LOGO */}
+      {/* TOP SECTION */}
+      <div>
 
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.2 }}
-        className="mb-12"
-      >
+        {/* LOGO */}
+        <div className="mb-8">
 
-        <h2 className="text-3xl font-bold text-white tracking-wide">
-          FinTrack
-        </h2>
+          <h2 className="text-3xl font-bold text-white">
+            FinTrack
+          </h2>
 
-        <p className="text-sm text-slate-400 mt-1">
-          Smart Finance Manager
-        </p>
+          <p className="text-sm text-slate-400">
+            Smart Finance Manager
+          </p>
 
-      </motion.div>
+        </div>
 
+        {/* NAVIGATION */}
+        <ul className="space-y-3">
 
-      {/* NAVIGATION */}
+          {navItems.map((item, index) => {
 
-      <ul className="space-y-4 flex-1">
+            const Icon = item.icon;
+            const active = location.pathname === item.path;
 
-        {navItems.map((item, index) => {
+            return (
 
-          const Icon = item.icon;
-          const active = location.pathname === item.path;
-
-          return (
-
-            <motion.li
-              key={item.name}
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: index * 0.08 }}
-              whileHover={{ x: 6 }}
-              whileTap={{ scale: 0.95 }}
-            >
-
-              <Link
-                to={item.path}
-                onClick={closeSidebar}
-                className={`flex items-center gap-4 px-4 py-3.5 rounded-lg text-lg font-bold transition-all duration-200
-                ${
-                  active
-                    ? "bg-blue-600 text-white shadow"
-                    : "hover:bg-slate-800 hover:text-white"
-                }`}
+              <motion.li
+                key={item.name}
+                whileHover={{ x: 5 }}
+                whileTap={{ scale: 0.95 }}
               >
 
-                <Icon size={26} />
+                <Link
+                  to={item.path}
+                  onClick={closeSidebar}
+                  className={`flex items-center gap-4 px-4 py-3 rounded-lg text-lg font-semibold transition
+                  ${
+                    active
+                      ? "bg-blue-600 text-white"
+                      : "hover:bg-slate-800 hover:text-white"
+                  }`}
+                >
 
-                {item.name}
+                  <Icon size={24} />
 
-              </Link>
+                  {item.name}
 
-            </motion.li>
+                </Link>
 
-          );
+              </motion.li>
 
-        })}
+            );
 
-      </ul>
+          })}
+
+        </ul>
+
+      </div>
 
 
-      {/* USER SECTION */}
+      {/* BOTTOM SECTION */}
+      <div className="mt-auto">
 
-      <div className="border-t border-slate-800 pt-6">
-
-        <motion.div
-          whileHover={{ scale: 1.03 }}
-          whileTap={{ scale: 0.95 }}
+        {/* PROFILE */}
+        <div
           onClick={() => navigate("/settings")}
-          className="flex items-center gap-4 mb-5 cursor-pointer hover:bg-slate-800 p-3 rounded-lg transition"
+          className="flex items-center gap-3 mb-4 cursor-pointer hover:bg-slate-800 p-3 rounded-lg"
         >
 
           <img
             src={profileImage}
             alt="profile"
-            className="w-13 h-13 rounded-full object-cover border"
-            onError={(e) => {
-              e.target.src = `${BASE_URL}/photo/download.png`;
-            }}
+            className="w-10 h-10 rounded-full object-cover"
           />
 
-          <div className="text-lg">
+          <div>
 
-            <p className="text-white font-bold">
+            <p className="text-white font-semibold">
               {user?.name || "User"}
             </p>
 
-            <p className="text-sm text-slate-400">
+            <p className="text-xs text-slate-400">
               FinTrack User
             </p>
 
           </div>
 
-        </motion.div>
+        </div>
 
 
         {/* LOGOUT */}
-
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
+        <button
           onClick={handleLogout}
-          className="flex items-center justify-center gap-3 w-full bg-red-500 hover:bg-red-600 transition px-4 py-3.5 rounded-lg text-white text-lg font-bold"
+          className="flex items-center justify-center gap-2 w-full bg-red-500 hover:bg-red-600 transition px-4 py-2.5 rounded-lg text-white font-semibold"
         >
 
-          <LogOut size={24} />
+          <LogOut size={20} />
 
           Logout
 
-        </motion.button>
+        </button>
 
       </div>
 
