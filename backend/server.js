@@ -22,40 +22,46 @@ const Wallet = require("./models/Wallet");
 
 const app = express();
 
+
 // 🔗 Connect Database
 connectDB();
+
 
 // 🔐 Security Middlewares
 
 app.use(
-helmet({
-crossOriginResourcePolicy: false
-})
+  helmet({
+    crossOriginResourcePolicy: false
+  })
 );
 
 app.use(
-cors({
-origin: "*"
-})
+  cors({
+    origin: "*"
+  })
 );
 
 app.use(express.json());
 
-// 📊 Logger (Development Mode)
+
+// 📊 Logger (Development Only)
 
 if (process.env.NODE_ENV === "development") {
-app.use(morgan("dev"));
+  app.use(morgan("dev"));
 }
+
 
 // 📂 Serve Profile Photos
 
 app.use("/photo", express.static(path.join(__dirname, "photo")));
 
+
 // 🌍 Base Route
 
 app.get("/", (req, res) => {
-res.send("🚀 FinTrack API Running...");
+  res.send("🚀 FinTrack API Running...");
 });
+
 
 // 📌 API Routes
 
@@ -65,101 +71,112 @@ app.use("/api/transactions", transactionRoutes);
 app.use("/api/budgets", budgetRoutes);
 app.use("/api/recurring", recurringRoutes);
 
-// 🔁 Recurring Cron Job (Every 5 Minutes)
+
+
+// 🔁 Recurring Cron Job
+// Every 5 minutes
 
 cron.schedule("*/5 * * * *", async () => {
+  try {
 
-try {
+    const now = new Date();
+
+    const recurringItems = await Recurring.find({
+      nextRun: { $lte: now },
+      isActive: true
+    });
+
+    if (recurringItems.length === 0) return;
+
+    for (const item of recurringItems) {
+
+      // Create Transaction
+
+      await Transaction.create({
+        user: item.user,
+        wallet: item.wallet,
+        title: item.title,
+        amount: item.amount,
+        category: item.category,
+        type: item.type,
+        isRecurring: true
+      });
 
 
-const now = new Date();
+      // Update Wallet Balance
 
-const recurringItems = await Recurring.find({
-  nextRun: { $lte: now },
-  isActive: true
+      const wallet = await Wallet.findById(item.wallet);
+      if (!wallet) continue;
+
+      wallet.balance =
+        item.type === "income"
+          ? wallet.balance + item.amount
+          : wallet.balance - item.amount;
+
+      await wallet.save();
+
+
+      // Calculate Next Run
+
+      let nextDate = new Date(item.nextRun);
+
+      if (item.frequency === "daily") {
+        nextDate.setDate(nextDate.getDate() + 1);
+      }
+      else if (item.frequency === "weekly") {
+        nextDate.setDate(nextDate.getDate() + 7);
+      }
+      else {
+        nextDate.setMonth(nextDate.getMonth() + 1);
+      }
+
+      item.nextRun = nextDate;
+
+
+      // Stop recurring if endDate passed
+
+      if (item.endDate && nextDate > item.endDate) {
+        item.isActive = false;
+      }
+
+      await item.save();
+
+    }
+
+    console.log(`✅ ${recurringItems.length} recurring transactions processed`);
+
+  } catch (error) {
+
+    console.error("❌ Recurring Cron Error:", error.message);
+
+  }
 });
 
-for (let item of recurringItems) {
 
-  // Create Transaction
+// ⭐ Production Best Cron (Daily at 12 AM)
+// Uncomment if needed
 
-  await Transaction.create({
-    user: item.user,
-    wallet: item.wallet,
-    title: item.title,
-    amount: item.amount,
-    category: item.category,
-    type: item.type,
-    isRecurring: true
-  });
-
-
-  // Update Wallet Balance
-
-  const wallet = await Wallet.findById(item.wallet);
-
-  if (!wallet) continue;
-
-  wallet.balance =
-    item.type === "income"
-      ? wallet.balance + item.amount
-      : wallet.balance - item.amount;
-
-  await wallet.save();
-
-
-  // Update Next Run Date
-
-  let nextDate = new Date(item.nextRun);
-
-  if (item.frequency === "daily") {
-    nextDate.setDate(nextDate.getDate() + 1);
-  }
-  else if (item.frequency === "weekly") {
-    nextDate.setDate(nextDate.getDate() + 7);
-  }
-  else {
-    nextDate.setMonth(nextDate.getMonth() + 1);
-  }
-
-  item.nextRun = nextDate;
-
-
-  // Stop recurring if endDate passed
-
-  if (item.endDate && nextDate > item.endDate) {
-    item.isActive = false;
-  }
-
-  await item.save();
-
-}
-
-console.log("✅ Recurring transactions processed");
-
-
-} catch (error) {
-
-
-console.error("❌ Recurring Cron Error:", error.message);
-
-
-}
-
+/*
+cron.schedule("0 0 * * *", async () => {
+  console.log("Running daily recurring check...");
 });
+*/
+
 
 // ❌ Not Found Middleware
 
 app.use(notFound);
 
+
 // ⚠ Global Error Handler
 
 app.use(errorHandler);
+
 
 // 🚀 Start Server
 
 const PORT = process.env.PORT || 8000;
 
 app.listen(PORT, () => {
-console.log(`🚀 Server running on port ${PORT}`);
+  console.log(`🚀 Server running on port ${PORT}`);
 });
