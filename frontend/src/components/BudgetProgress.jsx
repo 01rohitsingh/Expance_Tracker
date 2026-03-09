@@ -75,20 +75,19 @@ function BudgetProgress({ budget }) {
 
     <motion.div
 
-      whileHover={{ y: -2 }}       // PC hover animation
-      whileTap={{ scale: 0.97 }}   // mobile tap animation
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
 
-      transition={{ duration: 0.2 }}
+      whileHover={{ y: -6, scale: 1.03 }}
+      whileTap={{ scale: 0.94 }}
 
-      className="cursor-pointer"   // 👈 cursor pointer added
-
-      onTouchStart={(e) => {
-        e.currentTarget.style.transform = "scale(0.97)";
+      transition={{
+        type: "spring",
+        stiffness: 300,
+        damping: 18
       }}
 
-      onTouchEnd={(e) => {
-        e.currentTarget.style.transform = "scale(1)";
-      }}
+      className="cursor-pointer"
 
     >
 
@@ -111,7 +110,10 @@ function BudgetProgress({ budget }) {
           className={`${getColor()} h-3 rounded-full origin-left`}
           initial={{ scaleX: 0 }}
           animate={{ scaleX: progress / 100 }}
-          transition={{ duration: 0.9, ease: "easeOut" }}
+          transition={{
+            duration: 0.9,
+            ease: "easeOut"
+          }}
           style={{ width: "100%" }}
         />
 

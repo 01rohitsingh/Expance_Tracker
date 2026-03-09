@@ -58,12 +58,21 @@ function TransactionList({ transactions = [], refresh }) {
 
           <motion.div
             key={t._id}
-            initial={{ opacity: 0, y: 20 }}
+
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.05 }}
-            whileHover={{ y: -6, scale: 1.02 }}
-            whileTap={{ scale: 0.97 }}
-            className="border border-slate-200 rounded-xl p-5 hover:shadow-lg transition bg-white flex flex-col gap-4"
+
+            transition={{
+              delay: index * 0.05,
+              type: "spring",
+              stiffness: 300,
+              damping: 20
+            }}
+
+            whileHover={{ y: -10, scale: 1.04 }}
+            whileTap={{ scale: 0.94 }}
+
+            className="border border-slate-200 rounded-xl p-5 hover:shadow-xl transition bg-white flex flex-col gap-4 cursor-pointer"
           >
 
             {/* TOP */}
@@ -105,9 +114,16 @@ function TransactionList({ transactions = [], refresh }) {
               </p>
 
               <motion.button
-                whileHover={{ scale: 1.15 }}
-                whileTap={{ scale: 0.9 }}
+                whileHover={{ scale: 1.2, rotate: 8 }}
+                whileTap={{ scale: 0.85 }}
+
+                transition={{
+                  type: "spring",
+                  stiffness: 300
+                }}
+
                 onClick={() => deleteTransaction(t._id, t.category, t.amount)}
+
                 className="text-red-500 hover:text-red-700 cursor-pointer"
               >
                 <Trash2 size={22} />

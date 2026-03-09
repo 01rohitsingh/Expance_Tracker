@@ -49,19 +49,19 @@ function WalletCard({ wallet, refresh }) {
     switch (wallet.type) {
 
       case "cash":
-        return <Wallet size={20} className="text-green-600" />;
+        return <Wallet size={22} className="text-green-600" />;
 
       case "bank":
-        return <Landmark size={20} className="text-blue-600" />;
+        return <Landmark size={22} className="text-blue-600" />;
 
       case "credit":
-        return <CreditCard size={20} className="text-purple-600" />;
+        return <CreditCard size={22} className="text-purple-600" />;
 
       case "upi":
-        return <Smartphone size={20} className="text-orange-600" />;
+        return <Smartphone size={22} className="text-orange-600" />;
 
       default:
-        return <Wallet size={20} className="text-gray-600" />;
+        return <Wallet size={22} className="text-gray-600" />;
 
     }
 
@@ -70,23 +70,19 @@ function WalletCard({ wallet, refresh }) {
   return (
 
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
 
-      whileHover={{ y: -6, scale: 1.02 }}   // PC same
-      whileTap={{ scale: 0.97 }}            // mobile
+      whileHover={{ y: -10, scale: 1.04 }}
+      whileTap={{ scale: 0.94 }}
 
-      onTouchStart={(e)=>{
-        e.currentTarget.style.transform="scale(0.97)";
+      transition={{
+        type: "spring",
+        stiffness: 300,
+        damping: 18
       }}
 
-      onTouchEnd={(e)=>{
-        e.currentTarget.style.transform="scale(1)";
-      }}
-
-      transition={{ duration: 0.3 }}
-
-      className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm hover:shadow-md flex justify-between items-center"
+      className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm hover:shadow-lg flex justify-between items-center cursor-pointer"
     >
 
       <div className="flex items-center gap-3">
@@ -94,18 +90,14 @@ function WalletCard({ wallet, refresh }) {
         <motion.div
           className="bg-slate-100 p-3 rounded-lg"
 
-          whileHover={{ rotate: 8, scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
+          whileHover={{ rotate: 10, scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
 
-          onTouchStart={(e)=>{
-            e.currentTarget.style.transform="scale(0.95)";
+          transition={{
+            type: "spring",
+            stiffness: 300,
+            damping: 15
           }}
-
-          onTouchEnd={(e)=>{
-            e.currentTarget.style.transform="scale(1)";
-          }}
-
-          transition={{ duration: 0.2 }}
         >
           {getWalletIcon()}
         </motion.div>
@@ -127,20 +119,17 @@ function WalletCard({ wallet, refresh }) {
       <motion.button
         onClick={deleteWallet}
 
-        whileHover={{ scale: 1.15 }}   // PC same
-        whileTap={{ scale: 0.9 }}      // mobile
+        whileHover={{ scale: 1.2, rotate: 8 }}
+        whileTap={{ scale: 0.85 }}
 
-        onTouchStart={(e)=>{
-          e.currentTarget.style.transform="scale(0.9)";
+        transition={{
+          type: "spring",
+          stiffness: 300
         }}
 
-        onTouchEnd={(e)=>{
-          e.currentTarget.style.transform="scale(1)";
-        }}
-
-        className="text-red-500 hover:text-red-700 cursor-pointer transition"
+        className="text-red-500 hover:text-red-700 cursor-pointer"
       >
-        <Trash2 size={18} />
+        <Trash2 size={20} />
       </motion.button>
 
     </motion.div>

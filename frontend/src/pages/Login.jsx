@@ -24,18 +24,22 @@ function Login() {
       return;
     }
 
-    try {
+    if (loading) return; // prevent multiple clicks
 
-      setLoading(true);
+    setLoading(true); // loader immediately show
+
+    try {
 
       const res = await API.post("/auth/login", {
         email,
         password
       });
 
-      localStorage.setItem("token", res.data.data.token);
+      const userData = res.data.data;
 
-      login(res.data.data);
+      localStorage.setItem("token", userData.token);
+
+      login(userData);
 
       toast.success("Login successful 🎉");
 
@@ -105,9 +109,11 @@ function Login() {
 
         <motion.button
           type="submit"
+          disabled={loading}
           whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 0.95 }}
-          className="bg-blue-600 hover:bg-blue-700 text-white p-3 w-full rounded-lg font-medium transition cursor-pointer"
+          className={`p-3 w-full rounded-lg font-medium transition cursor-pointer text-white
+          ${loading ? "bg-blue-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"}`}
         >
           {loading ? "Logging in..." : "Login"}
         </motion.button>

@@ -8,20 +8,16 @@ function SummaryCard({ title, amount, icon: Icon, color }) {
       initial={{ opacity: 0, y: 25 }}
       animate={{ opacity: 1, y: 0 }}
 
-      whileHover={{ y: -6, scale: 1.02 }}
-      whileTap={{ scale: 0.97 }}
+      whileHover={{ y: -8, scale: 1.04 }}
+      whileTap={{ scale: 0.94 }}
 
-      onTouchStart={(e)=>{
-        e.currentTarget.style.transform="scale(0.97)";
+      transition={{
+        type: "spring",
+        stiffness: 300,
+        damping: 18
       }}
 
-      onTouchEnd={(e)=>{
-        e.currentTarget.style.transform="scale(1)";
-      }}
-
-      transition={{ duration: 0.35 }}
-
-      className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm hover:shadow-md flex items-center justify-between"
+      className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm hover:shadow-md flex items-center justify-between cursor-pointer"
     >
 
       <div>
@@ -41,21 +37,17 @@ function SummaryCard({ title, amount, icon: Icon, color }) {
         <motion.div
           className={`p-3 rounded-lg ${color || "bg-blue-100"}`}
 
-          whileHover={{ rotate: 8, scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
+          whileHover={{ rotate: 10, scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
 
-          onTouchStart={(e)=>{
-            e.currentTarget.style.transform="scale(0.95)";
+          transition={{
+            type: "spring",
+            stiffness: 300,
+            damping: 15
           }}
-
-          onTouchEnd={(e)=>{
-            e.currentTarget.style.transform="scale(1)";
-          }}
-
-          transition={{ duration: 0.25 }}
         >
 
-          <Icon size={22} className="text-blue-600" />
+          <Icon size={24} className="text-blue-600" />
 
         </motion.div>
 

@@ -37,7 +37,7 @@ function Analytics() {
     }
   };
 
-  /* ---------------- CATEGORY EXPENSE ---------------- */
+  /* CATEGORY EXPENSE */
 
   const categoryData = {};
 
@@ -60,7 +60,8 @@ function Analytics() {
     value: categoryData[key],
   }));
 
-  /* ---------------- INCOME VS EXPENSE ---------------- */
+
+  /* INCOME VS EXPENSE */
 
   let income = 0;
   let expense = 0;
@@ -82,7 +83,8 @@ function Analytics() {
     { name: "Expense", value: expense }
   ];
 
-  /* ---------------- MONTHLY TREND ---------------- */
+
+  /* MONTHLY TREND */
 
   const monthlyData = {};
 
@@ -104,7 +106,6 @@ function Analytics() {
     value: monthlyData[m]
   }));
 
-  /* ---------------- CHART COLORS ---------------- */
 
   const COLORS = [
     "#6366f1",
@@ -121,9 +122,8 @@ function Analytics() {
       className="p-6 bg-slate-100 min-h-screen"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
+      transition={{ duration: 0.4 }}
     >
-
-      {/* TITLE */}
 
       <h1 className="text-3xl font-bold mb-8 text-slate-800">
         Analytics Dashboard
@@ -134,10 +134,19 @@ function Analytics() {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
 
-        {/* TOTAL INCOME */}
-
         <motion.div
-          whileHover={{ scale: 1.05 }}
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+
+          whileHover={{ y: -8, scale: 1.04 }}
+          whileTap={{ scale: 0.94 }}
+
+          transition={{
+            type: "spring",
+            stiffness: 300,
+            damping: 18
+          }}
+
           className="bg-gradient-to-r from-purple-500 to-indigo-500 text-white p-6 rounded-xl shadow-lg cursor-pointer"
         >
           <p className="text-sm">Total Income</p>
@@ -145,10 +154,19 @@ function Analytics() {
         </motion.div>
 
 
-        {/* TOTAL EXPENSE */}
-
         <motion.div
-          whileHover={{ scale: 1.05 }}
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+
+          whileHover={{ y: -8, scale: 1.04 }}
+          whileTap={{ scale: 0.94 }}
+
+          transition={{
+            type: "spring",
+            stiffness: 300,
+            damping: 18
+          }}
+
           className="bg-gradient-to-r from-orange-400 to-pink-500 text-white p-6 rounded-xl shadow-lg cursor-pointer"
         >
           <p className="text-sm">Total Expense</p>
@@ -156,10 +174,19 @@ function Analytics() {
         </motion.div>
 
 
-        {/* BALANCE */}
-
         <motion.div
-          whileHover={{ scale: 1.05 }}
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+
+          whileHover={{ y: -8, scale: 1.04 }}
+          whileTap={{ scale: 0.94 }}
+
+          transition={{
+            type: "spring",
+            stiffness: 300,
+            damping: 18
+          }}
+
           className="bg-gradient-to-r from-teal-400 to-cyan-500 text-white p-6 rounded-xl shadow-lg cursor-pointer"
         >
           <p className="text-sm">Balance</p>
@@ -178,7 +205,17 @@ function Analytics() {
         {/* PIE CHART */}
 
         <motion.div
-          whileHover={{ y: -8 }}
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+
+          whileHover={{ y: -10, scale: 1.03 }}
+          whileTap={{ scale: 0.95 }}
+
+          transition={{
+            type: "spring",
+            stiffness: 250
+          }}
+
           className="bg-white p-6 rounded-xl shadow-lg cursor-pointer"
         >
 
@@ -208,7 +245,6 @@ function Analytics() {
               </Pie>
 
               <Tooltip />
-
               <Legend />
 
             </PieChart>
@@ -222,7 +258,17 @@ function Analytics() {
         {/* BAR CHART */}
 
         <motion.div
-          whileHover={{ y: -8 }}
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+
+          whileHover={{ y: -10, scale: 1.03 }}
+          whileTap={{ scale: 0.95 }}
+
+          transition={{
+            type: "spring",
+            stiffness: 250
+          }}
+
           className="bg-white p-6 rounded-xl shadow-lg cursor-pointer"
         >
 
@@ -234,27 +280,20 @@ function Analytics() {
 
             <BarChart data={incomeExpenseData}>
 
-              <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb"/>
+              <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
 
               <XAxis dataKey="name" />
-
               <YAxis />
 
-              <Tooltip
-                contentStyle={{
-                  borderRadius:"10px",
-                  border:"none",
-                  boxShadow:"0 5px 20px rgba(0,0,0,0.1)"
-                }}
-              />
+              <Tooltip />
 
-              <Bar dataKey="value" radius={[12,12,0,0]}>
+              <Bar dataKey="value" radius={[12, 12, 0, 0]}>
 
-                {incomeExpenseData.map((entry,index)=>(
+                {incomeExpenseData.map((entry, index) => (
                   <Cell
                     key={index}
                     fill={
-                      entry.name==="Income"
+                      entry.name === "Income"
                         ? "#22c55e"
                         : "#f43f5e"
                     }
@@ -274,7 +313,17 @@ function Analytics() {
         {/* MONTHLY TREND */}
 
         <motion.div
-          whileHover={{ y: -8 }}
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+
+          whileHover={{ y: -10, scale: 1.02 }}
+          whileTap={{ scale: 0.96 }}
+
+          transition={{
+            type: "spring",
+            stiffness: 250
+          }}
+
           className="bg-white p-6 rounded-xl shadow-lg lg:col-span-2 cursor-pointer"
         >
 
@@ -286,19 +335,12 @@ function Analytics() {
 
             <AreaChart data={lineData}>
 
-              <CartesianGrid strokeDasharray="4 4" stroke="#e5e7eb"/>
+              <CartesianGrid strokeDasharray="4 4" stroke="#e5e7eb" />
 
-              <XAxis dataKey="name"/>
+              <XAxis dataKey="name" />
+              <YAxis />
 
-              <YAxis/>
-
-              <Tooltip
-                contentStyle={{
-                  borderRadius:"10px",
-                  border:"none",
-                  boxShadow:"0 5px 20px rgba(0,0,0,0.1)"
-                }}
-              />
+              <Tooltip />
 
               <Area
                 type="monotone"
@@ -313,8 +355,8 @@ function Analytics() {
                 dataKey="value"
                 stroke="#6366f1"
                 strokeWidth={3}
-                dot={{ r:6 }}
-                activeDot={{ r:8 }}
+                dot={{ r: 6 }}
+                activeDot={{ r: 8 }}
               />
 
             </AreaChart>
