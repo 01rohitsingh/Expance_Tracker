@@ -75,7 +75,12 @@ function BudgetProgress({ budget }) {
 
     <motion.div
 
+      whileHover={{ y: -2 }}       // PC hover animation
       whileTap={{ scale: 0.97 }}   // mobile tap animation
+
+      transition={{ duration: 0.2 }}
+
+      className="cursor-pointer"   // 👈 cursor pointer added
 
       onTouchStart={(e) => {
         e.currentTarget.style.transform = "scale(0.97)";

@@ -135,7 +135,7 @@ function Analytics() {
               damping: 18
             }}
 
-            className="bg-white p-5 shadow rounded-xl"
+            className="bg-white p-5 shadow rounded-xl cursor-pointer"
           >
 
             <h2 className="text-lg font-semibold mb-4">
@@ -188,7 +188,7 @@ function Analytics() {
               damping: 18
             }}
 
-            className="bg-white p-5 shadow rounded-xl"
+            className="bg-white p-5 shadow rounded-xl cursor-pointer"
           >
 
             <h2 className="text-lg font-semibold mb-4">

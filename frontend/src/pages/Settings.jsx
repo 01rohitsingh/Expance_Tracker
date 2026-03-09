@@ -171,7 +171,7 @@ Settings
 initial={{opacity:0,y:20}}
 animate={{opacity:1,y:0}}
 whileHover={{y:-4}}
-className="bg-purple-50 p-5 rounded-xl shadow-sm border border-purple-300 hover:border-purple-500 focus-within:border-purple-600 transition"
+className="bg-purple-50 p-5 rounded-xl shadow-sm border border-purple-300 hover:border-purple-500 transition cursor-pointer"
 >
 
 <div className="flex items-center gap-2 mb-4">
@@ -194,14 +194,14 @@ className="w-20 h-20 rounded-full object-cover border"
 <input
 type="file"
 onChange={(e)=>setPhoto(e.target.files[0])}
-className="w-full border border-gray-300 rounded-lg p-2.5 focus:outline-none focus:border-purple-500"
+className="w-full border border-gray-300 rounded-lg p-2.5 focus:outline-none focus:border-purple-500 cursor-pointer"
 />
 
 <motion.button
 whileHover={{scale:1.04}}
 whileTap={{scale:0.96}}
 onClick={updatePhoto}
-className="w-full bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white py-2.5 rounded-lg"
+className="w-full bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white py-2.5 rounded-lg cursor-pointer"
 >
 Update Photo
 </motion.button>
@@ -217,7 +217,7 @@ Update Photo
 initial={{opacity:0,y:20}}
 animate={{opacity:1,y:0}}
 whileHover={{y:-4}}
-className="bg-blue-50 p-5 rounded-xl shadow-sm border border-blue-300 hover:border-blue-500 focus-within:border-blue-600 transition"
+className="bg-blue-50 p-5 rounded-xl shadow-sm border border-blue-300 hover:border-blue-500 transition cursor-pointer"
 >
 
 <div className="flex items-center gap-2 mb-4">
@@ -247,7 +247,7 @@ placeholder="Email"
 whileHover={{scale:1.04}}
 whileTap={{scale:0.96}}
 onClick={updateProfile}
-className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-lg"
+className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-lg cursor-pointer"
 >
 Update Profile
 </motion.button>
@@ -263,7 +263,7 @@ Update Profile
 initial={{opacity:0,y:20}}
 animate={{opacity:1,y:0}}
 whileHover={{y:-4}}
-className="bg-green-50 p-5 rounded-xl shadow-sm border border-green-300 hover:border-green-500 focus-within:border-green-600 transition"
+className="bg-green-50 p-5 rounded-xl shadow-sm border border-green-300 hover:border-green-500 transition"
 >
 
 <div className="flex items-center gap-2 mb-4">
@@ -315,7 +315,7 @@ className="absolute right-3 top-3 cursor-pointer text-gray-500"
 whileHover={{scale:1.04}}
 whileTap={{scale:0.96}}
 onClick={changePassword}
-className="w-full bg-green-600 hover:bg-green-700 text-white py-2.5 rounded-lg"
+className="w-full bg-green-600 hover:bg-green-700 text-white py-2.5 rounded-lg cursor-pointer"
 >
 Change Password
 </motion.button>
@@ -331,7 +331,7 @@ Change Password
 initial={{opacity:0,y:20}}
 animate={{opacity:1,y:0}}
 whileHover={{y:-4}}
-className="bg-red-50 p-5 rounded-xl shadow-sm border border-red-300 hover:border-red-500 transition"
+className="bg-red-50 p-5 rounded-xl shadow-sm border border-red-300 hover:border-red-500 transition cursor-pointer"
 >
 
 <div className="flex items-center gap-2 mb-3 text-red-500">
@@ -347,7 +347,7 @@ Deleting your account will permanently remove your data.
 whileHover={{scale:1.04}}
 whileTap={{scale:0.96}}
 onClick={deleteAccount}
-className="w-full bg-red-500 hover:bg-red-600 text-white py-2.5 rounded-lg"
+className="w-full bg-red-500 hover:bg-red-600 text-white py-2.5 rounded-lg cursor-pointer"
 >
 Delete Account
 </motion.button>

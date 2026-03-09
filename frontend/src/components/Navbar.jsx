@@ -55,7 +55,8 @@ function Navbar({ setOpenSidebar, setSearchQuery }) {
       {/* LEFT SIDE LOGO */}
 
       <motion.h1
-        className="text-xl lg:text-3xl font-bold text-slate-800"
+        onClick={() => navigate("/dashboard")}
+        className="text-xl lg:text-3xl font-bold text-slate-800 cursor-pointer"
         whileTap={{ scale: 0.95 }}
       >
         FinTrack
@@ -87,7 +88,7 @@ function Navbar({ setOpenSidebar, setSearchQuery }) {
 
         <motion.button
           onClick={() => navigate("/notifications")}
-          className="p-1.5 rounded-lg hover:bg-slate-100 relative"
+          className="p-1.5 rounded-lg hover:bg-slate-100 relative cursor-pointer"
           whileTap={{ scale: 0.9 }}
         >
 
@@ -127,7 +128,7 @@ function Navbar({ setOpenSidebar, setSearchQuery }) {
 
         <motion.button
           onClick={() => setOpenSidebar(true)}
-          className="p-1.5 rounded-lg hover:bg-slate-100 lg:hidden"
+          className="p-1.5 rounded-lg hover:bg-slate-100 lg:hidden cursor-pointer"
           whileTap={{ scale: 0.9 }}
         >
           <Menu size={24} />
