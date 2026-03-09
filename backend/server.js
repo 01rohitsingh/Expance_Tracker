@@ -153,15 +153,6 @@ cron.schedule("*/5 * * * *", async () => {
 });
 
 
-// ⭐ Production Best Cron (Daily at 12 AM)
-// Uncomment if needed
-
-/*
-cron.schedule("0 0 * * *", async () => {
-  console.log("Running daily recurring check...");
-});
-*/
-
 
 // ❌ Not Found Middleware
 
