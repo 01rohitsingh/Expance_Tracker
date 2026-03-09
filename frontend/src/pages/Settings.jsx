@@ -22,26 +22,31 @@ const [showCurrentPassword, setShowCurrentPassword] = useState(false);
 const [showNewPassword, setShowNewPassword] = useState(false);
 
 
-/* PHOTO PREVIEW */
+/* ================= PHOTO PREVIEW ================= */
 
 const handlePhoto = (e) => {
 
   const file = e.target.files[0];
-  setPhoto(file);
 
-  if (file) {
-    setPreview(URL.createObjectURL(file));
+  if (!file) return;
+
+  if (!file.type.startsWith("image/")) {
+    toast.error("Please select a valid image");
+    return;
   }
+
+  setPhoto(file);
+  setPreview(URL.createObjectURL(file));
 
 };
 
 
-/* UPDATE PHOTO */
+/* ================= UPDATE PHOTO ================= */
 
 const updatePhoto = async () => {
 
   if (!photo) {
-    toast.error("Please select image");
+    toast.error("Please select an image");
     return;
   }
 
@@ -51,7 +56,9 @@ const updatePhoto = async () => {
     formData.append("photo", photo);
 
     const res = await API.put("/auth/upload-photo", formData, {
-      headers: { "Content-Type": "multipart/form-data" }
+      headers: {
+        "Content-Type": "multipart/form-data"
+      }
     });
 
     updateUser({
@@ -59,18 +66,22 @@ const updatePhoto = async () => {
       photo: res.data.photo
     });
 
+    setPreview(null);
+    setPhoto(null);
+
     toast.success("Profile photo updated");
 
   } catch (error) {
 
-    toast.error("Photo upload failed");
+    console.error(error);
+    toast.error(error?.response?.data?.message || "Photo upload failed");
 
   }
 
 };
 
 
-/* UPDATE PROFILE */
+/* ================= UPDATE PROFILE ================= */
 
 const updateProfile = async () => {
 
@@ -91,14 +102,14 @@ const updateProfile = async () => {
 
   } catch (error) {
 
-    toast.error("Profile update failed");
+    toast.error(error?.response?.data?.message || "Profile update failed");
 
   }
 
 };
 
 
-/* CHANGE PASSWORD */
+/* ================= CHANGE PASSWORD ================= */
 
 const changePassword = async () => {
 
@@ -121,14 +132,14 @@ const changePassword = async () => {
 
   } catch (error) {
 
-    toast.error("Password change failed");
+    toast.error(error?.response?.data?.message || "Password change failed");
 
   }
 
 };
 
 
-/* DELETE ACCOUNT */
+/* ================= DELETE ACCOUNT ================= */
 
 const deleteAccount = async () => {
 
@@ -156,7 +167,7 @@ const deleteAccount = async () => {
 
   } catch (error) {
 
-    toast.error("Account deletion failed");
+    toast.error(error?.response?.data?.message || "Account deletion failed");
 
   }
 
@@ -183,7 +194,7 @@ Settings
 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
 
-{/* PROFILE PHOTO */}
+{/* ================= PROFILE PHOTO ================= */}
 
 <motion.div
 initial={{opacity:0,y:20}}
@@ -206,11 +217,15 @@ user?.photo ||
 "https://cdn-icons-png.flaticon.com/512/149/149071.png"
 }
 alt="profile"
+onError={(e)=>{
+e.target.src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
+}}
 className="w-20 h-20 rounded-full object-cover border"
 />
 
 <input
 type="file"
+accept="image/*"
 onChange={handlePhoto}
 className="w-full border border-gray-300 rounded-lg p-2.5 cursor-pointer"
 />
@@ -229,7 +244,7 @@ Update Photo
 </motion.div>
 
 
-{/* PROFILE INFO */}
+{/* ================= PROFILE INFO ================= */}
 
 <motion.div
 initial={{opacity:0,y:20}}
@@ -275,7 +290,7 @@ Update Profile
 </motion.div>
 
 
-{/* CHANGE PASSWORD */}
+{/* ================= CHANGE PASSWORD ================= */}
 
 <motion.div
 initial={{opacity:0,y:20}}
@@ -343,7 +358,7 @@ Change Password
 </motion.div>
 
 
-{/* DELETE ACCOUNT */}
+{/* ================= DELETE ACCOUNT ================= */}
 
 <motion.div
 initial={{opacity:0,y:20}}

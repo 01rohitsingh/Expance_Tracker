@@ -39,18 +39,22 @@ function Sidebar({ closeSidebar }) {
     <motion.aside
       initial={{ x: -250 }}
       animate={{ x: 0 }}
-      transition={{ duration: 0.4 }}
+      transition={{ duration: 0.35 }}
       className="w-64 h-screen bg-slate-950 text-slate-300 flex flex-col fixed left-0 top-0 px-5 py-6"
     >
 
-      {/* TOP SECTION */}
+      {/* ================= TOP SECTION ================= */}
+
       <div>
 
         {/* LOGO */}
 
         <div className="mb-8">
 
-          <h2 className="text-3xl font-bold text-white">
+          <h2
+            onClick={() => navigate("/dashboard")}
+            className="text-3xl font-bold text-white cursor-pointer"
+          >
             FinTrack
           </h2>
 
@@ -68,7 +72,10 @@ function Sidebar({ closeSidebar }) {
           {navItems.map((item) => {
 
             const Icon = item.icon;
-            const active = location.pathname === item.path;
+
+            const active =
+              location.pathname === item.path ||
+              location.pathname.startsWith(item.path);
 
             return (
 
@@ -80,7 +87,7 @@ function Sidebar({ closeSidebar }) {
 
                 <Link
                   to={item.path}
-                  onClick={closeSidebar}
+                  onClick={() => closeSidebar && closeSidebar()}
                   className={`flex items-center gap-4 px-4 py-3 rounded-lg text-lg font-semibold transition
                   ${
                     active
@@ -106,7 +113,7 @@ function Sidebar({ closeSidebar }) {
       </div>
 
 
-      {/* BOTTOM SECTION */}
+      {/* ================= BOTTOM SECTION ================= */}
 
       <div className="mt-auto">
 
@@ -114,13 +121,16 @@ function Sidebar({ closeSidebar }) {
 
         <div
           onClick={() => navigate("/settings")}
-          className="flex items-center gap-3 mb-4 cursor-pointer hover:bg-slate-800 p-3 rounded-lg"
+          className="flex items-center gap-3 mb-4 cursor-pointer hover:bg-slate-800 p-3 rounded-lg transition"
         >
 
           <img
             src={profileImage}
             alt="profile"
-            className="w-10 h-10 rounded-full object-cover"
+            onError={(e)=>{
+              e.target.src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
+            }}
+            className="w-10 h-10 rounded-full object-cover border border-slate-700"
           />
 
           <div>

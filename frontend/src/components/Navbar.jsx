@@ -13,20 +13,30 @@ function Navbar({ setOpenSidebar, setSearchQuery }) {
   const [search, setSearch] = useState("");
   const [notifications, setNotifications] = useState([]);
 
+  /* ================= NOTIFICATIONS ================= */
+
   useEffect(() => {
 
-    const interval = setInterval(() => {
+    const loadNotifications = () => {
       const data = getNotifications();
-      setNotifications(data);
-    }, 1000);
+      setNotifications(data || []);
+    };
+
+    loadNotifications();
+
+    const interval = setInterval(loadNotifications, 3000);
 
     return () => clearInterval(interval);
 
   }, []);
 
+
+  /* ================= SEARCH ================= */
+
   const handleSearch = (e) => {
 
     const value = e.target.value;
+
     setSearch(value);
 
     if (setSearchQuery) {
@@ -35,11 +45,18 @@ function Navbar({ setOpenSidebar, setSearchQuery }) {
 
   };
 
+
+  /* ================= UNREAD COUNT ================= */
+
   const unreadCount = notifications.filter((n) => !n.seen).length;
+
+
+  /* ================= PROFILE IMAGE ================= */
 
   const profileImage =
     user?.photo ||
     "https://cdn-icons-png.flaticon.com/512/149/149071.png";
+
 
   return (
 
@@ -64,6 +81,7 @@ function Navbar({ setOpenSidebar, setSearchQuery }) {
       {/* RIGHT SIDE */}
 
       <div className="flex items-center gap-1 sm:gap-2 lg:gap-4">
+
 
         {/* SEARCH */}
 
@@ -93,15 +111,17 @@ function Navbar({ setOpenSidebar, setSearchQuery }) {
           <Bell size={24} className="text-slate-700" />
 
           {unreadCount > 0 && (
+
             <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full">
               {unreadCount}
             </span>
+
           )}
 
         </motion.button>
 
 
-        {/* PROFILE (tablet + pc) */}
+        {/* PROFILE (Desktop + Tablet) */}
 
         <motion.div
           onClick={() => navigate("/settings")}
@@ -112,6 +132,9 @@ function Navbar({ setOpenSidebar, setSearchQuery }) {
           <img
             src={profileImage}
             alt="profile"
+            onError={(e)=>{
+              e.target.src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
+            }}
             className="w-8 h-8 rounded-full object-cover border"
           />
 
@@ -129,8 +152,11 @@ function Navbar({ setOpenSidebar, setSearchQuery }) {
           className="p-1.5 rounded-lg hover:bg-slate-100 md:hidden cursor-pointer"
           whileTap={{ scale: 0.9 }}
         >
+
           <Menu size={24} />
+
         </motion.button>
+
 
       </div>
 
