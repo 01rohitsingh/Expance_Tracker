@@ -167,9 +167,6 @@ cron.schedule("0 0 * * *", async () => {
 
 app.use(notFound);
 
-
-// ⚠ Global Error Handler
-
 app.use(errorHandler);
 
 
