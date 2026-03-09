@@ -42,7 +42,7 @@ const userSchema = new mongoose.Schema(
   // ✅ Profile Photo Field
   photo: {
     type: String,
-    default: "/backend/photo/download.png"
+    default: "https://res.cloudinary.com/ddfk6lnjk/image/upload/v1773059715/download_gbnoyc.png"
   }
 
 },
