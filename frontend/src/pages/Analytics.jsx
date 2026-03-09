@@ -13,7 +13,11 @@ import {
   YAxis,
   ResponsiveContainer,
   Legend,
-  CartesianGrid
+  CartesianGrid,
+  LineChart,
+  Line,
+  AreaChart,
+  Area
 } from "recharts";
 
 function Analytics() {
@@ -25,19 +29,15 @@ function Analytics() {
   }, []);
 
   const fetchTransactions = async () => {
-
     try {
-
       const res = await API.get("/transactions");
       setTransactions(res.data);
-
     } catch (error) {
-
       console.error("Analytics error:", error);
-
     }
-
   };
+
+  /* ---------------- CATEGORY EXPENSE ---------------- */
 
   const categoryData = {};
 
@@ -60,6 +60,8 @@ function Analytics() {
     value: categoryData[key],
   }));
 
+  /* ---------------- INCOME VS EXPENSE ---------------- */
+
   let income = 0;
   let expense = 0;
 
@@ -73,165 +75,255 @@ function Analytics() {
 
   });
 
+  const balance = income - expense;
+
   const incomeExpenseData = [
     { name: "Income", value: income },
     { name: "Expense", value: expense }
   ];
 
+  /* ---------------- MONTHLY TREND ---------------- */
+
+  const monthlyData = {};
+
+  transactions.forEach((t) => {
+
+    const date = new Date(t.date);
+    const month = date.toLocaleString("default", { month: "short" });
+
+    if (!monthlyData[month]) {
+      monthlyData[month] = 0;
+    }
+
+    monthlyData[month] += Number(t.amount);
+
+  });
+
+  const lineData = Object.keys(monthlyData).map((m) => ({
+    name: m,
+    value: monthlyData[m]
+  }));
+
+  /* ---------------- CHART COLORS ---------------- */
+
   const COLORS = [
-    "#3b82f6",
-    "#10b981",
-    "#f59e0b",
-    "#ef4444",
-    "#8b5cf6",
-    "#14b8a6"
+    "#6366f1",
+    "#ec4899",
+    "#f97316",
+    "#22c55e",
+    "#06b6d4",
+    "#eab308"
   ];
 
   return (
 
     <motion.div
+      className="p-6 bg-slate-100 min-h-screen"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 0.4 }}
-      className="p-4 md:p-6 bg-gray-100 min-h-screen"
     >
 
-      <motion.h1
-        initial={{ opacity: 0, y: -40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="text-2xl md:text-3xl font-bold mb-6 text-slate-800"
-      >
-        Analytics
-      </motion.h1>
+      {/* TITLE */}
 
-      {transactions.length === 0 ? (
+      <h1 className="text-3xl font-bold mb-8 text-slate-800">
+        Analytics Dashboard
+      </h1>
+
+
+      {/* SUMMARY CARDS */}
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+
+        {/* TOTAL INCOME */}
 
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.4 }}
-          className="bg-white p-10 rounded-xl shadow text-center text-gray-500"
+          whileHover={{ scale: 1.05 }}
+          className="bg-gradient-to-r from-purple-500 to-indigo-500 text-white p-6 rounded-xl shadow-lg cursor-pointer"
         >
-          No data available for analytics
+          <p className="text-sm">Total Income</p>
+          <h2 className="text-2xl font-bold">₹ {income}</h2>
         </motion.div>
 
-      ) : (
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* TOTAL EXPENSE */}
 
-          {/* Expense Category Chart */}
-
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-
-            whileHover={{ y: -10, scale: 1.05 }}
-            whileTap={{ scale: 0.92 }}
-
-            transition={{
-              type: "spring",
-              stiffness: 300,
-              damping: 18
-            }}
-
-            className="bg-white p-5 shadow rounded-xl cursor-pointer"
-          >
-
-            <h2 className="text-lg font-semibold mb-4">
-              Expense by Category
-            </h2>
-
-            <ResponsiveContainer width="100%" height={300}>
-
-              <PieChart>
-
-                <Pie
-                  data={pieData}
-                  dataKey="value"
-                  nameKey="name"
-                  outerRadius={100}
-                  label
-                >
-
-                  {pieData.map((entry, index) => (
-                    <Cell
-                      key={index}
-                      fill={COLORS[index % COLORS.length]}
-                    />
-                  ))}
-
-                </Pie>
-
-                <Tooltip />
-                <Legend />
-
-              </PieChart>
-
-            </ResponsiveContainer>
-
-          </motion.div>
+        <motion.div
+          whileHover={{ scale: 1.05 }}
+          className="bg-gradient-to-r from-orange-400 to-pink-500 text-white p-6 rounded-xl shadow-lg cursor-pointer"
+        >
+          <p className="text-sm">Total Expense</p>
+          <h2 className="text-2xl font-bold">₹ {expense}</h2>
+        </motion.div>
 
 
-          {/* Income vs Expense */}
+        {/* BALANCE */}
 
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
+        <motion.div
+          whileHover={{ scale: 1.05 }}
+          className="bg-gradient-to-r from-teal-400 to-cyan-500 text-white p-6 rounded-xl shadow-lg cursor-pointer"
+        >
+          <p className="text-sm">Balance</p>
+          <h2 className="text-2xl font-bold">₹ {balance}</h2>
+        </motion.div>
 
-            whileHover={{ y: -10, scale: 1.05 }}
-            whileTap={{ scale: 0.92 }}
+      </div>
 
-            transition={{
-              type: "spring",
-              stiffness: 300,
-              damping: 18
-            }}
 
-            className="bg-white p-5 shadow rounded-xl cursor-pointer"
-          >
 
-            <h2 className="text-lg font-semibold mb-4">
-              Income vs Expense
-            </h2>
+      {/* CHARTS */}
 
-            <ResponsiveContainer width="100%" height={300}>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
-              <BarChart data={incomeExpenseData}>
 
-                <CartesianGrid strokeDasharray="3 3" />
+        {/* PIE CHART */}
 
-                <XAxis dataKey="name" />
-                <YAxis />
+        <motion.div
+          whileHover={{ y: -8 }}
+          className="bg-white p-6 rounded-xl shadow-lg cursor-pointer"
+        >
 
-                <Tooltip />
+          <h2 className="text-lg font-semibold mb-4">
+            Expense by Category
+          </h2>
 
-                <Bar dataKey="value" radius={[10, 10, 0, 0]}>
+          <ResponsiveContainer width="100%" height={300}>
 
-                  {incomeExpenseData.map((entry, index) => (
+            <PieChart>
 
-                    <Cell
-                      key={index}
-                      fill={
-                        entry.name === "Income"
-                          ? "#10b981"
-                          : "#ef4444"
-                      }
-                    />
+              <Pie
+                data={pieData}
+                dataKey="value"
+                nameKey="name"
+                outerRadius={100}
+                label
+              >
 
-                  ))}
+                {pieData.map((entry, index) => (
+                  <Cell
+                    key={index}
+                    fill={COLORS[index % COLORS.length]}
+                  />
+                ))}
 
-                </Bar>
+              </Pie>
 
-              </BarChart>
+              <Tooltip />
 
-            </ResponsiveContainer>
+              <Legend />
 
-          </motion.div>
+            </PieChart>
 
-        </div>
+          </ResponsiveContainer>
 
-      )}
+        </motion.div>
+
+
+
+        {/* BAR CHART */}
+
+        <motion.div
+          whileHover={{ y: -8 }}
+          className="bg-white p-6 rounded-xl shadow-lg cursor-pointer"
+        >
+
+          <h2 className="text-lg font-semibold mb-4">
+            Income vs Expense
+          </h2>
+
+          <ResponsiveContainer width="100%" height={300}>
+
+            <BarChart data={incomeExpenseData}>
+
+              <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb"/>
+
+              <XAxis dataKey="name" />
+
+              <YAxis />
+
+              <Tooltip
+                contentStyle={{
+                  borderRadius:"10px",
+                  border:"none",
+                  boxShadow:"0 5px 20px rgba(0,0,0,0.1)"
+                }}
+              />
+
+              <Bar dataKey="value" radius={[12,12,0,0]}>
+
+                {incomeExpenseData.map((entry,index)=>(
+                  <Cell
+                    key={index}
+                    fill={
+                      entry.name==="Income"
+                        ? "#22c55e"
+                        : "#f43f5e"
+                    }
+                  />
+                ))}
+
+              </Bar>
+
+            </BarChart>
+
+          </ResponsiveContainer>
+
+        </motion.div>
+
+
+
+        {/* MONTHLY TREND */}
+
+        <motion.div
+          whileHover={{ y: -8 }}
+          className="bg-white p-6 rounded-xl shadow-lg lg:col-span-2 cursor-pointer"
+        >
+
+          <h2 className="text-lg font-semibold mb-4">
+            Monthly Spending Trend
+          </h2>
+
+          <ResponsiveContainer width="100%" height={320}>
+
+            <AreaChart data={lineData}>
+
+              <CartesianGrid strokeDasharray="4 4" stroke="#e5e7eb"/>
+
+              <XAxis dataKey="name"/>
+
+              <YAxis/>
+
+              <Tooltip
+                contentStyle={{
+                  borderRadius:"10px",
+                  border:"none",
+                  boxShadow:"0 5px 20px rgba(0,0,0,0.1)"
+                }}
+              />
+
+              <Area
+                type="monotone"
+                dataKey="value"
+                stroke="#6366f1"
+                fill="#c7d2fe"
+                strokeWidth={3}
+              />
+
+              <Line
+                type="monotone"
+                dataKey="value"
+                stroke="#6366f1"
+                strokeWidth={3}
+                dot={{ r:6 }}
+                activeDot={{ r:8 }}
+              />
+
+            </AreaChart>
+
+          </ResponsiveContainer>
+
+        </motion.div>
+
+      </div>
 
     </motion.div>
 
