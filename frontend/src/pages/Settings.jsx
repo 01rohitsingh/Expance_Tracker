@@ -8,18 +8,32 @@ import { AuthContext } from "../context/AuthContext";
 
 function Settings() {
 
-const BASE_URL = import.meta.env.VITE_API_URL;
 const { user, updateUser } = useContext(AuthContext);
 
 const [name, setName] = useState(user?.name || "");
 const [email, setEmail] = useState(user?.email || "");
 const [photo, setPhoto] = useState(null);
+const [preview, setPreview] = useState(null);
 
 const [currentPassword, setCurrentPassword] = useState("");
 const [newPassword, setNewPassword] = useState("");
 
 const [showCurrentPassword, setShowCurrentPassword] = useState(false);
 const [showNewPassword, setShowNewPassword] = useState(false);
+
+
+/* PHOTO PREVIEW */
+
+const handlePhoto = (e) => {
+
+  const file = e.target.files[0];
+  setPhoto(file);
+
+  if (file) {
+    setPreview(URL.createObjectURL(file));
+  }
+
+};
 
 
 /* UPDATE PHOTO */
@@ -40,7 +54,10 @@ const updatePhoto = async () => {
       headers: { "Content-Type": "multipart/form-data" }
     });
 
-    updateUser({ photo: res.data.photo });
+    updateUser({
+      ...user,
+      photo: res.data.photo
+    });
 
     toast.success("Profile photo updated");
 
@@ -65,6 +82,7 @@ const updateProfile = async () => {
     });
 
     updateUser({
+      ...user,
       name: res.data.data.name,
       email: res.data.data.email
     });
@@ -165,13 +183,13 @@ Settings
 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
 
-{/* Profile Photo */}
+{/* PROFILE PHOTO */}
 
 <motion.div
 initial={{opacity:0,y:20}}
 animate={{opacity:1,y:0}}
 whileHover={{y:-4}}
-className="bg-purple-50 p-5 rounded-xl shadow-sm border border-purple-300 hover:border-purple-500 transition cursor-pointer"
+className="bg-purple-50 p-5 rounded-xl shadow-sm border border-purple-300 hover:border-purple-500 transition"
 >
 
 <div className="flex items-center gap-2 mb-4">
@@ -183,9 +201,9 @@ className="bg-purple-50 p-5 rounded-xl shadow-sm border border-purple-300 hover:
 
 <img
 src={
-user?.photo
-? `${BASE_URL}${user.photo}`
-: `${BASE_URL}/photo/download.png`
+preview ||
+user?.photo ||
+"https://cdn-icons-png.flaticon.com/512/149/149071.png"
 }
 alt="profile"
 className="w-20 h-20 rounded-full object-cover border"
@@ -193,8 +211,8 @@ className="w-20 h-20 rounded-full object-cover border"
 
 <input
 type="file"
-onChange={(e)=>setPhoto(e.target.files[0])}
-className="w-full border border-gray-300 rounded-lg p-2.5 focus:outline-none focus:border-purple-500 cursor-pointer"
+onChange={handlePhoto}
+className="w-full border border-gray-300 rounded-lg p-2.5 cursor-pointer"
 />
 
 <motion.button
@@ -211,13 +229,13 @@ Update Photo
 </motion.div>
 
 
-{/* Profile Info */}
+{/* PROFILE INFO */}
 
 <motion.div
 initial={{opacity:0,y:20}}
 animate={{opacity:1,y:0}}
 whileHover={{y:-4}}
-className="bg-blue-50 p-5 rounded-xl shadow-sm border border-blue-300 hover:border-blue-500 transition cursor-pointer"
+className="bg-blue-50 p-5 rounded-xl shadow-sm border border-blue-300 hover:border-blue-500 transition"
 >
 
 <div className="flex items-center gap-2 mb-4">
@@ -231,7 +249,7 @@ className="bg-blue-50 p-5 rounded-xl shadow-sm border border-blue-300 hover:bord
 type="text"
 value={name}
 onChange={(e)=>setName(e.target.value)}
-className="w-full border border-gray-300 rounded-lg p-2.5 focus:outline-none focus:border-blue-500"
+className="w-full border border-gray-300 rounded-lg p-2.5"
 placeholder="Full Name"
 />
 
@@ -239,7 +257,7 @@ placeholder="Full Name"
 type="email"
 value={email}
 onChange={(e)=>setEmail(e.target.value)}
-className="w-full border border-gray-300 rounded-lg p-2.5 focus:outline-none focus:border-blue-500"
+className="w-full border border-gray-300 rounded-lg p-2.5"
 placeholder="Email"
 />
 
@@ -257,7 +275,7 @@ Update Profile
 </motion.div>
 
 
-{/* Change Password */}
+{/* CHANGE PASSWORD */}
 
 <motion.div
 initial={{opacity:0,y:20}}
@@ -280,7 +298,7 @@ type={showCurrentPassword ? "text" : "password"}
 placeholder="Current Password"
 value={currentPassword}
 onChange={(e)=>setCurrentPassword(e.target.value)}
-className="w-full border border-gray-300 rounded-lg p-2.5 focus:outline-none focus:border-green-500"
+className="w-full border border-gray-300 rounded-lg p-2.5"
 />
 
 <span
@@ -299,7 +317,7 @@ type={showNewPassword ? "text" : "password"}
 placeholder="New Password"
 value={newPassword}
 onChange={(e)=>setNewPassword(e.target.value)}
-className="w-full border border-gray-300 rounded-lg p-2.5 focus:outline-none focus:border-green-500"
+className="w-full border border-gray-300 rounded-lg p-2.5"
 />
 
 <span
@@ -325,13 +343,13 @@ Change Password
 </motion.div>
 
 
-{/* Danger Zone */}
+{/* DELETE ACCOUNT */}
 
 <motion.div
 initial={{opacity:0,y:20}}
 animate={{opacity:1,y:0}}
 whileHover={{y:-4}}
-className="bg-red-50 p-5 rounded-xl shadow-sm border border-red-300 hover:border-red-500 transition cursor-pointer"
+className="bg-red-50 p-5 rounded-xl shadow-sm border border-red-300 hover:border-red-500 transition"
 >
 
 <div className="flex items-center gap-2 mb-3 text-red-500">

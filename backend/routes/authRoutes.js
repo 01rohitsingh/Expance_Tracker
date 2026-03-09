@@ -3,29 +3,9 @@ const { register, login, changePassword, deleteAccount } = require("../controlle
 const { protect } = require("../middleware/authMiddleware");
 const User = require("../models/User");
 
-const multer = require("multer");
-const path = require("path");
+const upload = require("../middleware/upload");
 
 const router = express.Router();
-
-
-// MULTER STORAGE
-
-const storage = multer.diskStorage({
-
-  destination: (req, file, cb) => {
-    cb(null, "photo");
-  },
-
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname));
-  }
-
-});
-
-const upload = multer({ storage });
-
-
 
 
 /* REGISTER */
@@ -96,7 +76,8 @@ router.put(
         });
       }
 
-      user.photo = `/photo/${req.file.filename}`;
+      // Cloudinary URL
+      user.photo = req.file.path;
 
       await user.save();
 

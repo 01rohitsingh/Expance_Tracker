@@ -10,8 +10,6 @@ function Navbar({ setOpenSidebar, setSearchQuery }) {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const BASE_URL = import.meta.env.VITE_API_URL;
-
   const [search, setSearch] = useState("");
   const [notifications, setNotifications] = useState([]);
 
@@ -39,9 +37,9 @@ function Navbar({ setOpenSidebar, setSearchQuery }) {
 
   const unreadCount = notifications.filter((n) => !n.seen).length;
 
-  const profileImage = user?.photo
-    ? `${BASE_URL}${user.photo}`
-    : `${BASE_URL}/photo/download.png`;
+  const profileImage =
+    user?.photo ||
+    "https://cdn-icons-png.flaticon.com/512/149/149071.png";
 
   return (
 
@@ -52,7 +50,7 @@ function Navbar({ setOpenSidebar, setSearchQuery }) {
       transition={{ duration: 0.4 }}
     >
 
-      {/* LEFT SIDE LOGO */}
+      {/* LOGO */}
 
       <motion.h1
         onClick={() => navigate("/dashboard")}
@@ -67,7 +65,7 @@ function Navbar({ setOpenSidebar, setSearchQuery }) {
 
       <div className="flex items-center gap-1 sm:gap-2 lg:gap-4">
 
-        {/* SEARCH (DESKTOP ONLY) */}
+        {/* SEARCH */}
 
         <div className="hidden md:flex items-center bg-slate-100 px-4 py-2 rounded-xl w-[280px]">
 
@@ -84,7 +82,7 @@ function Navbar({ setOpenSidebar, setSearchQuery }) {
         </div>
 
 
-        {/* NOTIFICATION */}
+        {/* NOTIFICATIONS */}
 
         <motion.button
           onClick={() => navigate("/notifications")}
@@ -103,11 +101,11 @@ function Navbar({ setOpenSidebar, setSearchQuery }) {
         </motion.button>
 
 
-        {/* PROFILE (DESKTOP ONLY) */}
+        {/* PROFILE (tablet + pc) */}
 
         <motion.div
           onClick={() => navigate("/settings")}
-          className="hidden lg:flex items-center gap-2 cursor-pointer hover:bg-slate-100 px-3 py-1.5 rounded-lg"
+          className="hidden md:flex items-center gap-2 cursor-pointer hover:bg-slate-100 px-3 py-1.5 rounded-lg"
           whileTap={{ scale: 0.95 }}
         >
 
@@ -128,7 +126,7 @@ function Navbar({ setOpenSidebar, setSearchQuery }) {
 
         <motion.button
           onClick={() => setOpenSidebar(true)}
-          className="p-1.5 rounded-lg hover:bg-slate-100 lg:hidden cursor-pointer"
+          className="p-1.5 rounded-lg hover:bg-slate-100 md:hidden cursor-pointer"
           whileTap={{ scale: 0.9 }}
         >
           <Menu size={24} />

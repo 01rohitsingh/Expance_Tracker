@@ -17,8 +17,6 @@ function Sidebar({ closeSidebar }) {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const BASE_URL = import.meta.env.VITE_API_URL;
-
   const handleLogout = () => {
     logout();
     navigate("/");
@@ -32,9 +30,9 @@ function Sidebar({ closeSidebar }) {
     { name: "Settings", path: "/settings", icon: Settings }
   ];
 
-  const profileImage = user?.photo
-    ? `${BASE_URL}${user.photo}`
-    : `${BASE_URL}/photo/download.png`;
+  const profileImage =
+    user?.photo ||
+    "https://cdn-icons-png.flaticon.com/512/149/149071.png";
 
   return (
 
@@ -49,6 +47,7 @@ function Sidebar({ closeSidebar }) {
       <div>
 
         {/* LOGO */}
+
         <div className="mb-8">
 
           <h2 className="text-3xl font-bold text-white">
@@ -61,10 +60,12 @@ function Sidebar({ closeSidebar }) {
 
         </div>
 
+
         {/* NAVIGATION */}
+
         <ul className="space-y-3">
 
-          {navItems.map((item, index) => {
+          {navItems.map((item) => {
 
             const Icon = item.icon;
             const active = location.pathname === item.path;
@@ -106,9 +107,11 @@ function Sidebar({ closeSidebar }) {
 
 
       {/* BOTTOM SECTION */}
+
       <div className="mt-auto">
 
         {/* PROFILE */}
+
         <div
           onClick={() => navigate("/settings")}
           className="flex items-center gap-3 mb-4 cursor-pointer hover:bg-slate-800 p-3 rounded-lg"
@@ -136,9 +139,10 @@ function Sidebar({ closeSidebar }) {
 
 
         {/* LOGOUT */}
+
         <button
           onClick={handleLogout}
-          className="flex items-center justify-center gap-2 w-full bg-red-500 hover:bg-red-600 transition px-4 py-2.5 rounded-lg text-white font-semibold"
+          className="flex items-center justify-center gap-2 w-full bg-red-500 hover:bg-red-600 transition px-4 py-2.5 rounded-lg text-white font-semibold cursor-pointer"
         >
 
           <LogOut size={20} />

@@ -15,7 +15,17 @@ function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [photo, setPhoto] = useState(null);
+  const [preview, setPreview] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  const handlePhoto = (e) => {
+    const file = e.target.files[0];
+    setPhoto(file);
+
+    if (file) {
+      setPreview(URL.createObjectURL(file));
+    }
+  };
 
   const handleSubmit = async (e) => {
 
@@ -80,6 +90,8 @@ function Register() {
         className="bg-white border border-slate-200 shadow-xl rounded-2xl p-8 w-full max-w-md"
       >
 
+        {/* HEADER */}
+
         <div className="flex flex-col items-center mb-6">
 
           <motion.div
@@ -100,35 +112,58 @@ function Register() {
 
         </div>
 
+
+        {/* NAME */}
+
         <input
           type="text"
           placeholder="Full Name"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="border border-slate-300 p-3 rounded-lg w-full mb-4 focus:ring-2 focus:ring-green-500 outline-none"
+          className="border border-slate-300 p-3 rounded-lg w-full mb-4 focus:ring-2 focus:ring-green-500 outline-none cursor-text"
         />
+
+
+        {/* EMAIL */}
 
         <input
           type="email"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="border border-slate-300 p-3 rounded-lg w-full mb-4 focus:ring-2 focus:ring-green-500 outline-none"
+          className="border border-slate-300 p-3 rounded-lg w-full mb-4 focus:ring-2 focus:ring-green-500 outline-none cursor-text"
         />
+
+
+        {/* PASSWORD */}
 
         <input
           type="password"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="border border-slate-300 p-3 rounded-lg w-full mb-4 focus:ring-2 focus:ring-green-500 outline-none"
+          className="border border-slate-300 p-3 rounded-lg w-full mb-4 focus:ring-2 focus:ring-green-500 outline-none cursor-text"
         />
+
+
+        {/* PHOTO */}
+
+        {preview && (
+          <img
+            src={preview}
+            alt="preview"
+            className="w-16 h-16 rounded-full object-cover mx-auto mb-3"
+          />
+        )}
 
         <input
           type="file"
-          onChange={(e) => setPhoto(e.target.files[0])}
-          className="border border-slate-300 p-2 rounded-lg w-full mb-4"
+          onChange={handlePhoto}
+          className="border border-slate-300 p-2 rounded-lg w-full mb-4 cursor-pointer"
         />
+
+
+        {/* BUTTON */}
 
         <motion.button
           type="submit"
@@ -139,13 +174,16 @@ function Register() {
           {loading ? "Creating account..." : "Register"}
         </motion.button>
 
+
+        {/* LOGIN LINK */}
+
         <p className="text-center text-sm mt-4 text-slate-600">
 
           Already have an account?{" "}
 
           <Link
             to="/"
-            className="text-blue-600 font-medium hover:underline"
+            className="text-blue-600 font-medium hover:underline cursor-pointer"
           >
             Login
           </Link>
