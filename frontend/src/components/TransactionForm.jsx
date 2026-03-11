@@ -103,6 +103,7 @@ function TransactionForm({ refresh }) {
         Add Transaction
       </h2>
 
+      {/* Responsive Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4">
 
         <input
@@ -111,7 +112,7 @@ function TransactionForm({ refresh }) {
           placeholder="Title"
           value={formData.title}
           onChange={handleChange}
-          className="border border-slate-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="border border-slate-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
         />
 
         <input
@@ -120,7 +121,7 @@ function TransactionForm({ refresh }) {
           placeholder="Amount"
           value={formData.amount}
           onChange={handleChange}
-          className="border border-slate-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="border border-slate-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
         />
 
         <input
@@ -129,25 +130,26 @@ function TransactionForm({ refresh }) {
           placeholder="Category"
           value={formData.category}
           onChange={handleChange}
-          className="border border-slate-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="border border-slate-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
         />
 
         <select
           name="type"
           value={formData.type}
           onChange={handleChange}
-          className="border border-slate-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="border border-slate-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
         >
           <option value="expense">Expense</option>
           <option value="income">Income</option>
         </select>
 
+        {/* DATE FIX */}
         <input
           type="date"
           name="date"
           value={formData.date}
           onChange={handleChange}
-          className="border border-slate-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+          className="border border-slate-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full md:col-auto col-span-1"
         />
 
       </div>
