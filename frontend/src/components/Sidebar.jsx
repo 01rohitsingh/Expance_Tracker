@@ -43,7 +43,7 @@ function Sidebar({ closeSidebar }) {
       className="w-64 h-screen bg-slate-950 text-slate-300 flex flex-col fixed left-0 top-0 px-5 py-6"
     >
 
-      {/* ================= TOP SECTION ================= */}
+      {/* TOP SECTION */}
 
       <div>
 
@@ -92,7 +92,7 @@ function Sidebar({ closeSidebar }) {
                   ${
                     active
                       ? "bg-blue-600 text-white"
-                      : "hover:bg-slate-800 hover:text-white"
+                      : "hover:bg-slate-800 hover:text-white active:bg-slate-800 active:text-white"
                   }`}
                 >
 
@@ -113,7 +113,7 @@ function Sidebar({ closeSidebar }) {
       </div>
 
 
-      {/* ================= BOTTOM SECTION ================= */}
+      {/* BOTTOM SECTION */}
 
       <div className="mt-auto">
 
@@ -121,7 +121,7 @@ function Sidebar({ closeSidebar }) {
 
         <div
           onClick={() => navigate("/settings")}
-          className="flex items-center gap-3 mb-4 cursor-pointer hover:bg-slate-800 p-3 rounded-lg transition"
+          className="flex items-center gap-3 mb-4 cursor-pointer hover:bg-slate-800 active:bg-slate-800 p-3 rounded-lg transition"
         >
 
           <img
@@ -152,7 +152,7 @@ function Sidebar({ closeSidebar }) {
 
         <button
           onClick={handleLogout}
-          className="flex items-center justify-center gap-2 w-full bg-red-500 hover:bg-red-600 transition px-4 py-2.5 rounded-lg text-white font-semibold cursor-pointer"
+          className="flex items-center justify-center gap-2 w-full bg-red-500 hover:bg-red-600 active:bg-red-600 transition px-4 py-2.5 rounded-lg text-white font-semibold cursor-pointer"
         >
 
           <LogOut size={20} />
