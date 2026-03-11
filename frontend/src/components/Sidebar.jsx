@@ -37,10 +37,10 @@ function Sidebar({ closeSidebar }) {
   return (
 
     <motion.aside
-      initial={{ x: -250 }}
+      initial={{ x: -260 }}
       animate={{ x: 0 }}
-      transition={{ duration: 0.35 }}
-      className="w-64 h-screen bg-slate-950 text-slate-300 flex flex-col fixed left-0 top-0 px-5 py-6"
+      transition={{ duration: 0.25 }}
+      className="w-64 min-h-screen bg-slate-950 text-slate-300 flex flex-col fixed left-0 top-0 px-5 py-6 overflow-y-auto"
     >
 
       {/* TOP SECTION */}
@@ -81,18 +81,17 @@ function Sidebar({ closeSidebar }) {
 
               <motion.li
                 key={item.name}
-                whileHover={{ x: 5 }}
-                whileTap={{ scale: 0.95 }}
+                whileTap={{ scale: 0.96 }}
               >
 
                 <Link
                   to={item.path}
                   onClick={() => closeSidebar && closeSidebar()}
-                  className={`flex items-center gap-4 px-4 py-3 rounded-lg text-lg font-semibold transition
+                  className={`flex items-center gap-4 px-4 py-3 rounded-lg text-lg font-semibold
                   ${
                     active
                       ? "bg-blue-600 text-white"
-                      : "hover:bg-slate-800 hover:text-white active:bg-slate-800 active:text-white"
+                      : "hover:bg-slate-800 hover:text-white active:bg-slate-800 active:text-white transition-none"
                   }`}
                 >
 
@@ -115,13 +114,13 @@ function Sidebar({ closeSidebar }) {
 
       {/* BOTTOM SECTION */}
 
-      <div className="mt-auto">
+      <div className="mt-auto pt-6">
 
         {/* PROFILE */}
 
         <div
           onClick={() => navigate("/settings")}
-          className="flex items-center gap-3 mb-4 cursor-pointer hover:bg-slate-800 active:bg-slate-800 p-3 rounded-lg transition"
+          className="flex items-center gap-3 mb-4 cursor-pointer hover:bg-slate-800 active:bg-slate-800 p-3 rounded-lg"
         >
 
           <img
@@ -152,7 +151,7 @@ function Sidebar({ closeSidebar }) {
 
         <button
           onClick={handleLogout}
-          className="flex items-center justify-center gap-2 w-full bg-red-500 hover:bg-red-600 active:bg-red-600 transition px-4 py-2.5 rounded-lg text-white font-semibold cursor-pointer"
+          className="flex items-center justify-center gap-2 w-full bg-red-500 hover:bg-red-600 active:bg-red-600 px-4 py-2.5 rounded-lg text-white font-semibold cursor-pointer"
         >
 
           <LogOut size={20} />
