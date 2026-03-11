@@ -75,16 +75,14 @@ function BudgetProgress({ budget }) {
 
     <motion.div
 
-      initial={{ opacity: 0, y: 30 }}
+      initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
 
-      whileHover={{ y: -6, scale: 1.03 }}
-      whileTap={{ scale: 0.94 }}
+      whileTap={{ scale: 0.96 }}
 
       transition={{
-        type: "spring",
-        stiffness: 300,
-        damping: 18
+        duration: 0.25,
+        ease: "easeOut"
       }}
 
       className="cursor-pointer"

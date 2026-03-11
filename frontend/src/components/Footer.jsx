@@ -7,7 +7,6 @@ export default function Footer() {
   return (
     <footer className="bg-white border-t border-slate-200 mt-auto">
 
-      {/* Top gradient line */}
       <div className="h-[2px] bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500"></div>
 
       <div className="max-w-7xl mx-auto px-6 py-8">
@@ -38,19 +37,19 @@ export default function Footer() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
           >
-            <Link to="/dashboard" className="hover:text-blue-600 transition">
+            <Link to="/dashboard" className="hover:text-blue-600 active:text-blue-600 transition">
               Dashboard
             </Link>
 
-            <Link to="/wallets" className="hover:text-blue-600 transition">
+            <Link to="/wallets" className="hover:text-blue-600 active:text-blue-600 transition">
               Wallets
             </Link>
 
-            <Link to="/analytics" className="hover:text-blue-600 transition">
+            <Link to="/analytics" className="hover:text-blue-600 active:text-blue-600 transition">
               Analytics
             </Link>
 
-            <Link to="/settings" className="hover:text-blue-600 transition">
+            <Link to="/settings" className="hover:text-blue-600 active:text-blue-600 transition">
               Settings
             </Link>
           </motion.div>
@@ -68,7 +67,7 @@ export default function Footer() {
               href="https://github.com/01rohitsingh"
               target="_blank"
               rel="noopener noreferrer"
-              className="p-3 rounded-lg bg-slate-100 hover:bg-blue-50 hover:text-blue-600 transition active:scale-90"
+              className="p-3 rounded-lg bg-slate-100 hover:bg-blue-50 hover:text-blue-600 active:bg-blue-50 active:text-blue-600 transition"
               whileHover={{ scale: 1.25 }}
               whileTap={{ scale: 0.85 }}
             >
@@ -79,7 +78,7 @@ export default function Footer() {
               href="https://www.linkedin.com/in/01rohitsingh"
               target="_blank"
               rel="noopener noreferrer"
-              className="p-3 rounded-lg bg-slate-100 hover:bg-blue-50 hover:text-blue-600 transition active:scale-90"
+              className="p-3 rounded-lg bg-slate-100 hover:bg-blue-50 hover:text-blue-600 active:bg-blue-50 active:text-blue-600 transition"
               whileHover={{ scale: 1.25 }}
               whileTap={{ scale: 0.85 }}
             >
@@ -90,7 +89,7 @@ export default function Footer() {
               href="https://mail.google.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="p-3 rounded-lg bg-slate-100 hover:bg-blue-50 hover:text-blue-600 transition active:scale-90"
+              className="p-3 rounded-lg bg-slate-100 hover:bg-blue-50 hover:text-blue-600 active:bg-blue-50 active:text-blue-600 transition"
               whileHover={{ scale: 1.25 }}
               whileTap={{ scale: 0.85 }}
             >

@@ -22,7 +22,7 @@ const [showCurrentPassword, setShowCurrentPassword] = useState(false);
 const [showNewPassword, setShowNewPassword] = useState(false);
 
 
-/* ================= PHOTO PREVIEW ================= */
+/* PHOTO PREVIEW */
 
 const handlePhoto = (e) => {
 
@@ -41,7 +41,7 @@ const handlePhoto = (e) => {
 };
 
 
-/* ================= UPDATE PHOTO ================= */
+/* UPDATE PHOTO */
 
 const updatePhoto = async () => {
 
@@ -78,7 +78,7 @@ const updatePhoto = async () => {
 };
 
 
-/* ================= UPDATE PROFILE ================= */
+/* UPDATE PROFILE */
 
 const updateProfile = async () => {
 
@@ -103,7 +103,7 @@ const updateProfile = async () => {
 };
 
 
-/* ================= CHANGE PASSWORD ================= */
+/* CHANGE PASSWORD */
 
 const changePassword = async () => {
 
@@ -133,7 +133,7 @@ const changePassword = async () => {
 };
 
 
-/* ================= DELETE ACCOUNT ================= */
+/* DELETE ACCOUNT */
 
 const deleteAccount = async () => {
 
@@ -182,9 +182,11 @@ Settings
 {/* PROFILE PHOTO */}
 
 <motion.div
-whileHover={{ y: -4, scale: 1.01 }}
-transition={{ type: "tween", duration: 0.08 }}
-className="bg-purple-50 p-5 rounded-xl shadow-sm border border-purple-300 hover:border-purple-500"
+initial={{ opacity: 0, y: 15 }}
+animate={{ opacity: 1, y: 0 }}
+whileTap={{ scale: 0.96 }}
+transition={{ duration: 0.25, ease: "easeOut" }}
+className="bg-purple-50 p-5 rounded-xl shadow-sm border border-purple-300"
 >
 
 <div className="flex items-center gap-2 mb-4">
@@ -215,9 +217,8 @@ className="w-full border border-gray-300 rounded-lg p-2.5 cursor-pointer"
 />
 
 <motion.button
-whileHover={{ scale: 1.05 }}
 whileTap={{ scale: 0.96 }}
-transition={{ duration: 0.08 }}
+transition={{ duration: 0.2 }}
 onClick={updatePhoto}
 className="w-full bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white py-2.5 rounded-lg cursor-pointer"
 >
@@ -232,9 +233,11 @@ Update Photo
 {/* PROFILE INFO */}
 
 <motion.div
-whileHover={{ y: -4, scale: 1.01 }}
-transition={{ type: "tween", duration: 0.08 }}
-className="bg-blue-50 p-5 rounded-xl shadow-sm border border-blue-300 hover:border-blue-500"
+initial={{ opacity: 0, y: 15 }}
+animate={{ opacity: 1, y: 0 }}
+whileTap={{ scale: 0.96 }}
+transition={{ duration: 0.25, ease: "easeOut" }}
+className="bg-blue-50 p-5 rounded-xl shadow-sm border border-blue-300"
 >
 
 <div className="flex items-center gap-2 mb-4">
@@ -261,11 +264,10 @@ placeholder="Email"
 />
 
 <motion.button
-whileHover={{ scale: 1.05 }}
 whileTap={{ scale: 0.96 }}
-transition={{ duration: 0.08 }}
+transition={{ duration: 0.2 }}
 onClick={updateProfile}
-className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-lg cursor-pointer"
+className="w-full bg-blue-600 text-white py-2.5 rounded-lg cursor-pointer"
 >
 Update Profile
 </motion.button>
@@ -278,9 +280,11 @@ Update Profile
 {/* CHANGE PASSWORD */}
 
 <motion.div
-whileHover={{ y: -4, scale: 1.01 }}
-transition={{ type: "tween", duration: 0.08 }}
-className="bg-green-50 p-5 rounded-xl shadow-sm border border-green-300 hover:border-green-500"
+initial={{ opacity: 0, y: 15 }}
+animate={{ opacity: 1, y: 0 }}
+whileTap={{ scale: 0.96 }}
+transition={{ duration: 0.25, ease: "easeOut" }}
+className="bg-green-50 p-5 rounded-xl shadow-sm border border-green-300"
 >
 
 <div className="flex items-center gap-2 mb-4">
@@ -329,11 +333,10 @@ className="absolute right-3 top-3 cursor-pointer text-gray-500"
 </div>
 
 <motion.button
-whileHover={{ scale: 1.05 }}
 whileTap={{ scale: 0.96 }}
-transition={{ duration: 0.08 }}
+transition={{ duration: 0.2 }}
 onClick={changePassword}
-className="w-full bg-green-600 hover:bg-green-700 text-white py-2.5 rounded-lg cursor-pointer"
+className="w-full bg-green-600 text-white py-2.5 rounded-lg cursor-pointer"
 >
 Change Password
 </motion.button>
@@ -346,9 +349,11 @@ Change Password
 {/* DELETE ACCOUNT */}
 
 <motion.div
-whileHover={{ y: -4, scale: 1.01 }}
-transition={{ type: "tween", duration: 0.08 }}
-className="bg-red-50 p-5 rounded-xl shadow-sm border border-red-300 hover:border-red-500"
+initial={{ opacity: 0, y: 15 }}
+animate={{ opacity: 1, y: 0 }}
+whileTap={{ scale: 0.96 }}
+transition={{ duration: 0.25, ease: "easeOut" }}
+className="bg-red-50 p-5 rounded-xl shadow-sm border border-red-300"
 >
 
 <div className="flex items-center gap-2 mb-3 text-red-500">
@@ -361,11 +366,10 @@ Deleting your account will permanently remove your data.
 </p>
 
 <motion.button
-whileHover={{ scale: 1.05 }}
 whileTap={{ scale: 0.96 }}
-transition={{ duration: 0.08 }}
+transition={{ duration: 0.2 }}
 onClick={deleteAccount}
-className="w-full bg-red-500 hover:bg-red-600 text-white py-2.5 rounded-lg cursor-pointer"
+className="w-full bg-red-500 text-white py-2.5 rounded-lg cursor-pointer"
 >
 Delete Account
 </motion.button>
