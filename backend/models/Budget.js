@@ -37,7 +37,7 @@ const budgetSchema = new mongoose.Schema(
 
     isActive: {
       type: Boolean,
-      default: true, // 🔥 Soft disable support
+      default: true, 
     },
   },
   { timestamps: true }
