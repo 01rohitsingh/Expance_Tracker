@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
 import API from "../services/api";
 import { toast } from "react-toastify";
 import { addNotification } from "../utils/notifications";
-import { cardAnimation, buttonAnimation } from "../utils/animations";
+import { motion } from "framer-motion";
+import { buttonAnimation } from "../utils/animations";
 
 function TransactionForm({ refresh }) {
 
@@ -94,8 +94,7 @@ function TransactionForm({ refresh }) {
 
   return (
 
-    <motion.form
-      {...cardAnimation}
+    <form
       onSubmit={handleSubmit}
       className="bg-white border border-slate-200 p-5 rounded-xl shadow-sm mb-6"
     >
@@ -104,7 +103,7 @@ function TransactionForm({ refresh }) {
         Add Transaction
       </h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4">
 
         <input
           type="text"
@@ -112,7 +111,7 @@ function TransactionForm({ refresh }) {
           placeholder="Title"
           value={formData.title}
           onChange={handleChange}
-          className="border border-slate-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="border border-slate-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
 
         <input
@@ -121,7 +120,7 @@ function TransactionForm({ refresh }) {
           placeholder="Amount"
           value={formData.amount}
           onChange={handleChange}
-          className="border border-slate-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="border border-slate-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
 
         <input
@@ -130,14 +129,14 @@ function TransactionForm({ refresh }) {
           placeholder="Category"
           value={formData.category}
           onChange={handleChange}
-          className="border border-slate-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="border border-slate-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
 
         <select
           name="type"
           value={formData.type}
           onChange={handleChange}
-          className="border border-slate-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="border border-slate-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           <option value="expense">Expense</option>
           <option value="income">Income</option>
@@ -148,7 +147,7 @@ function TransactionForm({ refresh }) {
           name="date"
           value={formData.date}
           onChange={handleChange}
-          className="border border-slate-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="border border-slate-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
         />
 
       </div>
@@ -157,12 +156,12 @@ function TransactionForm({ refresh }) {
         {...buttonAnimation}
         type="submit"
         disabled={loading}
-        className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 mt-4 rounded-lg transition disabled:opacity-50"
+        className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 mt-4 rounded-lg disabled:opacity-50"
       >
         {loading ? "Adding..." : "Add Transaction"}
       </motion.button>
 
-    </motion.form>
+    </form>
 
   );
 

@@ -1,9 +1,7 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
 import API from "../services/api";
 import { toast } from "react-toastify";
 import { addNotification } from "../utils/notifications";
-import { cardAnimation, buttonAnimation } from "../utils/animations";
 
 function WalletForm({ refresh }) {
 
@@ -42,7 +40,9 @@ function WalletForm({ refresh }) {
 
       console.error("Wallet create error", error);
 
-      toast.error(error.response?.data?.message || "Failed to create wallet ❌");
+      toast.error(
+        error.response?.data?.message || "Failed to create wallet ❌"
+      );
 
     }
 
@@ -50,10 +50,9 @@ function WalletForm({ refresh }) {
 
   return (
 
-    <motion.form
-      {...cardAnimation}
+    <form
       onSubmit={handleSubmit}
-      className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm mb-6 cursor-pointer"
+      className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm mb-6"
     >
 
       <h2 className="text-lg font-semibold mb-4 text-slate-800">
@@ -67,13 +66,13 @@ function WalletForm({ refresh }) {
           placeholder="Wallet Name"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="border border-slate-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-text"
+          className="border border-slate-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
 
         <select
           value={type}
           onChange={(e) => setType(e.target.value)}
-          className="border border-slate-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
+          className="border border-slate-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           <option value="cash">Cash</option>
           <option value="bank">Bank</option>
@@ -86,20 +85,20 @@ function WalletForm({ refresh }) {
           placeholder="Initial Balance"
           value={balance}
           onChange={(e) => setBalance(e.target.value)}
-          className="border border-slate-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-text"
+          className="border border-slate-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
 
       </div>
 
-      <motion.button
-        {...buttonAnimation}
+      <button
         type="submit"
-        className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 mt-4 rounded-lg cursor-pointer transition"
+        className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 mt-4 rounded-lg 
+        transition-all duration-200 hover:scale-105 active:scale-95"
       >
         Add Wallet
-      </motion.button>
+      </button>
 
-    </motion.form>
+    </form>
 
   );
 

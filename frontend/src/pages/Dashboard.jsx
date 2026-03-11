@@ -3,9 +3,7 @@ import SummaryCard from "../components/SummaryCard";
 import TransactionList from "../components/TransactionList";
 import TransactionForm from "../components/TransactionForm";
 import API from "../services/api";
-import { motion } from "framer-motion";
 import { toast } from "react-toastify";
-import { cardAnimation } from "../utils/animations";
 
 function Dashboard({ searchQuery = "" }) {
 
@@ -50,13 +48,8 @@ function Dashboard({ searchQuery = "" }) {
 
       data.forEach((t) => {
 
-        if (t.type === "income") {
-          totalIncome += Number(t.amount);
-        }
-
-        if (t.type === "expense") {
-          totalExpense += Number(t.amount);
-        }
+        if (t.type === "income") totalIncome += Number(t.amount);
+        if (t.type === "expense") totalExpense += Number(t.amount);
 
       });
 
@@ -97,11 +90,7 @@ function Dashboard({ searchQuery = "" }) {
 
   return (
 
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      className="p-4 md:p-6 bg-gray-100 min-h-screen"
-    >
+    <div className="p-4 md:p-6 bg-gray-100 min-h-screen">
 
       <h1 className="text-2xl md:text-3xl font-bold mb-6">
         Dashboard
@@ -109,48 +98,21 @@ function Dashboard({ searchQuery = "" }) {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
 
-        <motion.div
-          {...cardAnimation}
-          transition={{ ...cardAnimation.transition, delay: 0.05 }}
-        >
-          <SummaryCard title="Income" amount={income} />
-        </motion.div>
-
-        <motion.div
-          {...cardAnimation}
-          transition={{ ...cardAnimation.transition, delay: 0.1 }}
-        >
-          <SummaryCard title="Expense" amount={expense} />
-        </motion.div>
-
-        <motion.div
-          {...cardAnimation}
-          transition={{ ...cardAnimation.transition, delay: 0.15 }}
-        >
-          <SummaryCard title="Remaining Income" amount={remainingIncome} />
-        </motion.div>
-
-        <motion.div
-          {...cardAnimation}
-          transition={{ ...cardAnimation.transition, delay: 0.2 }}
-        >
-          <SummaryCard title="Wallet Balance" amount={walletBalance} />
-        </motion.div>
+        <SummaryCard title="Income" amount={income} />
+        <SummaryCard title="Expense" amount={expense} />
+        <SummaryCard title="Remaining Income" amount={remainingIncome} />
+        <SummaryCard title="Wallet Balance" amount={walletBalance} />
 
       </div>
 
-      <motion.div {...cardAnimation}>
-        <TransactionForm refresh={loadDashboard} />
-      </motion.div>
+      <TransactionForm refresh={loadDashboard} />
 
-      <motion.div {...cardAnimation} transition={{ ...cardAnimation.transition, delay: 0.1 }}>
-        <TransactionList
-          transactions={filteredTransactions}
-          refresh={loadDashboard}
-        />
-      </motion.div>
+      <TransactionList
+        transactions={filteredTransactions}
+        refresh={loadDashboard}
+      />
 
-    </motion.div>
+    </div>
 
   );
 

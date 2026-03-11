@@ -160,12 +160,9 @@ function Budgets({ searchQuery = "" }) {
       </div>
 
 
-      {/* CREATE BUDGET */}
+      {/* CREATE BUDGET (Motion Removed Only Here) */}
 
-      <motion.div
-        {...cardAnimation}
-        className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 mb-8"
-      >
+      <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 mb-8">
 
         <h2 className="font-semibold text-slate-700 mb-4">
           Create Budget
@@ -192,17 +189,16 @@ function Budgets({ searchQuery = "" }) {
             className="border border-slate-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
           />
 
-          <motion.button
-            {...buttonAnimation}
+          <button
             type="submit"
-            className="bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-3 rounded-lg cursor-pointer transition"
+            className="bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-3 rounded-lg transition-all duration-200 hover:scale-105 active:scale-95"
           >
             Add Budget
-          </motion.button>
+          </button>
 
         </form>
 
-      </motion.div>
+      </div>
 
 
       {/* TOTAL BUDGET CARD */}

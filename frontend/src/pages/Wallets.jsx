@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 import WalletCard from "../components/WalletCard";
 import WalletForm from "../components/WalletForm";
 import API from "../services/api";
-import { motion } from "framer-motion";
-import { cardAnimation } from "../utils/animations";
 
 function Wallets({ searchQuery = "" }) {
 
@@ -46,19 +44,13 @@ function Wallets({ searchQuery = "" }) {
 
   return (
 
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      className="p-4 md:p-6 bg-gray-100 min-h-screen"
-    >
+    <div className="p-4 md:p-6 bg-gray-100 min-h-screen">
 
       <h1 className="text-2xl md:text-3xl font-bold mb-6">
         Wallets
       </h1>
 
-      <motion.div {...cardAnimation}>
-        <WalletForm refresh={fetchWallets} />
-      </motion.div>
+      <WalletForm refresh={fetchWallets} />
 
       {filteredWallets.length === 0 ? (
 
@@ -70,15 +62,10 @@ function Wallets({ searchQuery = "" }) {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
 
-          {filteredWallets.map((wallet, index) => (
+          {filteredWallets.map((wallet) => (
 
-            <motion.div
+            <div
               key={wallet._id}
-              {...cardAnimation}
-              transition={{
-                ...cardAnimation.transition,
-                delay: index * 0.05
-              }}
               className="cursor-pointer"
             >
 
@@ -87,7 +74,7 @@ function Wallets({ searchQuery = "" }) {
                 refresh={fetchWallets}
               />
 
-            </motion.div>
+            </div>
 
           ))}
 
@@ -95,7 +82,7 @@ function Wallets({ searchQuery = "" }) {
 
       )}
 
-    </motion.div>
+    </div>
 
   );
 

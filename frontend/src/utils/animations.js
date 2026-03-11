@@ -5,7 +5,7 @@ export const cardAnimation = {
   animate: { opacity: 1, y: 0 },
 
   whileHover: { y: -3, scale: 1.01 },
-  whileTap: { scale: 0.97 },
+  // whileTap: { scale: 0.97 },
 
   transition: {
     type: "tween",
@@ -16,7 +16,7 @@ export const cardAnimation = {
 
 export const iconAnimation = {
   whileHover: { scale: 1.08 },
-  whileTap: { scale: 0.92 },
+  // whileTap: { scale: 0.92 },
 
   transition: {
     type: "tween",
