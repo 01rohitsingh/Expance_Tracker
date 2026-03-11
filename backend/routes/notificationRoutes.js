@@ -3,7 +3,8 @@ const express = require("express");
 const {
   getNotifications,
   markAllSeen,
-  deleteNotification
+  deleteNotification,
+  getUnseenCount
 } = require("../controllers/notificationController");
 
 const { protect } = require("../middleware/authMiddleware");
@@ -16,6 +17,8 @@ router.get("/", protect, getNotifications);
 // MARK ALL AS SEEN
 router.put("/mark-seen", protect, markAllSeen);
 
+// GET UNSEEN COUNT
+router.get("/unseen-count", protect, getUnseenCount);
 // DELETE NOTIFICATION
 router.delete("/:id", protect, deleteNotification);
 

@@ -8,13 +8,10 @@ function Notifications() {
 
   const [notifications, setNotifications] = useState([]);
 
-  // Format time
   const formatTime = (time) => {
-    const date = new Date(time);
-    return date.toLocaleString();
+    return new Date(time).toLocaleString();
   };
 
-  // Fetch notifications
   const fetchNotifications = async () => {
     try {
 
@@ -22,7 +19,11 @@ function Notifications() {
 
       setNotifications(res.data);
 
+      // mark notifications seen
       await API.put("/notifications/mark-seen");
+
+      // tell navbar to refresh count
+      window.dispatchEvent(new Event("notificationsUpdated"));
 
     } catch (error) {
 
@@ -35,7 +36,6 @@ function Notifications() {
     fetchNotifications();
   }, []);
 
-  // Delete notification
   const deleteNotification = async (id) => {
     try {
 
@@ -44,6 +44,8 @@ function Notifications() {
       setNotifications((prev) =>
         prev.filter((n) => n._id !== id)
       );
+
+      window.dispatchEvent(new Event("notificationsUpdated"));
 
     } catch (error) {
 
@@ -57,27 +59,22 @@ function Notifications() {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="min-h-screen bg-slate-100 px-4 sm:px-6 md:px-10 lg:px-14 py-6 sm:py-8"
+      className="min-h-screen bg-slate-100 px-6 py-8"
     >
 
-      {/* HEADER */}
+      <div className="flex items-center gap-3 mb-8">
 
-      <div className="flex items-center gap-3 sm:gap-4 mb-6 sm:mb-10">
-
-        <motion.div
-          {...iconAnimation}
-          className="bg-blue-100 p-2 sm:p-3 rounded-xl"
-        >
-          <Bell className="text-blue-600 w-5 h-5 sm:w-6 sm:h-6"/>
-        </motion.div>
+        <div className="bg-blue-100 p-3 rounded-xl">
+          <Bell className="text-blue-600"/>
+        </div>
 
         <div>
 
-          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800">
+          <h1 className="text-2xl font-bold text-slate-800">
             Notifications
           </h1>
 
-          <p className="text-xs sm:text-sm text-slate-500">
+          <p className="text-sm text-slate-500">
             Your recent activity updates
           </p>
 
@@ -85,66 +82,68 @@ function Notifications() {
 
       </div>
 
+      {notifications.length === 0 ? (
 
-      {/* GRID */}
+        <div className="flex flex-col items-center mt-20 text-slate-500">
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+          <Bell size={50} className="opacity-40 mb-4"/>
 
-        {notifications.map((n, index) => (
+          <p className="text-lg font-semibold">
+            No Notifications Yet
+          </p>
 
-          <motion.div
-            key={n._id}
-            {...cardAnimation}
-            transition={{
-              ...cardAnimation.transition,
-              delay: index * 0.04
-            }}
-            className="bg-white border border-slate-200 rounded-xl p-4 sm:p-5 shadow-sm flex flex-col justify-between"
-          >
+        </div>
 
-            <div className="flex gap-3">
+      ) : (
 
-              <motion.div
-                {...iconAnimation}
-                className="bg-blue-50 p-2 rounded-lg h-fit"
-              >
-                <Bell size={16} className="text-blue-600"/>
-              </motion.div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 
-              <div>
+          {notifications.map((n, index) => (
 
-                <p className="text-sm sm:text-base font-semibold text-slate-800 leading-snug break-words">
-                  {n.message}
-                </p>
+            <motion.div
+              key={n._id}
+              {...cardAnimation}
+              transition={{
+                ...cardAnimation.transition,
+                delay: index * 0.05
+              }}
+              className="bg-white border rounded-xl p-5 shadow-sm flex justify-between items-start"
+            >
 
-                <p className="text-[11px] sm:text-xs text-slate-400 mt-2">
-                  {formatTime(n.createdAt)}
-                </p>
+              <div className="flex gap-3">
+
+                <div className="bg-blue-50 p-2 rounded-lg">
+                  <Bell size={16} className="text-blue-600"/>
+                </div>
+
+                <div>
+
+                  <p className="font-semibold text-slate-800">
+                    {n.message}
+                  </p>
+
+                  <p className="text-xs text-slate-400 mt-1">
+                    {formatTime(n.createdAt)}
+                  </p>
+
+                </div>
 
               </div>
 
-            </div>
-
-
-            {/* DELETE BUTTON */}
-
-            <div className="flex justify-end mt-4">
-
-              <motion.button
-                {...buttonAnimation}
+              <button
                 onClick={() => deleteNotification(n._id)}
-                className="text-red-500 hover:bg-red-50 p-2 rounded-lg transition"
+                className="text-red-500 hover:bg-red-50 p-2 rounded-lg"
               >
                 <Trash2 size={18}/>
-              </motion.button>
+              </button>
 
-            </div>
+            </motion.div>
 
-          </motion.div>
+          ))}
 
-        ))}
+        </div>
 
-      </div>
+      )}
 
     </motion.div>
 

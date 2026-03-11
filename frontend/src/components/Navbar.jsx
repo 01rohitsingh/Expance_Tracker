@@ -2,8 +2,8 @@ import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { Bell, Search, Menu } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { getNotifications } from "../utils/notifications";
 import { motion } from "framer-motion";
+import API from "../services/api";
 
 function Navbar({ setOpenSidebar, setSearchQuery }) {
 
@@ -11,25 +11,34 @@ function Navbar({ setOpenSidebar, setSearchQuery }) {
   const navigate = useNavigate();
 
   const [search, setSearch] = useState("");
-  const [notifications, setNotifications] = useState([]);
+  const [unreadCount, setUnreadCount] = useState(0);
 
-  /* ================= NOTIFICATIONS ================= */
+  /* ================= FETCH NOTIFICATION COUNT ================= */
 
   useEffect(() => {
 
-    const loadNotifications = () => {
-      const data = getNotifications();
-      setNotifications(data || []);
+    const fetchNotificationCount = async () => {
+      try {
+
+        const res = await API.get("/notifications/unseen-count");
+
+        setUnreadCount(res.data.count);
+
+      } catch (error) {
+
+        console.error("Failed to fetch notification count");
+
+      }
     };
 
-    loadNotifications();
+    fetchNotificationCount();
 
-    const interval = setInterval(loadNotifications, 3000);
+    // refresh every 5 seconds
+    const interval = setInterval(fetchNotificationCount, 5000);
 
     return () => clearInterval(interval);
 
   }, []);
-
 
   /* ================= SEARCH ================= */
 
@@ -45,18 +54,11 @@ function Navbar({ setOpenSidebar, setSearchQuery }) {
 
   };
 
-
-  /* ================= UNREAD COUNT ================= */
-
-  const unreadCount = notifications.filter((n) => !n.seen).length;
-
-
   /* ================= PROFILE IMAGE ================= */
 
   const profileImage =
     user?.photo ||
     "https://cdn-icons-png.flaticon.com/512/149/149071.png";
-
 
   return (
 
@@ -121,7 +123,7 @@ function Navbar({ setOpenSidebar, setSearchQuery }) {
         </motion.button>
 
 
-        {/* PROFILE (Desktop + Tablet) */}
+        {/* PROFILE */}
 
         <motion.div
           onClick={() => navigate("/settings")}

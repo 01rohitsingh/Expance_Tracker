@@ -11,6 +11,7 @@ ADD TRANSACTION
 */
 exports.addTransaction = async (req, res, next) => {
   try {
+
     const { title, amount, category, type, wallet, date, note } = req.body;
 
     if (!title || !amount || !category || !type || !wallet) {
@@ -27,7 +28,7 @@ exports.addTransaction = async (req, res, next) => {
 
     const userWallet = await Wallet.findOne({
       _id: wallet,
-      user: req.user._id,
+      user: req.user._id
     });
 
     if (!userWallet) {
@@ -46,10 +47,10 @@ exports.addTransaction = async (req, res, next) => {
       type,
       wallet,
       date,
-      note,
+      note
     });
 
-    // Update wallet balance
+    // update wallet balance
     userWallet.balance =
       type === "income"
         ? userWallet.balance + amount
@@ -57,17 +58,20 @@ exports.addTransaction = async (req, res, next) => {
 
     await userWallet.save();
 
-    // ⭐ CREATE NOTIFICATION
+    // 🔔 notification
     await Notification.create({
       userId: req.user._id,
-      message: `Transaction "${title}" of ₹${amount} added`,
+      message: `New transaction "${title}" of ₹${amount} added`,
+      seen: false
     });
 
     res.status(201).json(transaction);
+
   } catch (error) {
     next(error);
   }
 };
+
 
 /*
 ---------------------------------------
@@ -76,18 +80,21 @@ GET ALL TRANSACTIONS
 */
 exports.getTransactions = async (req, res, next) => {
   try {
+
     const transactions = await Transaction.find({
       user: req.user._id,
-      isDeleted: false,
+      isDeleted: false
     })
       .populate("wallet", "name balance")
       .sort({ date: -1 });
 
     res.json(transactions);
+
   } catch (error) {
     next(error);
   }
 };
+
 
 /*
 ---------------------------------------
@@ -96,10 +103,11 @@ DELETE TRANSACTION (Soft Delete)
 */
 exports.deleteTransaction = async (req, res, next) => {
   try {
+
     const transaction = await Transaction.findOne({
       _id: req.params.id,
       user: req.user._id,
-      isDeleted: false,
+      isDeleted: false
     });
 
     if (!transaction) {
@@ -108,7 +116,7 @@ exports.deleteTransaction = async (req, res, next) => {
 
     const wallet = await Wallet.findById(transaction.wallet);
 
-    // Reverse wallet balance
+    // reverse wallet balance
     wallet.balance =
       transaction.type === "income"
         ? wallet.balance - transaction.amount
@@ -119,17 +127,20 @@ exports.deleteTransaction = async (req, res, next) => {
     transaction.isDeleted = true;
     await transaction.save();
 
-    // ⭐ CREATE NOTIFICATION
+    // 🔔 notification
     await Notification.create({
       userId: req.user._id,
-      message: `Transaction "${transaction.title}" deleted`,
+      message: `Transaction "${transaction.title}" was deleted`,
+      seen: false
     });
 
     res.json({ message: "Transaction deleted successfully" });
+
   } catch (error) {
     next(error);
   }
 };
+
 
 /*
 ---------------------------------------
@@ -138,10 +149,11 @@ UPDATE TRANSACTION
 */
 exports.updateTransaction = async (req, res, next) => {
   try {
+
     const transaction = await Transaction.findOne({
       _id: req.params.id,
       user: req.user._id,
-      isDeleted: false,
+      isDeleted: false
     });
 
     if (!transaction) {
@@ -150,7 +162,7 @@ exports.updateTransaction = async (req, res, next) => {
 
     const oldWallet = await Wallet.findById(transaction.wallet);
 
-    // Reverse old effect
+    // reverse old wallet effect
     oldWallet.balance =
       transaction.type === "income"
         ? oldWallet.balance - transaction.amount
@@ -169,7 +181,7 @@ exports.updateTransaction = async (req, res, next) => {
 
     const newWallet = await Wallet.findOne({
       _id: newWalletId,
-      user: req.user._id,
+      user: req.user._id
     });
 
     if (!newWallet) {
@@ -180,7 +192,7 @@ exports.updateTransaction = async (req, res, next) => {
       return res.status(400).json({ message: "Insufficient balance" });
     }
 
-    // Apply new effect
+    // apply new wallet effect
     newWallet.balance =
       newType === "income"
         ? newWallet.balance + newAmount
@@ -198,17 +210,20 @@ exports.updateTransaction = async (req, res, next) => {
 
     await transaction.save();
 
-    // ⭐ CREATE NOTIFICATION
+    // 🔔 notification
     await Notification.create({
       userId: req.user._id,
-      message: `Transaction "${transaction.title}" updated`,
+      message: `Transaction "${transaction.title}" was updated`,
+      seen: false
     });
 
     res.json(transaction);
+
   } catch (error) {
     next(error);
   }
 };
+
 
 /*
 ---------------------------------------
@@ -217,16 +232,19 @@ EXPORT CSV
 */
 exports.exportCSV = async (req, res, next) => {
   try {
+
     const csv = await exportTransactionsCSV(req.user._id);
 
     res.header("Content-Type", "text/csv");
     res.attachment("transactions.csv");
 
     res.send(csv);
+
   } catch (error) {
     next(error);
   }
 };
+
 
 /*
 ---------------------------------------
@@ -235,9 +253,11 @@ FINANCIAL HEALTH SCORE
 */
 exports.getFinancialScore = async (req, res, next) => {
   try {
+
     const score = await calculateFinancialScore(req.user._id);
 
     res.json({ score });
+
   } catch (error) {
     next(error);
   }

@@ -1,12 +1,22 @@
 const Budget = require("../models/Budget");
 const Notification = require("../models/Notification");
 
-/* CREATE BUDGET */
 
+/*
+---------------------------------------
+CREATE BUDGET
+---------------------------------------
+*/
 const setBudget = async (req, res) => {
   try {
 
     const { category, limit, month, year } = req.body;
+
+    if (!category || !limit || !month || !year) {
+      return res.status(400).json({
+        message: "Category, limit, month and year are required"
+      });
+    }
 
     const budget = await Budget.create({
       user: req.user._id,
@@ -16,10 +26,11 @@ const setBudget = async (req, res) => {
       year
     });
 
-    // ⭐ CREATE NOTIFICATION
+    // 🔔 Notification
     await Notification.create({
       userId: req.user._id,
-      message: `Budget set for "${category}" with limit ₹${limit}`
+      message: `Budget set for "${category}" with limit ₹${limit}`,
+      seen: false
     });
 
     res.status(201).json(budget);
@@ -36,8 +47,11 @@ const setBudget = async (req, res) => {
 };
 
 
-/* GET BUDGETS */
-
+/*
+---------------------------------------
+GET BUDGETS
+---------------------------------------
+*/
 const getBudgets = async (req, res) => {
   try {
 
@@ -60,8 +74,11 @@ const getBudgets = async (req, res) => {
 };
 
 
-/* DELETE BUDGET */
-
+/*
+---------------------------------------
+DELETE BUDGET
+---------------------------------------
+*/
 const deleteBudget = async (req, res) => {
   try {
 
@@ -73,12 +90,20 @@ const deleteBudget = async (req, res) => {
       });
     }
 
+    // check ownership
+    if (budget.user.toString() !== req.user._id.toString()) {
+      return res.status(403).json({
+        message: "Not authorized"
+      });
+    }
+
     await budget.deleteOne();
 
-    // ⭐ CREATE NOTIFICATION
+    // 🔔 Notification
     await Notification.create({
       userId: req.user._id,
-      message: `Budget for "${budget.category}" deleted`
+      message: `Budget for "${budget.category}" deleted`,
+      seen: false
     });
 
     res.json({

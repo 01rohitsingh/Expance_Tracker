@@ -91,68 +91,79 @@ function TransactionForm({ refresh }) {
 
     <form
       onSubmit={handleSubmit}
-      className="bg-white border border-slate-200 p-5 rounded-xl shadow-sm mb-6"
+      className="bg-white border border-slate-200 p-6 rounded-xl shadow-sm mb-6"
     >
 
-      <h2 className="text-xl font-semibold mb-4 text-slate-800">
+      <h2 className="text-xl font-semibold mb-5 text-slate-800">
         Add Transaction
       </h2>
 
-      {/* PERFECT RESPONSIVE GRID */}
+      {/* Responsive Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
 
+        {/* Title */}
         <input
           type="text"
           name="title"
           placeholder="Title"
           value={formData.title}
           onChange={handleChange}
-          className="border border-slate-300 p-3 rounded-lg w-full"
+          className="border border-black p-3 rounded-lg w-full
+          focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
         />
 
+        {/* Amount */}
         <input
           type="number"
           name="amount"
           placeholder="Amount"
           value={formData.amount}
           onChange={handleChange}
-          className="border border-slate-300 p-3 rounded-lg w-full"
+          className="border border-black p-3 rounded-lg w-full
+          focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
         />
 
+        {/* Category */}
         <input
           type="text"
           name="category"
           placeholder="Category"
           value={formData.category}
           onChange={handleChange}
-          className="border border-slate-300 p-3 rounded-lg w-full"
+          className="border border-black p-3 rounded-lg w-full
+          focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
         />
 
+        {/* Type */}
         <select
           name="type"
           value={formData.type}
           onChange={handleChange}
-          className="border border-slate-300 p-3 rounded-lg w-full"
+          className="border border-black p-3 rounded-lg w-full
+          focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
         >
           <option value="expense">Expense</option>
           <option value="income">Income</option>
         </select>
 
+        {/* Date */}
         <input
           type="date"
           name="date"
           value={formData.date}
           onChange={handleChange}
-          className="border border-slate-300 p-3 rounded-lg w-full"
+          className="border border-black p-3 rounded-lg w-full
+          focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
         />
 
       </div>
 
+      {/* Button */}
       <motion.button
         {...buttonAnimation}
         type="submit"
         disabled={loading}
-        className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 mt-4 rounded-lg"
+        className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 mt-5 rounded-lg font-medium transition"
       >
         {loading ? "Adding..." : "Add Transaction"}
       </motion.button>
