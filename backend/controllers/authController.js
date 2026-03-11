@@ -2,24 +2,26 @@ const User = require("../models/User");
 const Wallet = require("../models/Wallet");
 const jwt = require("jsonwebtoken");
 
+
 // Generate JWT Token
 const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: "30d",
-  });
+  return jwt.sign(
+    { id },
+    process.env.JWT_SECRET,
+    { expiresIn: "7d" }
+  );
 };
+
 
 /*
 ---------------------------------------
-REGISTER USER
+REGISTER USER (FAST)
 ---------------------------------------
 */
 exports.register = async (req, res) => {
   try {
 
     const { name, email, password } = req.body;
-
-    const photo = req.file ? req.file.path : null;
 
     if (!name || !email || !password) {
       return res.status(400).json({
@@ -28,23 +30,15 @@ exports.register = async (req, res) => {
       });
     }
 
-    const exists = await User.findOne({ email });
-
-    if (exists) {
-      return res.status(400).json({
-        success: false,
-        message: "User already exists"
-      });
-    }
-
+    // create user directly (unique email handled by schema)
     const user = await User.create({
       name,
       email,
-      password,
-      photo
+      password
     });
 
-    await Wallet.create({
+    // create default wallet
+    Wallet.create({
       user: user._id,
       name: "Cash",
       type: "cash",
@@ -65,7 +59,15 @@ exports.register = async (req, res) => {
 
   } catch (error) {
 
-    console.log("REGISTER ERROR:", error);
+    // duplicate email error
+    if (error.code === 11000) {
+      return res.status(400).json({
+        success: false,
+        message: "User already exists"
+      });
+    }
+
+    console.error("REGISTER ERROR:", error);
 
     res.status(500).json({
       success: false,
@@ -76,9 +78,10 @@ exports.register = async (req, res) => {
 };
 
 
+
 /*
 ---------------------------------------
-LOGIN USER
+LOGIN USER (FAST)
 ---------------------------------------
 */
 exports.login = async (req, res) => {
@@ -93,7 +96,9 @@ exports.login = async (req, res) => {
       });
     }
 
-    const user = await User.findOne({ email }).select("+password");
+    const user = await User
+      .findOne({ email })
+      .select("+password");
 
     if (!user) {
       return res.status(401).json({
@@ -118,11 +123,14 @@ exports.login = async (req, res) => {
         name: user.name,
         email: user.email,
         role: user.role,
+        photo: user.photo,
         token: generateToken(user._id)
       }
     });
 
   } catch (error) {
+
+    console.error("LOGIN ERROR:", error);
 
     res.status(500).json({
       success: false,
@@ -131,6 +139,7 @@ exports.login = async (req, res) => {
 
   }
 };
+
 
 
 /*
@@ -143,7 +152,9 @@ exports.changePassword = async (req, res) => {
 
     const { currentPassword, newPassword } = req.body;
 
-    const user = await User.findById(req.user._id).select("+password");
+    const user = await User
+      .findById(req.user._id)
+      .select("+password");
 
     if (!user) {
       return res.status(404).json({
@@ -157,7 +168,7 @@ exports.changePassword = async (req, res) => {
     if (!isMatch) {
       return res.status(400).json({
         success: false,
-        message: "Current password is incorrect"
+        message: "Current password incorrect"
       });
     }
 
@@ -172,6 +183,8 @@ exports.changePassword = async (req, res) => {
 
   } catch (error) {
 
+    console.error("CHANGE PASSWORD ERROR:", error);
+
     res.status(500).json({
       success: false,
       message: error.message
@@ -179,6 +192,7 @@ exports.changePassword = async (req, res) => {
 
   }
 };
+
 
 
 /*
@@ -207,6 +221,8 @@ exports.deleteAccount = async (req, res) => {
     });
 
   } catch (error) {
+
+    console.error("DELETE ACCOUNT ERROR:", error);
 
     res.status(500).json({
       success: false,

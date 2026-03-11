@@ -14,18 +14,8 @@ function Register() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [photo, setPhoto] = useState(null);
-  const [preview, setPreview] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const handlePhoto = (e) => {
-    const file = e.target.files[0];
-    setPhoto(file);
-
-    if (file) {
-      setPreview(URL.createObjectURL(file));
-    }
-  };
 
   const handleSubmit = async (e) => {
 
@@ -40,25 +30,17 @@ function Register() {
 
       setLoading(true);
 
-      const formData = new FormData();
-
-      formData.append("name", name);
-      formData.append("email", email);
-      formData.append("password", password);
-
-      if (photo) {
-        formData.append("photo", photo);
-      }
-
-      const res = await API.post("/auth/register", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data"
-        }
+      const res = await API.post("/auth/register", {
+        name,
+        email,
+        password
       });
 
-      localStorage.setItem("token", res.data.data.token);
+      const userData = res.data.data;
 
-      login(res.data.data);
+      localStorage.setItem("token", userData.token);
+
+      login(userData);
 
       toast.success("Registration successful 🎉");
 
@@ -77,6 +59,7 @@ function Register() {
     }
 
   };
+
 
   return (
 
@@ -120,7 +103,7 @@ function Register() {
           placeholder="Full Name"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="border border-slate-300 p-3 rounded-lg w-full mb-4 focus:ring-2 focus:ring-green-500 outline-none cursor-text"
+          className="border border-slate-300 p-3 rounded-lg w-full mb-4 focus:ring-2 focus:ring-green-500 outline-none"
         />
 
 
@@ -131,7 +114,7 @@ function Register() {
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="border border-slate-300 p-3 rounded-lg w-full mb-4 focus:ring-2 focus:ring-green-500 outline-none cursor-text"
+          className="border border-slate-300 p-3 rounded-lg w-full mb-4 focus:ring-2 focus:ring-green-500 outline-none"
         />
 
 
@@ -142,24 +125,7 @@ function Register() {
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="border border-slate-300 p-3 rounded-lg w-full mb-4 focus:ring-2 focus:ring-green-500 outline-none cursor-text"
-        />
-
-
-        {/* PHOTO */}
-
-        {preview && (
-          <img
-            src={preview}
-            alt="preview"
-            className="w-16 h-16 rounded-full object-cover mx-auto mb-3"
-          />
-        )}
-
-        <input
-          type="file"
-          onChange={handlePhoto}
-          className="border border-slate-300 p-2 rounded-lg w-full mb-4 cursor-pointer"
+          className="border border-slate-300 p-3 rounded-lg w-full mb-4 focus:ring-2 focus:ring-green-500 outline-none"
         />
 
 
@@ -169,7 +135,7 @@ function Register() {
           type="submit"
           whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 0.95 }}
-          className="bg-green-600 hover:bg-green-700 text-white p-3 w-full rounded-lg font-medium transition cursor-pointer"
+          className="bg-green-600 hover:bg-green-700 text-white p-3 w-full rounded-lg font-medium transition"
         >
           {loading ? "Creating account..." : "Register"}
         </motion.button>
@@ -183,7 +149,7 @@ function Register() {
 
           <Link
             to="/"
-            className="text-blue-600 font-medium hover:underline cursor-pointer"
+            className="text-blue-600 font-medium hover:underline"
           >
             Login
           </Link>

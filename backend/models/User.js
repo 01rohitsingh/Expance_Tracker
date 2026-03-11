@@ -18,6 +18,7 @@ const userSchema = new mongoose.Schema(
     unique: true,
     lowercase: true,
     trim: true,
+    index: true, // ⭐ IMPORTANT (login fast)
     validate: [validator.isEmail, "Invalid email format"],
   },
 
@@ -39,10 +40,10 @@ const userSchema = new mongoose.Schema(
     default: 0,
   },
 
-  // ✅ Profile Photo Field
   photo: {
     type: String,
-    default: "https://res.cloudinary.com/ddfk6lnjk/image/upload/v1773059715/download_gbnoyc.png"
+    default:
+      "https://res.cloudinary.com/ddfk6lnjk/image/upload/v1773059715/download_gbnoyc.png",
   }
 
 },
@@ -50,22 +51,22 @@ const userSchema = new mongoose.Schema(
 );
 
 
-
 // 🔐 Hash Password Before Save
 userSchema.pre("save", async function () {
 
   if (!this.isModified("password")) return;
 
-  const salt = await bcrypt.genSalt(12);
+  // ⭐ Reduced salt rounds (faster)
+  const salt = await bcrypt.genSalt(8);
+
   this.password = await bcrypt.hash(this.password, salt);
 
 });
 
 
-
 // 🔑 Compare Password
 userSchema.methods.matchPassword = async function (enteredPassword) {
-  return await bcrypt.compare(enteredPassword, this.password);
+  return bcrypt.compare(enteredPassword, this.password);
 };
 
 

@@ -4,7 +4,6 @@ const express = require("express");
 const cors = require("cors");
 const helmet = require("helmet");
 const morgan = require("morgan");
-const cron = require("node-cron");
 
 const connectDB = require("./config/db");
 const { notFound, errorHandler } = require("./middleware/errorMiddleware");
@@ -14,13 +13,7 @@ const walletRoutes = require("./routes/walletRoutes");
 const transactionRoutes = require("./routes/transactionRoutes");
 const budgetRoutes = require("./routes/budgetRoutes");
 const recurringRoutes = require("./routes/recurringRoutes");
-
-// ⭐ NEW ROUTE
 const notificationRoutes = require("./routes/notificationRoutes");
-
-const Recurring = require("./models/Recurring");
-const Transaction = require("./models/Transaction");
-const Wallet = require("./models/Wallet");
 
 const app = express();
 
@@ -29,7 +22,7 @@ const app = express();
 connectDB();
 
 
-// SECURITY
+// ⭐ SECURITY
 app.use(
   helmet({
     crossOriginResourcePolicy: false
@@ -37,51 +30,49 @@ app.use(
 );
 
 
-// CORS
+// ⭐ BODY PARSER (limit added)
+app.use(express.json({ limit: "1mb" }));
+
+
+// ⭐ CORS
 app.use(
   cors({
-    origin: "*"
+    origin: "*",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true
   })
 );
 
 
-// BODY PARSER
-app.use(express.json());
-
-
-// LOGGER
+// ⭐ LOGGER (dev only)
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
 
-// TEST ROUTE
+// ROOT ROUTE
 app.get("/", (req, res) => {
   res.send("🚀 FinTrack API Running...");
 });
 
 
-// ROUTES
+// ⭐ API ROUTES
 app.use("/api/auth", authRoutes);
 app.use("/api/wallets", walletRoutes);
 app.use("/api/transactions", transactionRoutes);
 app.use("/api/budgets", budgetRoutes);
 app.use("/api/recurring", recurringRoutes);
-
-// ⭐ NOTIFICATION ROUTE
 app.use("/api/notifications", notificationRoutes);
 
 
-// ERROR HANDLING
+// ⭐ ERROR HANDLING
 app.use(notFound);
 app.use(errorHandler);
 
 
-// PORT
+// SERVER
 const PORT = process.env.PORT || 8000;
 
-
-// START SERVER
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
 });

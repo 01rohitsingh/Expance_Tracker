@@ -9,14 +9,13 @@ const router = express.Router();
 
 /* ================= REGISTER ================= */
 
-router.post("/register", upload.single("photo"), register);
-
+// ⭐ Removed image upload (super fast register)
+router.post("/register", register);
 
 
 /* ================= LOGIN ================= */
 
 router.post("/login", login);
-
 
 
 /* ================= UPDATE PROFILE ================= */
@@ -59,7 +58,6 @@ router.put("/profile", protect, async (req, res) => {
 });
 
 
-
 /* ================= UPLOAD PROFILE PHOTO ================= */
 
 router.put(
@@ -70,7 +68,6 @@ router.put(
 
     try {
 
-      // File check
       if (!req.file) {
         return res.status(400).json({
           success: false,
@@ -87,7 +84,6 @@ router.put(
         });
       }
 
-      // Cloudinary URL
       user.photo = req.file.path;
 
       await user.save();
@@ -113,17 +109,14 @@ router.put(
 );
 
 
-
 /* ================= CHANGE PASSWORD ================= */
 
 router.put("/change-password", protect, changePassword);
 
 
-
 /* ================= DELETE ACCOUNT ================= */
 
 router.delete("/delete-account", protect, deleteAccount);
-
 
 
 module.exports = router;
