@@ -18,14 +18,12 @@ function TransactionForm({ refresh }) {
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
-
     const { name, value } = e.target;
 
     setFormData({
       ...formData,
       [name]: value
     });
-
   };
 
   const handleSubmit = async (e) => {
@@ -47,7 +45,7 @@ function TransactionForm({ refresh }) {
     const walletId = localStorage.getItem("walletId");
 
     if (!walletId) {
-      toast.error("Wallet not found. Create wallet first ⚠");
+      toast.error("Wallet not found ⚠");
       return;
     }
 
@@ -64,7 +62,7 @@ function TransactionForm({ refresh }) {
         date
       });
 
-      toast.success("Transaction added successfully 💰");
+      toast.success("Transaction added 💰");
 
       addNotification(`Transaction "${title}" ₹${amount} added`);
 
@@ -85,11 +83,8 @@ function TransactionForm({ refresh }) {
       );
 
     } finally {
-
       setLoading(false);
-
     }
-
   };
 
   return (
@@ -103,8 +98,8 @@ function TransactionForm({ refresh }) {
         Add Transaction
       </h2>
 
-      {/* Responsive Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4">
+      {/* PERFECT RESPONSIVE GRID */}
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
 
         <input
           type="text"
@@ -112,7 +107,7 @@ function TransactionForm({ refresh }) {
           placeholder="Title"
           value={formData.title}
           onChange={handleChange}
-          className="border border-slate-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+          className="border border-slate-300 p-3 rounded-lg w-full"
         />
 
         <input
@@ -121,7 +116,7 @@ function TransactionForm({ refresh }) {
           placeholder="Amount"
           value={formData.amount}
           onChange={handleChange}
-          className="border border-slate-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+          className="border border-slate-300 p-3 rounded-lg w-full"
         />
 
         <input
@@ -130,26 +125,25 @@ function TransactionForm({ refresh }) {
           placeholder="Category"
           value={formData.category}
           onChange={handleChange}
-          className="border border-slate-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+          className="border border-slate-300 p-3 rounded-lg w-full"
         />
 
         <select
           name="type"
           value={formData.type}
           onChange={handleChange}
-          className="border border-slate-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+          className="border border-slate-300 p-3 rounded-lg w-full"
         >
           <option value="expense">Expense</option>
           <option value="income">Income</option>
         </select>
 
-        {/* DATE FIX */}
         <input
           type="date"
           name="date"
           value={formData.date}
           onChange={handleChange}
-          className="border border-slate-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full md:col-auto col-span-1"
+          className="border border-slate-300 p-3 rounded-lg w-full"
         />
 
       </div>
@@ -158,15 +152,13 @@ function TransactionForm({ refresh }) {
         {...buttonAnimation}
         type="submit"
         disabled={loading}
-        className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 mt-4 rounded-lg disabled:opacity-50"
+        className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 mt-4 rounded-lg"
       >
         {loading ? "Adding..." : "Add Transaction"}
       </motion.button>
 
     </form>
-
   );
-
 }
 
 export default TransactionForm;
