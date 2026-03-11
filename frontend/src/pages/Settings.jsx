@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import { motion } from "framer-motion";
 import { User, Lock, Trash2, Eye, EyeOff, Image } from "lucide-react";
 import { AuthContext } from "../context/AuthContext";
+import { cardAnimation, buttonAnimation, iconAnimation } from "../utils/animations";
 
 function Settings() {
 
@@ -181,18 +182,21 @@ Settings
 
 {/* PROFILE PHOTO */}
 
-<motion.div
-initial={{ opacity: 0, y: 15 }}
-animate={{ opacity: 1, y: 0 }}
-whileTap={{ scale: 0.96 }}
-transition={{ duration: 0.25, ease: "easeOut" }}
-className="bg-purple-50 p-5 rounded-xl shadow-sm border border-purple-300"
->
+<motion.div {...cardAnimation}
+className="bg-purple-50 p-5 rounded-xl shadow-sm border border-purple-300">
 
 <div className="flex items-center gap-2 mb-4">
+
+<motion.div {...iconAnimation}>
 <Image size={18}/>
-<h2 className="text-base font-semibold">Profile Photo</h2>
+</motion.div>
+
+<h2 className="text-base font-semibold">
+Profile Photo
+</h2>
+
 </div>
+
 
 <div className="flex flex-col items-center gap-3">
 
@@ -203,25 +207,30 @@ user?.photo ||
 "https://cdn-icons-png.flaticon.com/512/149/149071.png"
 }
 alt="profile"
-onError={(e)=>{
-e.target.src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
-}}
 className="w-20 h-20 rounded-full object-cover border"
 />
+
+
+{/* FILE INPUT WITH HOVER + TAP */}
+
+<motion.div
+  {...buttonAnimation}
+  className="w-full"
+>
 
 <input
 type="file"
 accept="image/*"
 onChange={handlePhoto}
-className="w-full border border-gray-300 rounded-lg p-2.5 cursor-pointer"
+className="w-full border border-gray-300 rounded-lg p-2.5 bg-transparent cursor-pointer hover:border-purple-500 transition"
 />
 
-<motion.button
-whileTap={{ scale: 0.96 }}
-transition={{ duration: 0.2 }}
+</motion.div>
+
+
+<motion.button {...buttonAnimation}
 onClick={updatePhoto}
-className="w-full bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white py-2.5 rounded-lg cursor-pointer"
->
+className="w-full bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white py-2.5 rounded-lg cursor-pointer">
 Update Photo
 </motion.button>
 
@@ -232,17 +241,19 @@ Update Photo
 
 {/* PROFILE INFO */}
 
-<motion.div
-initial={{ opacity: 0, y: 15 }}
-animate={{ opacity: 1, y: 0 }}
-whileTap={{ scale: 0.96 }}
-transition={{ duration: 0.25, ease: "easeOut" }}
-className="bg-blue-50 p-5 rounded-xl shadow-sm border border-blue-300"
->
+<motion.div {...cardAnimation}
+className="bg-blue-50 p-5 rounded-xl shadow-sm border border-blue-300">
 
 <div className="flex items-center gap-2 mb-4">
+
+<motion.div {...iconAnimation}>
 <User size={18}/>
-<h2 className="text-base font-semibold">Profile Information</h2>
+</motion.div>
+
+<h2 className="text-base font-semibold">
+Profile Information
+</h2>
+
 </div>
 
 <div className="space-y-3">
@@ -251,7 +262,7 @@ className="bg-blue-50 p-5 rounded-xl shadow-sm border border-blue-300"
 type="text"
 value={name}
 onChange={(e)=>setName(e.target.value)}
-className="w-full border border-gray-300 rounded-lg p-2.5"
+className="w-full border border-gray-300 rounded-lg p-2.5 bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
 placeholder="Full Name"
 />
 
@@ -259,16 +270,13 @@ placeholder="Full Name"
 type="email"
 value={email}
 onChange={(e)=>setEmail(e.target.value)}
-className="w-full border border-gray-300 rounded-lg p-2.5"
+className="w-full border border-gray-300 rounded-lg p-2.5 bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
 placeholder="Email"
 />
 
-<motion.button
-whileTap={{ scale: 0.96 }}
-transition={{ duration: 0.2 }}
+<motion.button {...buttonAnimation}
 onClick={updateProfile}
-className="w-full bg-blue-600 text-white py-2.5 rounded-lg cursor-pointer"
->
+className="w-full bg-blue-600 text-white py-2.5 rounded-lg cursor-pointer">
 Update Profile
 </motion.button>
 
@@ -279,17 +287,19 @@ Update Profile
 
 {/* CHANGE PASSWORD */}
 
-<motion.div
-initial={{ opacity: 0, y: 15 }}
-animate={{ opacity: 1, y: 0 }}
-whileTap={{ scale: 0.96 }}
-transition={{ duration: 0.25, ease: "easeOut" }}
-className="bg-green-50 p-5 rounded-xl shadow-sm border border-green-300"
->
+<motion.div {...cardAnimation}
+className="bg-green-50 p-5 rounded-xl shadow-sm border border-green-300">
 
 <div className="flex items-center gap-2 mb-4">
+
+<motion.div {...iconAnimation}>
 <Lock size={18}/>
-<h2 className="text-base font-semibold">Change Password</h2>
+</motion.div>
+
+<h2 className="text-base font-semibold">
+Change Password
+</h2>
+
 </div>
 
 <div className="space-y-3">
@@ -301,7 +311,7 @@ type={showCurrentPassword ? "text" : "password"}
 placeholder="Current Password"
 value={currentPassword}
 onChange={(e)=>setCurrentPassword(e.target.value)}
-className="w-full border border-gray-300 rounded-lg p-2.5"
+className="w-full border border-gray-300 rounded-lg p-2.5 bg-transparent focus:outline-none focus:ring-2 focus:ring-green-500"
 />
 
 <span
@@ -320,7 +330,7 @@ type={showNewPassword ? "text" : "password"}
 placeholder="New Password"
 value={newPassword}
 onChange={(e)=>setNewPassword(e.target.value)}
-className="w-full border border-gray-300 rounded-lg p-2.5"
+className="w-full border border-gray-300 rounded-lg p-2.5 bg-transparent focus:outline-none focus:ring-2 focus:ring-green-500"
 />
 
 <span
@@ -332,12 +342,9 @@ className="absolute right-3 top-3 cursor-pointer text-gray-500"
 
 </div>
 
-<motion.button
-whileTap={{ scale: 0.96 }}
-transition={{ duration: 0.2 }}
+<motion.button {...buttonAnimation}
 onClick={changePassword}
-className="w-full bg-green-600 text-white py-2.5 rounded-lg cursor-pointer"
->
+className="w-full bg-green-600 text-white py-2.5 rounded-lg cursor-pointer">
 Change Password
 </motion.button>
 
@@ -348,29 +355,28 @@ Change Password
 
 {/* DELETE ACCOUNT */}
 
-<motion.div
-initial={{ opacity: 0, y: 15 }}
-animate={{ opacity: 1, y: 0 }}
-whileTap={{ scale: 0.96 }}
-transition={{ duration: 0.25, ease: "easeOut" }}
-className="bg-red-50 p-5 rounded-xl shadow-sm border border-red-300"
->
+<motion.div {...cardAnimation}
+className="bg-red-50 p-5 rounded-xl shadow-sm border border-red-300">
 
 <div className="flex items-center gap-2 mb-3 text-red-500">
+
+<motion.div {...iconAnimation}>
 <Trash2 size={18}/>
-<h2 className="text-base font-semibold">Danger Zone</h2>
+</motion.div>
+
+<h2 className="text-base font-semibold">
+Danger Zone
+</h2>
+
 </div>
 
 <p className="text-gray-500 mb-3 text-sm">
 Deleting your account will permanently remove your data.
 </p>
 
-<motion.button
-whileTap={{ scale: 0.96 }}
-transition={{ duration: 0.2 }}
+<motion.button {...buttonAnimation}
 onClick={deleteAccount}
-className="w-full bg-red-500 text-white py-2.5 rounded-lg cursor-pointer"
->
+className="w-full bg-red-500 text-white py-2.5 rounded-lg cursor-pointer">
 Delete Account
 </motion.button>
 

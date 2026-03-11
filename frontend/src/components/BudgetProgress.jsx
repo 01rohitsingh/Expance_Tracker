@@ -2,13 +2,16 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import API from "../services/api";
 import { addNotification } from "../utils/notifications";
+import { cardAnimation } from "../utils/animations";   // ✅ added
 
 function BudgetProgress({ budget }) {
 
   const [spent, setSpent] = useState(0);
 
   useEffect(() => {
-    fetchSpentAmount();
+    if (budget) {
+      fetchSpentAmount();
+    }
   }, [budget]);
 
   const fetchSpentAmount = async () => {
@@ -19,11 +22,12 @@ function BudgetProgress({ budget }) {
 
       const totalSpent = res.data.reduce((total, transaction) => {
 
-        if (
-          transaction.category?.toLowerCase() === budget?.category?.toLowerCase() &&
-          transaction.type === "expense"
-        ) {
-          return total + Number(transaction.amount);
+        const sameCategory =
+          transaction.category?.toLowerCase() ===
+          budget?.category?.toLowerCase();
+
+        if (sameCategory && transaction.type === "expense") {
+          return total + Number(transaction.amount || 0);
         }
 
         return total;
@@ -33,24 +37,20 @@ function BudgetProgress({ budget }) {
       setSpent(totalSpent);
 
     } catch (error) {
-
       console.error("Error calculating spent amount:", error);
-
     }
 
   };
 
   const percentage =
-    budget?.limit > 0 ? (spent / budget.limit) * 100 : 0;
+    budget?.limit ? (spent / budget.limit) * 100 : 0;
 
   const progress = Math.min(percentage, 100);
 
   const getColor = () => {
-
     if (percentage < 60) return "bg-green-500";
     if (percentage < 90) return "bg-yellow-500";
     return "bg-red-500";
-
   };
 
   useEffect(() => {
@@ -74,19 +74,8 @@ function BudgetProgress({ budget }) {
   return (
 
     <motion.div
-
-      initial={{ opacity: 0, y: 15 }}
-      animate={{ opacity: 1, y: 0 }}
-
-      whileTap={{ scale: 0.96 }}
-
-      transition={{
-        duration: 0.25,
-        ease: "easeOut"
-      }}
-
+      {...cardAnimation}   // ✅ reusable animation applied
       className="cursor-pointer"
-
     >
 
       <div className="flex justify-between text-sm text-slate-600 mb-2">
@@ -105,14 +94,13 @@ function BudgetProgress({ budget }) {
 
         <motion.div
           key={progress}
-          className={`${getColor()} h-3 rounded-full origin-left`}
-          initial={{ scaleX: 0 }}
-          animate={{ scaleX: progress / 100 }}
+          className={`${getColor()} h-3 rounded-full`}
+          initial={{ width: 0 }}
+          animate={{ width: `${progress}%` }}
           transition={{
-            duration: 0.9,
+            duration: 0.6,
             ease: "easeOut"
           }}
-          style={{ width: "100%" }}
         />
 
       </div>

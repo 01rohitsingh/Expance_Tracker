@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import API from "../services/api";
 import { Bell, Trash2 } from "lucide-react";
 import { motion } from "framer-motion";
+import { cardAnimation, buttonAnimation, iconAnimation } from "../utils/animations";
 
 function Notifications() {
 
@@ -56,7 +57,6 @@ function Notifications() {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 0.3 }}
       className="min-h-screen bg-slate-100 px-4 sm:px-6 md:px-10 lg:px-14 py-6 sm:py-8"
     >
 
@@ -64,9 +64,12 @@ function Notifications() {
 
       <div className="flex items-center gap-3 sm:gap-4 mb-6 sm:mb-10">
 
-        <div className="bg-blue-100 p-2 sm:p-3 rounded-xl">
+        <motion.div
+          {...iconAnimation}
+          className="bg-blue-100 p-2 sm:p-3 rounded-xl"
+        >
           <Bell className="text-blue-600 w-5 h-5 sm:w-6 sm:h-6"/>
-        </div>
+        </motion.div>
 
         <div>
 
@@ -87,27 +90,26 @@ function Notifications() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
 
-        {notifications.map((n) => (
+        {notifications.map((n, index) => (
 
           <motion.div
             key={n._id}
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            whileHover={{
-              y: -10,
-              scale: 1.03,
-              boxShadow: "0px 15px 25px rgba(0,0,0,0.1)"
+            {...cardAnimation}
+            transition={{
+              ...cardAnimation.transition,
+              delay: index * 0.04
             }}
-            whileTap={{ scale: 0.97 }}
-            transition={{ duration: 0.25 }}
             className="bg-white border border-slate-200 rounded-xl p-4 sm:p-5 shadow-sm flex flex-col justify-between"
           >
 
             <div className="flex gap-3">
 
-              <div className="bg-blue-50 p-2 rounded-lg h-fit">
+              <motion.div
+                {...iconAnimation}
+                className="bg-blue-50 p-2 rounded-lg h-fit"
+              >
                 <Bell size={16} className="text-blue-600"/>
-              </div>
+              </motion.div>
 
               <div>
 
@@ -128,12 +130,13 @@ function Notifications() {
 
             <div className="flex justify-end mt-4">
 
-              <button
+              <motion.button
+                {...buttonAnimation}
                 onClick={() => deleteNotification(n._id)}
                 className="text-red-500 hover:bg-red-50 p-2 rounded-lg transition"
               >
                 <Trash2 size={18}/>
-              </button>
+              </motion.button>
 
             </div>
 

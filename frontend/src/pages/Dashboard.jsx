@@ -5,6 +5,7 @@ import TransactionForm from "../components/TransactionForm";
 import API from "../services/api";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
+import { cardAnimation } from "../utils/animations";
 
 function Dashboard({ searchQuery = "" }) {
 
@@ -102,74 +103,51 @@ function Dashboard({ searchQuery = "" }) {
       className="p-4 md:p-6 bg-gray-100 min-h-screen"
     >
 
-      <motion.h1
-        initial={{ opacity: 0, y: -25 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
-        className="text-2xl md:text-3xl font-bold mb-6"
-      >
+      <h1 className="text-2xl md:text-3xl font-bold mb-6">
         Dashboard
-      </motion.h1>
+      </h1>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
 
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.05 }}
-          whileHover={{ y: -8, scale: 1.03 }}
+          {...cardAnimation}
+          transition={{ ...cardAnimation.transition, delay: 0.05 }}
         >
           <SummaryCard title="Income" amount={income} />
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          whileHover={{ y: -8, scale: 1.03 }}
+          {...cardAnimation}
+          transition={{ ...cardAnimation.transition, delay: 0.1 }}
         >
           <SummaryCard title="Expense" amount={expense} />
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.15 }}
-          whileHover={{ y: -8, scale: 1.03 }}
+          {...cardAnimation}
+          transition={{ ...cardAnimation.transition, delay: 0.15 }}
         >
           <SummaryCard title="Remaining Income" amount={remainingIncome} />
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          whileHover={{ y: -8, scale: 1.03 }}
+          {...cardAnimation}
+          transition={{ ...cardAnimation.transition, delay: 0.2 }}
         >
           <SummaryCard title="Wallet Balance" amount={walletBalance} />
         </motion.div>
 
       </div>
 
-      <motion.div
-        initial={{ opacity: 0, y: 25 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
-      >
+      <motion.div {...cardAnimation}>
         <TransactionForm refresh={loadDashboard} />
       </motion.div>
 
-      <motion.div
-        initial={{ opacity: 0, y: 25 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-
+      <motion.div {...cardAnimation} transition={{ ...cardAnimation.transition, delay: 0.1 }}>
         <TransactionList
           transactions={filteredTransactions}
           refresh={loadDashboard}
         />
-
       </motion.div>
 
     </motion.div>

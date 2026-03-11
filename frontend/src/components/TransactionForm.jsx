@@ -3,23 +3,44 @@ import { motion } from "framer-motion";
 import API from "../services/api";
 import { toast } from "react-toastify";
 import { addNotification } from "../utils/notifications";
+import { cardAnimation, buttonAnimation } from "../utils/animations";
 
 function TransactionForm({ refresh }) {
 
-  const [title, setTitle] = useState("");
-  const [amount, setAmount] = useState("");
-  const [category, setCategory] = useState("");
-  const [type, setType] = useState("expense");
-  const [date, setDate] = useState("");
+  const [formData, setFormData] = useState({
+    title: "",
+    amount: "",
+    category: "",
+    type: "expense",
+    date: ""
+  });
 
-  const isMobile = window.innerWidth < 768;
+  const [loading, setLoading] = useState(false);
+
+  const handleChange = (e) => {
+
+    const { name, value } = e.target;
+
+    setFormData({
+      ...formData,
+      [name]: value
+    });
+
+  };
 
   const handleSubmit = async (e) => {
 
     e.preventDefault();
 
+    const { title, amount, category, type, date } = formData;
+
     if (!title || !amount || !category || !date) {
       toast.error("Please fill all fields ❌");
+      return;
+    }
+
+    if (Number(amount) <= 0) {
+      toast.error("Amount must be greater than 0");
       return;
     }
 
@@ -32,7 +53,9 @@ function TransactionForm({ refresh }) {
 
     try {
 
-      const res = await API.post("/transactions", {
+      setLoading(true);
+
+      await API.post("/transactions", {
         title,
         amount: Number(amount),
         category,
@@ -45,17 +68,25 @@ function TransactionForm({ refresh }) {
 
       addNotification(`Transaction "${title}" ₹${amount} added`);
 
-      setTitle("");
-      setAmount("");
-      setCategory("");
-      setDate("");
-      setType("expense");
+      setFormData({
+        title: "",
+        amount: "",
+        category: "",
+        type: "expense",
+        date: ""
+      });
 
       refresh();
 
     } catch (error) {
 
-      toast.error(error.response?.data?.message || "Failed to add transaction ❌");
+      toast.error(
+        error.response?.data?.message || "Failed to add transaction ❌"
+      );
+
+    } finally {
+
+      setLoading(false);
 
     }
 
@@ -64,15 +95,12 @@ function TransactionForm({ refresh }) {
   return (
 
     <motion.form
+      {...cardAnimation}
       onSubmit={handleSubmit}
-      initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
-      whileTap={isMobile ? { scale: 0.98 } : {}}
-      transition={{ duration: 0.35 }}
       className="bg-white border border-slate-200 p-5 rounded-xl shadow-sm mb-6"
     >
 
-      <h2 className="text-2xl font-medium mb-4 text-slate-800">
+      <h2 className="text-xl font-semibold mb-4 text-slate-800">
         Add Transaction
       </h2>
 
@@ -80,31 +108,35 @@ function TransactionForm({ refresh }) {
 
         <input
           type="text"
+          name="title"
           placeholder="Title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          value={formData.title}
+          onChange={handleChange}
           className="border border-slate-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
 
         <input
           type="number"
+          name="amount"
           placeholder="Amount"
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
+          value={formData.amount}
+          onChange={handleChange}
           className="border border-slate-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
 
         <input
           type="text"
+          name="category"
           placeholder="Category"
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
+          value={formData.category}
+          onChange={handleChange}
           className="border border-slate-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
 
         <select
-          value={type}
-          onChange={(e) => setType(e.target.value)}
+          name="type"
+          value={formData.type}
+          onChange={handleChange}
           className="border border-slate-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           <option value="expense">Expense</option>
@@ -113,20 +145,21 @@ function TransactionForm({ refresh }) {
 
         <input
           type="date"
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
+          name="date"
+          value={formData.date}
+          onChange={handleChange}
           className="border border-slate-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
 
       </div>
 
       <motion.button
+        {...buttonAnimation}
         type="submit"
-        whileHover={{ scale: 1.05 }}
-        whileTap={isMobile ? { scale: 0.95 } : {}}
-        className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 mt-4 rounded-lg transition"
+        disabled={loading}
+        className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 mt-4 rounded-lg transition disabled:opacity-50"
       >
-        Add Transaction
+        {loading ? "Adding..." : "Add Transaction"}
       </motion.button>
 
     </motion.form>

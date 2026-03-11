@@ -4,6 +4,7 @@ import Swal from "sweetalert2";
 import { motion } from "framer-motion";
 import { Wallet, Landmark, CreditCard, Smartphone, Trash2 } from "lucide-react";
 import { addNotification } from "../utils/notifications";
+import { cardAnimation, iconAnimation, buttonAnimation } from "../utils/animations";
 
 function WalletCard({ wallet, refresh }) {
 
@@ -70,34 +71,15 @@ function WalletCard({ wallet, refresh }) {
   return (
 
     <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
-
-      whileHover={{ y: -10, scale: 1.04 }}
-      whileTap={{ scale: 0.94 }}
-
-      transition={{
-        type: "spring",
-        stiffness: 300,
-        damping: 18
-      }}
-
+      {...cardAnimation}
       className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm hover:shadow-lg flex justify-between items-center cursor-pointer"
     >
 
       <div className="flex items-center gap-3">
 
         <motion.div
+          {...iconAnimation}
           className="bg-slate-100 p-3 rounded-lg"
-
-          whileHover={{ rotate: 10, scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-
-          transition={{
-            type: "spring",
-            stiffness: 300,
-            damping: 15
-          }}
         >
           {getWalletIcon()}
         </motion.div>
@@ -117,16 +99,8 @@ function WalletCard({ wallet, refresh }) {
       </div>
 
       <motion.button
+        {...buttonAnimation}
         onClick={deleteWallet}
-
-        whileHover={{ scale: 1.2, rotate: 8 }}
-        whileTap={{ scale: 0.85 }}
-
-        transition={{
-          type: "spring",
-          stiffness: 300
-        }}
-
         className="text-red-500 hover:text-red-700 cursor-pointer"
       >
         <Trash2 size={20} />

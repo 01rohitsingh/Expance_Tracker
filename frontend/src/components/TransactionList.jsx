@@ -4,25 +4,26 @@ import { Trash2 } from "lucide-react";
 import Swal from "sweetalert2";
 import { motion } from "framer-motion";
 import { addNotification } from "../utils/notifications";
+import { cardAnimation, buttonAnimation } from "../utils/animations";
 
 function TransactionList({ transactions = [], refresh }) {
 
   const deleteTransaction = async (id, category, amount) => {
 
-    const result = await Swal.fire({
-      title: "Delete transaction?",
-      text: "This action cannot be undone",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Delete",
-      cancelButtonText: "Cancel",
-      confirmButtonColor: "#ef4444",
-      cancelButtonColor: "#6b7280"
-    });
-
-    if (!result.isConfirmed) return;
-
     try {
+
+      const result = await Swal.fire({
+        title: "Delete transaction?",
+        text: "This action cannot be undone",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Delete",
+        cancelButtonText: "Cancel",
+        confirmButtonColor: "#ef4444",
+        cancelButtonColor: "#6b7280"
+      });
+
+      if (!result.isConfirmed) return;
 
       await API.delete(`/transactions/${id}`);
 
@@ -34,6 +35,7 @@ function TransactionList({ transactions = [], refresh }) {
 
     } catch (error) {
 
+      console.error("Delete transaction error:", error);
       toast.error("Failed to delete transaction ❌");
 
     }
@@ -44,7 +46,7 @@ function TransactionList({ transactions = [], refresh }) {
 
     <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
 
-      <h2 className="text-2xl font-medium mb-6 text-slate-800">
+      <h2 className="text-2xl font-semibold mb-6 text-slate-800">
         Transactions
       </h2>
 
@@ -58,30 +60,25 @@ function TransactionList({ transactions = [], refresh }) {
 
           <motion.div
             key={t._id}
-
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-
-            whileTap={{ scale: 0.96 }}
+            {...cardAnimation}
 
             transition={{
-              duration: 0.25,
-              ease: "easeOut",
-              delay: index * 0.05
+              ...cardAnimation.transition,
+              delay: index * 0.04
             }}
 
-            className="border border-slate-200 rounded-xl p-5 hover:shadow-xl transition bg-white flex flex-col gap-4 cursor-pointer"
+            className="border border-slate-200 rounded-xl p-5 hover:shadow-lg transition bg-white flex flex-col gap-4 cursor-pointer"
           >
 
-            {/* TOP */}
+            {/* CATEGORY + TYPE */}
             <div className="flex justify-between items-center">
 
-              <p className="text-xl font-semibold text-slate-800 capitalize">
+              <p className="text-lg font-semibold text-slate-800 capitalize">
                 {t.category}
               </p>
 
               <span
-                className={`px-4 py-1.5 text-sm rounded-full font-semibold
+                className={`px-3 py-1 text-xs rounded-full font-semibold
                 ${
                   t.type === "income"
                     ? "bg-green-100 text-green-700"
@@ -94,36 +91,31 @@ function TransactionList({ transactions = [], refresh }) {
             </div>
 
             {/* DATE */}
-            <p className="text-base text-slate-500 font-medium">
-              {t.date ? t.date.substring(0, 10) : "No date"}
+            <p className="text-sm text-slate-500">
+              {t.date ? new Date(t.date).toLocaleDateString() : "No date"}
             </p>
 
             {/* AMOUNT + DELETE */}
             <div className="flex justify-between items-center">
 
               <p
-                className={
+                className={`text-xl font-bold ${
                   t.type === "income"
-                    ? "text-green-600 text-xl font-bold"
-                    : "text-red-500 text-xl font-bold"
-                }
+                    ? "text-green-600"
+                    : "text-red-500"
+                }`}
               >
                 ₹ {Number(t.amount).toLocaleString()}
               </p>
 
               <motion.button
-
-                whileTap={{ scale: 0.85 }}
-
-                transition={{
-                  duration: 0.2
-                }}
-
-                onClick={() => deleteTransaction(t._id, t.category, t.amount)}
-
+                {...buttonAnimation}
+                onClick={() =>
+                  deleteTransaction(t._id, t.category, t.amount)
+                }
                 className="text-red-500 hover:text-red-700 cursor-pointer"
               >
-                <Trash2 size={22} />
+                <Trash2 size={20} />
               </motion.button>
 
             </div>

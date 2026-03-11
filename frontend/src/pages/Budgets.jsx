@@ -6,6 +6,7 @@ import { Target, Wallet, Trash2 } from "lucide-react";
 import { motion } from "framer-motion";
 import Swal from "sweetalert2";
 import { addNotification } from "../utils/notifications";
+import { cardAnimation, buttonAnimation, iconAnimation } from "../utils/animations";
 
 function Budgets({ searchQuery = "" }) {
 
@@ -129,18 +130,18 @@ function Budgets({ searchQuery = "" }) {
       className="p-4 md:p-6 bg-slate-100 min-h-screen"
     >
 
-      <motion.div
-        initial={{ opacity: 0, y: -25 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
-        className="flex items-center justify-between mb-8"
-      >
+      {/* HEADER */}
+
+      <div className="flex items-center justify-between mb-8">
 
         <div className="flex items-center gap-3">
 
-          <div className="bg-blue-100 p-3 rounded-lg">
+          <motion.div
+            {...iconAnimation}
+            className="bg-blue-100 p-3 rounded-lg"
+          >
             <Target className="text-blue-600"/>
-          </div>
+          </motion.div>
 
           <div>
 
@@ -156,13 +157,13 @@ function Budgets({ searchQuery = "" }) {
 
         </div>
 
-      </motion.div>
+      </div>
 
+
+      {/* CREATE BUDGET */}
 
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.35 }}
+        {...cardAnimation}
         className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 mb-8"
       >
 
@@ -192,9 +193,8 @@ function Budgets({ searchQuery = "" }) {
           />
 
           <motion.button
+            {...buttonAnimation}
             type="submit"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
             className="bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-3 rounded-lg cursor-pointer transition"
           >
             Add Budget
@@ -205,36 +205,36 @@ function Budgets({ searchQuery = "" }) {
       </motion.div>
 
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      {/* TOTAL BUDGET CARD */}
+
+      <motion.div
+        {...cardAnimation}
+        className="bg-white border border-slate-200 rounded-xl p-5 flex items-center gap-4 shadow-sm hover:shadow-md mb-8"
+      >
 
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          whileHover={{ y: -6, scale: 1.02 }}
-          transition={{ duration: 0.35 }}
-          className="bg-white border border-slate-200 rounded-xl p-5 flex items-center gap-4 shadow-sm hover:shadow-md"
+          {...iconAnimation}
+          className="bg-green-100 p-3 rounded-lg"
         >
-
-          <div className="bg-green-100 p-3 rounded-lg">
-            <Wallet className="text-green-600"/>
-          </div>
-
-          <div>
-
-            <p className="text-sm text-slate-500">
-              Total Budgets
-            </p>
-
-            <p className="text-xl font-bold text-slate-800">
-              {filteredBudgets.length}
-            </p>
-
-          </div>
-
+          <Wallet className="text-green-600"/>
         </motion.div>
 
-      </div>
+        <div>
 
+          <p className="text-sm text-slate-500">
+            Total Budgets
+          </p>
+
+          <p className="text-xl font-bold text-slate-800">
+            {filteredBudgets.length}
+          </p>
+
+        </div>
+
+      </motion.div>
+
+
+      {/* EMPTY STATE */}
 
       {filteredBudgets.length === 0 ? (
 
@@ -262,10 +262,11 @@ function Budgets({ searchQuery = "" }) {
 
             <motion.div
               key={budget._id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.05 }}
-              whileHover={{ y: -5 }}
+              {...cardAnimation}
+              transition={{
+                ...cardAnimation.transition,
+                delay: index * 0.05
+              }}
               className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm hover:shadow-md"
             >
 
@@ -276,8 +277,7 @@ function Budgets({ searchQuery = "" }) {
                 </h3>
 
                 <motion.button
-                  whileHover={{ scale: 1.15 }}
-                  whileTap={{ scale: 0.9 }}
+                  {...buttonAnimation}
                   onClick={() => deleteBudget(budget)}
                   className="text-red-500 hover:text-red-700 transition"
                 >

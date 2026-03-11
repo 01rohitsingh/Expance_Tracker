@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import API from "../services/api";
 import { motion } from "framer-motion";
+import { cardAnimation } from "../utils/animations";
 
 import {
   PieChart,
@@ -14,7 +15,6 @@ import {
   ResponsiveContainer,
   Legend,
   CartesianGrid,
-  LineChart,
   Line,
   AreaChart,
   Area
@@ -135,58 +135,23 @@ function Analytics() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
 
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-
-          whileHover={{ y: -8, scale: 1.04 }}
-          whileTap={{ scale: 0.94 }}
-
-          transition={{
-            type: "spring",
-            stiffness: 300,
-            damping: 18
-          }}
-
+          {...cardAnimation}
           className="bg-gradient-to-r from-purple-500 to-indigo-500 text-white p-6 rounded-xl shadow-lg cursor-pointer"
         >
           <p className="text-sm">Total Income</p>
           <h2 className="text-2xl font-bold">₹ {income}</h2>
         </motion.div>
 
-
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-
-          whileHover={{ y: -8, scale: 1.04 }}
-          whileTap={{ scale: 0.94 }}
-
-          transition={{
-            type: "spring",
-            stiffness: 300,
-            damping: 18
-          }}
-
+          {...cardAnimation}
           className="bg-gradient-to-r from-orange-400 to-pink-500 text-white p-6 rounded-xl shadow-lg cursor-pointer"
         >
           <p className="text-sm">Total Expense</p>
           <h2 className="text-2xl font-bold">₹ {expense}</h2>
         </motion.div>
 
-
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-
-          whileHover={{ y: -8, scale: 1.04 }}
-          whileTap={{ scale: 0.94 }}
-
-          transition={{
-            type: "spring",
-            stiffness: 300,
-            damping: 18
-          }}
-
+          {...cardAnimation}
           className="bg-gradient-to-r from-teal-400 to-cyan-500 text-white p-6 rounded-xl shadow-lg cursor-pointer"
         >
           <p className="text-sm">Balance</p>
@@ -194,7 +159,6 @@ function Analytics() {
         </motion.div>
 
       </div>
-
 
 
       {/* CHARTS */}
@@ -205,17 +169,7 @@ function Analytics() {
         {/* PIE CHART */}
 
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-
-          whileHover={{ y: -10, scale: 1.03 }}
-          whileTap={{ scale: 0.95 }}
-
-          transition={{
-            type: "spring",
-            stiffness: 250
-          }}
-
+          {...cardAnimation}
           className="bg-white p-6 rounded-xl shadow-lg cursor-pointer"
         >
 
@@ -258,17 +212,7 @@ function Analytics() {
         {/* BAR CHART */}
 
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-
-          whileHover={{ y: -10, scale: 1.03 }}
-          whileTap={{ scale: 0.95 }}
-
-          transition={{
-            type: "spring",
-            stiffness: 250
-          }}
-
+          {...cardAnimation}
           className="bg-white p-6 rounded-xl shadow-lg cursor-pointer"
         >
 
@@ -313,17 +257,7 @@ function Analytics() {
         {/* MONTHLY TREND */}
 
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-
-          whileHover={{ y: -10, scale: 1.02 }}
-          whileTap={{ scale: 0.96 }}
-
-          transition={{
-            type: "spring",
-            stiffness: 250
-          }}
-
+          {...cardAnimation}
           className="bg-white p-6 rounded-xl shadow-lg lg:col-span-2 cursor-pointer"
         >
 
