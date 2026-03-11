@@ -1,11 +1,12 @@
 const Wallet = require("../models/Wallet");
+const Notification = require("../models/Notification");
 
 // Create Wallet
 exports.createWallet = async (req, res) => {
   try {
     const { name, type, balance, currency } = req.body;
 
-    // Validation (model ke according)
+    // Validation
     if (!name || !type) {
       return res.status(400).json({
         message: "Name and type are required",
@@ -20,9 +21,16 @@ exports.createWallet = async (req, res) => {
       currency: currency ?? "INR",
     });
 
+    // ⭐ CREATE NOTIFICATION
+    await Notification.create({
+      userId: req.user._id,
+      message: `Wallet "${name}" created with balance ₹${wallet.balance}`,
+    });
+
     res.status(201).json(wallet);
+
   } catch (error) {
-    // Duplicate wallet name per user
+
     if (error.code === 11000) {
       return res.status(400).json({
         message: "Wallet with this name already exists",
@@ -36,25 +44,33 @@ exports.createWallet = async (req, res) => {
   }
 };
 
+
+// Get Wallets
 exports.getWallets = async (req, res) => {
   try {
+
     const wallets = await Wallet.find({
       user: req.user._id,
       isActive: true,
     }).sort({ createdAt: -1 });
 
     res.json(wallets);
+
   } catch (error) {
+
     res.status(500).json({
       message: "Server Error",
       error: error.message,
     });
+
   }
 };
+
 
 // Delete Wallet
 exports.deleteWallet = async (req, res) => {
   try {
+
     const wallet = await Wallet.findById(req.params.id);
 
     if (!wallet) {
@@ -63,7 +79,6 @@ exports.deleteWallet = async (req, res) => {
       });
     }
 
-    // ensure wallet belongs to logged user
     if (wallet.user.toString() !== req.user._id.toString()) {
       return res.status(401).json({
         message: "Not authorized",
@@ -72,14 +87,22 @@ exports.deleteWallet = async (req, res) => {
 
     await wallet.deleteOne();
 
+    // ⭐ CREATE NOTIFICATION
+    await Notification.create({
+      userId: req.user._id,
+      message: `Wallet "${wallet.name}" deleted`,
+    });
+
     res.json({
       message: "Wallet deleted successfully",
     });
 
   } catch (error) {
+
     res.status(500).json({
       message: "Server Error",
       error: error.message,
     });
+
   }
 };

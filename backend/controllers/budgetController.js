@@ -1,4 +1,5 @@
 const Budget = require("../models/Budget");
+const Notification = require("../models/Notification");
 
 /* CREATE BUDGET */
 
@@ -13,6 +14,12 @@ const setBudget = async (req, res) => {
       limit,
       month,
       year
+    });
+
+    // ⭐ CREATE NOTIFICATION
+    await Notification.create({
+      userId: req.user._id,
+      message: `Budget set for "${category}" with limit ₹${limit}`
     });
 
     res.status(201).json(budget);
@@ -67,6 +74,12 @@ const deleteBudget = async (req, res) => {
     }
 
     await budget.deleteOne();
+
+    // ⭐ CREATE NOTIFICATION
+    await Notification.create({
+      userId: req.user._id,
+      message: `Budget for "${budget.category}" deleted`
+    });
 
     res.json({
       message: "Budget deleted successfully"

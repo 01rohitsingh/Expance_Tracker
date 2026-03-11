@@ -1,5 +1,6 @@
 const Transaction = require("../models/Transaction");
 const Wallet = require("../models/Wallet");
+const Notification = require("../models/Notification");
 const exportTransactionsCSV = require("../utils/csvExport");
 const calculateFinancialScore = require("../utils/financialScore");
 
@@ -56,6 +57,12 @@ exports.addTransaction = async (req, res, next) => {
 
     await userWallet.save();
 
+    // ⭐ CREATE NOTIFICATION
+    await Notification.create({
+      userId: req.user._id,
+      message: `Transaction "${title}" of ₹${amount} added`,
+    });
+
     res.status(201).json(transaction);
   } catch (error) {
     next(error);
@@ -111,6 +118,12 @@ exports.deleteTransaction = async (req, res, next) => {
 
     transaction.isDeleted = true;
     await transaction.save();
+
+    // ⭐ CREATE NOTIFICATION
+    await Notification.create({
+      userId: req.user._id,
+      message: `Transaction "${transaction.title}" deleted`,
+    });
 
     res.json({ message: "Transaction deleted successfully" });
   } catch (error) {
@@ -184,6 +197,12 @@ exports.updateTransaction = async (req, res, next) => {
     transaction.date = req.body.date ?? transaction.date;
 
     await transaction.save();
+
+    // ⭐ CREATE NOTIFICATION
+    await Notification.create({
+      userId: req.user._id,
+      message: `Transaction "${transaction.title}" updated`,
+    });
 
     res.json(transaction);
   } catch (error) {

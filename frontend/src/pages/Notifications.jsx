@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getNotifications, markAllSeen, formatTime } from "../utils/notifications";
+import API from "../services/api";
 import { Bell, Trash2 } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -7,22 +7,48 @@ function Notifications() {
 
   const [notifications, setNotifications] = useState([]);
 
+  // Format time
+  const formatTime = (time) => {
+    const date = new Date(time);
+    return date.toLocaleString();
+  };
+
+  // Fetch notifications
+  const fetchNotifications = async () => {
+    try {
+
+      const res = await API.get("/notifications");
+
+      setNotifications(res.data);
+
+      await API.put("/notifications/mark-seen");
+
+    } catch (error) {
+
+      console.error("Failed to load notifications", error);
+
+    }
+  };
+
   useEffect(() => {
-
-    const data = getNotifications();
-    setNotifications(data);
-    markAllSeen();
-
+    fetchNotifications();
   }, []);
 
-  const deleteNotification = (id) => {
+  // Delete notification
+  const deleteNotification = async (id) => {
+    try {
 
-    const updated = notifications.filter((n) => n.id !== id);
+      await API.delete(`/notifications/${id}`);
 
-    setNotifications(updated);
+      setNotifications((prev) =>
+        prev.filter((n) => n._id !== id)
+      );
 
-    localStorage.setItem("notifications", JSON.stringify(updated));
+    } catch (error) {
 
+      console.error("Delete failed", error);
+
+    }
   };
 
   return (
@@ -64,7 +90,7 @@ function Notifications() {
         {notifications.map((n) => (
 
           <motion.div
-            key={n.id}
+            key={n._id}
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             whileHover={{
@@ -74,7 +100,7 @@ function Notifications() {
             }}
             whileTap={{ scale: 0.97 }}
             transition={{ duration: 0.25 }}
-            className="bg-white border border-slate-200 rounded-xl p-4 sm:p-5 shadow-sm cursor-pointer flex flex-col justify-between"
+            className="bg-white border border-slate-200 rounded-xl p-4 sm:p-5 shadow-sm flex flex-col justify-between"
           >
 
             <div className="flex gap-3">
@@ -90,7 +116,7 @@ function Notifications() {
                 </p>
 
                 <p className="text-[11px] sm:text-xs text-slate-400 mt-2">
-                  {formatTime(n.timestamp)}
+                  {formatTime(n.createdAt)}
                 </p>
 
               </div>
@@ -103,7 +129,7 @@ function Notifications() {
             <div className="flex justify-end mt-4">
 
               <button
-                onClick={() => deleteNotification(n.id)}
+                onClick={() => deleteNotification(n._id)}
                 className="text-red-500 hover:bg-red-50 p-2 rounded-lg transition"
               >
                 <Trash2 size={18}/>
