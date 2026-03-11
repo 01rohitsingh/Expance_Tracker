@@ -1,33 +1,35 @@
 // src/utils/animations.js
 
 export const cardAnimation = {
-  initial: { opacity: 0, y: 15 },
+  initial: { opacity: 0, y: 12 },
   animate: { opacity: 1, y: 0 },
-  whileHover: { y: -4, scale: 1.01 },
-  whileTap: { scale: 0.98 },
+
+  whileHover: { y: -3, scale: 1.01 },
+  whileTap: { scale: 0.97 },
+
   transition: {
-    type: "spring",
-    stiffness: 120,
-    damping: 18
+    type: "tween",
+    duration: 0.18,
+    ease: "easeOut"
   }
 };
 
 export const iconAnimation = {
-  whileHover: { scale: 1.05 },
-  whileTap: { scale: 0.95 },
+  whileHover: { scale: 1.08 },
+  whileTap: { scale: 0.92 },
+
   transition: {
-    type: "spring",
-    stiffness: 180,
-    damping: 14
+    type: "tween",
+    duration: 0.15
   }
 };
 
 export const buttonAnimation = {
-  whileHover: { scale: 1.04 },
-  whileTap: { scale: 0.96 },
+  whileHover: { scale: 1.03 },
+  whileTap: { scale: 0.92 },
+
   transition: {
-    type: "spring",
-    stiffness: 200,
-    damping: 15
+    type: "tween",
+    duration: 0.12
   }
 };
