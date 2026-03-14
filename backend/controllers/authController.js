@@ -3,7 +3,11 @@ const Wallet = require("../models/Wallet");
 const jwt = require("jsonwebtoken");
 
 
-// Generate JWT Token
+/*
+---------------------------------------
+GENERATE JWT TOKEN
+---------------------------------------
+*/
 const generateToken = (id) => {
   return jwt.sign(
     { id },
@@ -15,30 +19,49 @@ const generateToken = (id) => {
 
 /*
 ---------------------------------------
-REGISTER USER (FAST)
+REGISTER USER
 ---------------------------------------
 */
 exports.register = async (req, res) => {
+
   try {
 
     const { name, email, password } = req.body;
 
+    // Validation
     if (!name || !email || !password) {
       return res.status(400).json({
         success: false,
-        message: "All fields required"
+        message: "All fields are required"
       });
     }
 
-    // create user directly (unique email handled by schema)
+    if (password.length < 6) {
+      return res.status(400).json({
+        success: false,
+        message: "Password must be at least 6 characters"
+      });
+    }
+
+    // Check existing user
+    const existingUser = await User.findOne({ email });
+
+    if (existingUser) {
+      return res.status(400).json({
+        success: false,
+        message: "User already exists"
+      });
+    }
+
+    // Create user
     const user = await User.create({
       name,
       email,
       password
     });
 
-    // create default wallet
-    Wallet.create({
+    // Create default wallet
+    await Wallet.create({
       user: user._id,
       name: "Cash",
       type: "cash",
@@ -48,6 +71,7 @@ exports.register = async (req, res) => {
 
     res.status(201).json({
       success: true,
+      message: "User registered successfully",
       data: {
         _id: user._id,
         name: user.name,
@@ -59,32 +83,25 @@ exports.register = async (req, res) => {
 
   } catch (error) {
 
-    // duplicate email error
-    if (error.code === 11000) {
-      return res.status(400).json({
-        success: false,
-        message: "User already exists"
-      });
-    }
-
     console.error("REGISTER ERROR:", error);
 
     res.status(500).json({
       success: false,
-      message: error.message
+      message: "Server error during registration"
     });
 
   }
-};
 
+};
 
 
 /*
 ---------------------------------------
-LOGIN USER (FAST)
+LOGIN USER
 ---------------------------------------
 */
 exports.login = async (req, res) => {
+
   try {
 
     const { email, password } = req.body;
@@ -118,6 +135,7 @@ exports.login = async (req, res) => {
 
     res.json({
       success: true,
+      message: "Login successful",
       data: {
         _id: user._id,
         name: user.name,
@@ -134,12 +152,12 @@ exports.login = async (req, res) => {
 
     res.status(500).json({
       success: false,
-      message: error.message
+      message: "Server error during login"
     });
 
   }
-};
 
+};
 
 
 /*
@@ -148,6 +166,7 @@ CHANGE PASSWORD
 ---------------------------------------
 */
 exports.changePassword = async (req, res) => {
+
   try {
 
     const { currentPassword, newPassword } = req.body;
@@ -187,12 +206,12 @@ exports.changePassword = async (req, res) => {
 
     res.status(500).json({
       success: false,
-      message: error.message
+      message: "Server error while changing password"
     });
 
   }
-};
 
+};
 
 
 /*
@@ -226,7 +245,7 @@ exports.deleteAccount = async (req, res) => {
 
     res.status(500).json({
       success: false,
-      message: error.message
+      message: "Server error while deleting account"
     });
 
   }

@@ -18,7 +18,7 @@ const userSchema = new mongoose.Schema(
     unique: true,
     lowercase: true,
     trim: true,
-    index: true, // ⭐ IMPORTANT (login fast)
+    index: true, // ⭐ fast login
     validate: [validator.isEmail, "Invalid email format"],
   },
 
@@ -33,49 +33,90 @@ const userSchema = new mongoose.Schema(
     type: String,
     enum: ["user", "admin"],
     default: "user",
+    index: true
+  },
+
+  // ⭐ admin can block user
+  isActive: {
+    type: Boolean,
+    default: true
   },
 
   financialScore: {
     type: Number,
     default: 0,
+    min: 0,
+    max: 100
   },
 
   photo: {
     type: String,
     default:
       "https://res.cloudinary.com/ddfk6lnjk/image/upload/v1773059715/download_gbnoyc.png",
+  },
+
+  lastLogin: {
+    type: Date
   }
 
 },
-{ timestamps: true }
+{ 
+  timestamps: true,
+  versionKey: false
+}
 );
 
 
-// 🔐 Hash Password Before Save
+
+/*
+-------------------------------------
+HASH PASSWORD BEFORE SAVE
+-------------------------------------
+*/
+
 userSchema.pre("save", async function () {
 
-  if (!this.isModified("password")) return;
+  if (!this.isModified("password")) {
+    return;
+  }
 
-  // ⭐ Reduced salt rounds (faster)
-  const salt = await bcrypt.genSalt(8);
+  const salt = await bcrypt.genSalt(10);
 
   this.password = await bcrypt.hash(this.password, salt);
 
 });
 
 
-// 🔑 Compare Password
+
+
+/*
+-------------------------------------
+COMPARE PASSWORD
+-------------------------------------
+*/
+
 userSchema.methods.matchPassword = async function (enteredPassword) {
-  return bcrypt.compare(enteredPassword, this.password);
+  return await bcrypt.compare(enteredPassword, this.password);
 };
 
 
-// Remove password from response
+
+/*
+-------------------------------------
+REMOVE PASSWORD FROM RESPONSE
+-------------------------------------
+*/
+
 userSchema.methods.toJSON = function () {
+
   const obj = this.toObject();
+
   delete obj.password;
+
   return obj;
+
 };
+
 
 
 module.exports = mongoose.model("User", userSchema);

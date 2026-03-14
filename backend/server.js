@@ -6,23 +6,28 @@ const helmet = require("helmet");
 const morgan = require("morgan");
 
 const connectDB = require("./config/db");
+
 const { notFound, errorHandler } = require("./middleware/errorMiddleware");
 
+
+// ⭐ ROUTES
 const authRoutes = require("./routes/authRoutes");
 const walletRoutes = require("./routes/walletRoutes");
 const transactionRoutes = require("./routes/transactionRoutes");
 const budgetRoutes = require("./routes/budgetRoutes");
 const recurringRoutes = require("./routes/recurringRoutes");
 const notificationRoutes = require("./routes/notificationRoutes");
+const adminRoutes = require("./routes/adminRoutes"); // ⭐ ADMIN ROUTE
+
 
 const app = express();
 
 
-// CONNECT DATABASE
+// ⭐ CONNECT DATABASE
 connectDB();
 
 
-// ⭐ SECURITY
+// ⭐ SECURITY HEADERS
 app.use(
   helmet({
     crossOriginResourcePolicy: false
@@ -30,7 +35,7 @@ app.use(
 );
 
 
-// ⭐ BODY PARSER (limit added)
+// ⭐ BODY PARSER
 app.use(express.json({ limit: "1mb" }));
 
 
@@ -44,13 +49,13 @@ app.use(
 );
 
 
-// ⭐ LOGGER (dev only)
+// ⭐ LOGGER (development only)
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
 
-// ROOT ROUTE
+// ⭐ ROOT ROUTE
 app.get("/", (req, res) => {
   res.send("🚀 FinTrack API Running...");
 });
@@ -63,14 +68,15 @@ app.use("/api/transactions", transactionRoutes);
 app.use("/api/budgets", budgetRoutes);
 app.use("/api/recurring", recurringRoutes);
 app.use("/api/notifications", notificationRoutes);
+app.use("/api/admin", adminRoutes); // ⭐ ADMIN PANEL ROUTE
 
 
-// ⭐ ERROR HANDLING
+// ⭐ ERROR HANDLING MIDDLEWARE
 app.use(notFound);
 app.use(errorHandler);
 
 
-// SERVER
+// ⭐ SERVER START
 const PORT = process.env.PORT || 8000;
 
 app.listen(PORT, () => {
