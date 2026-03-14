@@ -1,5 +1,4 @@
 const express = require("express");
-
 const router = express.Router();
 
 const adminAuth = require("../middleware/adminAuth");
@@ -13,9 +12,9 @@ const {
   unblockUser,
   getAllTransactions,
   deleteTransaction,
-  monthlyAnalytics
+  monthlyAnalytics,
+  topCategories
 } = require("../controllers/adminController");
-
 
 /*
 ----------------------------
@@ -25,7 +24,6 @@ ADMIN LOGIN
 
 router.post("/login", adminLogin);
 
-
 /*
 ----------------------------
 DASHBOARD
@@ -33,7 +31,6 @@ DASHBOARD
 */
 
 router.get("/dashboard", adminAuth, getDashboard);
-
 
 /*
 ----------------------------
@@ -49,7 +46,6 @@ router.put("/block-user/:id", adminAuth, blockUser);
 
 router.put("/unblock-user/:id", adminAuth, unblockUser);
 
-
 /*
 ----------------------------
 TRANSACTIONS
@@ -60,7 +56,6 @@ router.get("/transactions", adminAuth, getAllTransactions);
 
 router.delete("/transaction/:id", adminAuth, deleteTransaction);
 
-
 /*
 ----------------------------
 ANALYTICS
@@ -69,5 +64,8 @@ ANALYTICS
 
 router.get("/analytics", adminAuth, monthlyAnalytics);
 
+/* ⭐ CATEGORY PIE CHART */
+
+router.get("/top-categories", adminAuth, topCategories);
 
 module.exports = router;

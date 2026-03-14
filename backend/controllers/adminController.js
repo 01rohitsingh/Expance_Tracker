@@ -335,3 +335,106 @@ exports.monthlyAnalytics = async (req, res) => {
   }
 
 };
+
+/*
+--------------------------------
+ADMIN DASHBOARD
+--------------------------------
+*/
+
+exports.getDashboard = async (req, res) => {
+
+  try {
+
+    // total users
+    const totalUsers = await User.countDocuments();
+
+    // total transactions
+    const totalTransactions = await Transaction.countDocuments();
+
+    // total income
+    const incomeResult = await Transaction.aggregate([
+      { $match: { type: "income" } },
+      {
+        $group: {
+          _id: null,
+          total: { $sum: "$amount" }
+        }
+      }
+    ]);
+
+    // total expense
+    const expenseResult = await Transaction.aggregate([
+      { $match: { type: "expense" } },
+      {
+        $group: {
+          _id: null,
+          total: { $sum: "$amount" }
+        }
+      }
+    ]);
+
+    // safe values
+    const totalIncome = incomeResult.length ? incomeResult[0].total : 0;
+    const totalExpense = expenseResult.length ? expenseResult[0].total : 0;
+
+    res.json({
+      totalUsers,
+      totalTransactions,
+      totalIncome,
+      totalExpense
+    });
+
+  } catch (error) {
+
+    console.error("Dashboard Error:", error);
+
+    res.status(500).json({
+      message: "Server Error"
+    });
+
+  }
+
+};
+
+
+
+/*
+--------------------------------
+TOP SPENDING CATEGORIES
+--------------------------------
+*/
+
+exports.topCategories = async (req, res) => {
+
+  try {
+
+    const data = await Transaction.aggregate([
+      {
+        $match: { type: "expense" }
+      },
+      {
+        $group: {
+          _id: "$category",
+          total: { $sum: "$amount" }
+        }
+      },
+      {
+        $sort: { total: -1 }
+      },
+      {
+        $limit: 5
+      }
+    ]);
+
+    res.json(data);
+
+  } catch (error) {
+
+    res.status(500).json({
+      message: error.message
+    });
+
+  }
+
+};

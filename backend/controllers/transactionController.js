@@ -4,26 +4,34 @@ const Notification = require("../models/Notification");
 const exportTransactionsCSV = require("../utils/csvExport");
 const calculateFinancialScore = require("../utils/financialScore");
 
+
 /*
 ---------------------------------------
 ADD TRANSACTION
 ---------------------------------------
 */
 exports.addTransaction = async (req, res, next) => {
+
   try {
 
     const { title, amount, category, type, wallet, date, note } = req.body;
 
     if (!title || !amount || !category || !type || !wallet) {
-      return res.status(400).json({ message: "All fields are required" });
+      return res.status(400).json({
+        message: "All fields are required"
+      });
     }
 
     if (!["income", "expense"].includes(type)) {
-      return res.status(400).json({ message: "Invalid transaction type" });
+      return res.status(400).json({
+        message: "Invalid transaction type"
+      });
     }
 
     if (amount <= 0) {
-      return res.status(400).json({ message: "Amount must be greater than 0" });
+      return res.status(400).json({
+        message: "Amount must be greater than 0"
+      });
     }
 
     const userWallet = await Wallet.findOne({
@@ -32,33 +40,39 @@ exports.addTransaction = async (req, res, next) => {
     });
 
     if (!userWallet) {
-      return res.status(404).json({ message: "Wallet not found" });
+      return res.status(404).json({
+        message: "Wallet not found"
+      });
     }
 
+    // expense balance check
     if (type === "expense" && userWallet.balance < amount) {
-      return res.status(400).json({ message: "Insufficient wallet balance" });
+      return res.status(400).json({
+        message: "Insufficient wallet balance"
+      });
     }
 
     const transaction = await Transaction.create({
       user: req.user._id,
+      wallet,
       title,
       amount,
       category,
       type,
-      wallet,
       date,
       note
     });
 
     // update wallet balance
-    userWallet.balance =
-      type === "income"
-        ? userWallet.balance + amount
-        : userWallet.balance - amount;
+    if (type === "income") {
+      userWallet.balance += amount;
+    } else {
+      userWallet.balance -= amount;
+    }
 
     await userWallet.save();
 
-    // 🔔 notification
+    // notification
     await Notification.create({
       userId: req.user._id,
       message: `New transaction "${title}" of ₹${amount} added`,
@@ -68,8 +82,11 @@ exports.addTransaction = async (req, res, next) => {
     res.status(201).json(transaction);
 
   } catch (error) {
+
     next(error);
+
   }
+
 };
 
 
@@ -79,6 +96,7 @@ GET ALL TRANSACTIONS
 ---------------------------------------
 */
 exports.getTransactions = async (req, res, next) => {
+
   try {
 
     const transactions = await Transaction.find({
@@ -91,17 +109,21 @@ exports.getTransactions = async (req, res, next) => {
     res.json(transactions);
 
   } catch (error) {
+
     next(error);
+
   }
+
 };
 
 
 /*
 ---------------------------------------
-DELETE TRANSACTION (Soft Delete)
+DELETE TRANSACTION (SOFT DELETE)
 ---------------------------------------
 */
 exports.deleteTransaction = async (req, res, next) => {
+
   try {
 
     const transaction = await Transaction.findOne({
@@ -111,34 +133,42 @@ exports.deleteTransaction = async (req, res, next) => {
     });
 
     if (!transaction) {
-      return res.status(404).json({ message: "Transaction not found" });
+      return res.status(404).json({
+        message: "Transaction not found"
+      });
     }
 
     const wallet = await Wallet.findById(transaction.wallet);
 
     // reverse wallet balance
-    wallet.balance =
-      transaction.type === "income"
-        ? wallet.balance - transaction.amount
-        : wallet.balance + transaction.amount;
+    if (transaction.type === "income") {
+      wallet.balance -= transaction.amount;
+    } else {
+      wallet.balance += transaction.amount;
+    }
 
     await wallet.save();
 
     transaction.isDeleted = true;
+
     await transaction.save();
 
-    // 🔔 notification
     await Notification.create({
       userId: req.user._id,
-      message: `Transaction "${transaction.title}" was deleted`,
+      message: `Transaction "${transaction.title}" deleted`,
       seen: false
     });
 
-    res.json({ message: "Transaction deleted successfully" });
+    res.json({
+      message: "Transaction deleted successfully"
+    });
 
   } catch (error) {
+
     next(error);
+
   }
+
 };
 
 
@@ -148,6 +178,7 @@ UPDATE TRANSACTION
 ---------------------------------------
 */
 exports.updateTransaction = async (req, res, next) => {
+
   try {
 
     const transaction = await Transaction.findOne({
@@ -157,27 +188,27 @@ exports.updateTransaction = async (req, res, next) => {
     });
 
     if (!transaction) {
-      return res.status(404).json({ message: "Transaction not found" });
+      return res.status(404).json({
+        message: "Transaction not found"
+      });
     }
 
     const oldWallet = await Wallet.findById(transaction.wallet);
 
-    // reverse old wallet effect
-    oldWallet.balance =
-      transaction.type === "income"
-        ? oldWallet.balance - transaction.amount
-        : oldWallet.balance + transaction.amount;
+    // reverse old balance
+    if (transaction.type === "income") {
+      oldWallet.balance -= transaction.amount;
+    } else {
+      oldWallet.balance += transaction.amount;
+    }
 
     await oldWallet.save();
 
-    const newAmount =
-      req.body.amount !== undefined ? req.body.amount : transaction.amount;
+    const newAmount = req.body.amount ?? transaction.amount;
 
-    const newType =
-      req.body.type !== undefined ? req.body.type : transaction.type;
+    const newType = req.body.type ?? transaction.type;
 
-    const newWalletId =
-      req.body.wallet !== undefined ? req.body.wallet : transaction.wallet;
+    const newWalletId = req.body.wallet ?? transaction.wallet;
 
     const newWallet = await Wallet.findOne({
       _id: newWalletId,
@@ -185,18 +216,23 @@ exports.updateTransaction = async (req, res, next) => {
     });
 
     if (!newWallet) {
-      return res.status(404).json({ message: "Wallet not found" });
+      return res.status(404).json({
+        message: "Wallet not found"
+      });
     }
 
     if (newType === "expense" && newWallet.balance < newAmount) {
-      return res.status(400).json({ message: "Insufficient balance" });
+      return res.status(400).json({
+        message: "Insufficient balance"
+      });
     }
 
-    // apply new wallet effect
-    newWallet.balance =
-      newType === "income"
-        ? newWallet.balance + newAmount
-        : newWallet.balance - newAmount;
+    // apply new balance
+    if (newType === "income") {
+      newWallet.balance += newAmount;
+    } else {
+      newWallet.balance -= newAmount;
+    }
 
     await newWallet.save();
 
@@ -210,18 +246,20 @@ exports.updateTransaction = async (req, res, next) => {
 
     await transaction.save();
 
-    // 🔔 notification
     await Notification.create({
       userId: req.user._id,
-      message: `Transaction "${transaction.title}" was updated`,
+      message: `Transaction "${transaction.title}" updated`,
       seen: false
     });
 
     res.json(transaction);
 
   } catch (error) {
+
     next(error);
+
   }
+
 };
 
 
@@ -231,18 +269,23 @@ EXPORT CSV
 ---------------------------------------
 */
 exports.exportCSV = async (req, res, next) => {
+
   try {
 
     const csv = await exportTransactionsCSV(req.user._id);
 
     res.header("Content-Type", "text/csv");
+
     res.attachment("transactions.csv");
 
     res.send(csv);
 
   } catch (error) {
+
     next(error);
+
   }
+
 };
 
 
@@ -252,13 +295,19 @@ FINANCIAL HEALTH SCORE
 ---------------------------------------
 */
 exports.getFinancialScore = async (req, res, next) => {
+
   try {
 
     const score = await calculateFinancialScore(req.user._id);
 
-    res.json({ score });
+    res.json({
+      score
+    });
 
   } catch (error) {
+
     next(error);
+
   }
+
 };
