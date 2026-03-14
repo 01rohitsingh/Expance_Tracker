@@ -13,7 +13,9 @@ const {
   getAllTransactions,
   deleteTransaction,
   monthlyAnalytics,
-  topCategories
+  topCategories,
+  getUserDetails,
+  topSpendingUsers
 } = require("../controllers/adminController");
 
 /*
@@ -68,4 +70,13 @@ router.get("/analytics", adminAuth, monthlyAnalytics);
 
 router.get("/top-categories", adminAuth, topCategories);
 
+/*
+----------------------------
+TOP SPENDING USERS
+----------------------------
+*/
+
+router.get("/top-spending-users", adminAuth, topSpendingUsers);
+
+router.get("/user-details/:id", getUserDetails);
 module.exports = router;

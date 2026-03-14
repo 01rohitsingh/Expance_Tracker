@@ -6,22 +6,24 @@ import { useOutletContext } from "react-router-dom";
 import API from "../services/adminApi";
 import { cardAnimation } from "../utils/animations";
 
-function Transactions() {
+function TransactionsPage() {
   const [transactions, setTransactions] = useState([]);
   const [filter, setFilter] = useState("all");
 
   // ⭐ global search from Navbar
   const { search } = useOutletContext();
 
+  // fetch all transactions
   const fetchTransactions = async () => {
     try {
       const res = await API.get("/transactions");
       setTransactions(res.data);
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
+      console.error(err);
     }
   };
 
+  // delete transaction
   const deleteTransaction = async (id) => {
     const confirmDelete = window.confirm("Delete this transaction?");
     if (!confirmDelete) return;
@@ -29,8 +31,8 @@ function Transactions() {
     try {
       await API.delete(`/transaction/${id}`);
       fetchTransactions();
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
+      console.error(err);
     }
   };
 
@@ -38,7 +40,7 @@ function Transactions() {
     fetchTransactions();
   }, []);
 
-  // ------------------------- FILTER + SEARCH -------------------------
+  // filter + search
   const filteredTransactions = transactions
     .filter((t) => filter === "all" || t.type === filter)
     .filter((t) =>
@@ -54,32 +56,24 @@ function Transactions() {
       <div className="flex flex-wrap gap-3 mb-6">
         <button
           onClick={() => setFilter("all")}
-          className={`px-4 py-2 md:px-5 md:py-3 rounded text-sm md:text-base ${
-            filter === "all"
-              ? "bg-blue-500 text-white"
-              : "bg-gray-200 hover:bg-gray-300"
+          className={`px-4 py-2 rounded text-sm md:text-base ${
+            filter === "all" ? "bg-blue-500 text-white" : "bg-gray-200"
           }`}
         >
           All
         </button>
-
         <button
           onClick={() => setFilter("income")}
-          className={`px-4 py-2 md:px-5 md:py-3 rounded text-sm md:text-base ${
-            filter === "income"
-              ? "bg-green-500 text-white"
-              : "bg-gray-200 hover:bg-gray-300"
+          className={`px-4 py-2 rounded text-sm md:text-base ${
+            filter === "income" ? "bg-green-500 text-white" : "bg-gray-200"
           }`}
         >
           Income
         </button>
-
         <button
           onClick={() => setFilter("expense")}
-          className={`px-4 py-2 md:px-5 md:py-3 rounded text-sm md:text-base ${
-            filter === "expense"
-              ? "bg-red-500 text-white"
-              : "bg-gray-200 hover:bg-gray-300"
+          className={`px-4 py-2 rounded text-sm md:text-base ${
+            filter === "expense" ? "bg-red-500 text-white" : "bg-gray-200"
           }`}
         >
           Expense
@@ -89,9 +83,7 @@ function Transactions() {
       {/* TRANSACTIONS GRID */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
         {filteredTransactions.length === 0 ? (
-          <p className="text-gray-500 text-base md:text-lg">
-            No transactions found
-          </p>
+          <p className="text-gray-500">No transactions found</p>
         ) : (
           filteredTransactions.map((t) => (
             <motion.div
@@ -99,35 +91,20 @@ function Transactions() {
               {...cardAnimation}
               className="bg-white p-5 md:p-6 rounded-xl shadow relative hover:shadow-lg transition"
             >
-              {/* DELETE ICON */}
               <FaTrash
                 onClick={() => deleteTransaction(t._id)}
-                className="absolute top-4 right-4 text-red-500 text-lg md:text-2xl cursor-pointer hover:text-red-700"
+                className="absolute top-4 right-4 text-red-500 cursor-pointer hover:text-red-700"
               />
-
-              {/* USER NAME */}
-              <h2 className="text-lg md:text-xl font-bold">
-                {t.user?.name || "Unknown"}
-              </h2>
-
-              {/* AMOUNT */}
-              <p className="text-lg md:text-xl font-semibold mt-2">
-                ₹{t.amount}
-              </p>
-
-              {/* TYPE */}
+              <h2 className="text-lg md:text-xl font-bold">{t.user?.name || "Unknown"}</h2>
+              <p className="text-lg font-semibold mt-2">₹{t.amount}</p>
               <span
-                className={`inline-block mt-2 px-3 py-1 md:px-4 md:py-2 rounded-full text-sm md:text-base font-medium ${
-                  t.type === "income"
-                    ? "bg-green-100 text-green-600"
-                    : "bg-red-100 text-red-600"
+                className={`inline-block mt-2 px-3 py-1 rounded-full text-sm ${
+                  t.type === "income" ? "bg-green-100 text-green-600" : "bg-red-100 text-red-600"
                 }`}
               >
                 {t.type}
               </span>
-
-              {/* DATE */}
-              <p className="text-gray-500 mt-2 text-sm md:text-base">
+              <p className="text-gray-500 mt-2 text-sm">
                 {t.date ? new Date(t.date).toLocaleDateString() : "N/A"}
               </p>
             </motion.div>
@@ -138,4 +115,4 @@ function Transactions() {
   );
 }
 
-export default Transactions;
+export default TransactionsPage;

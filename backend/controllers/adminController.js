@@ -401,7 +401,7 @@ exports.getDashboard = async (req, res) => {
 
 /*
 --------------------------------
-TOP SPENDING CATEGORIES
+TOP  CATEGORIES
 --------------------------------
 */
 
@@ -425,6 +425,148 @@ exports.topCategories = async (req, res) => {
       {
         $limit: 5
       }
+    ]);
+
+    res.json(data);
+
+  } catch (error) {
+
+    res.status(500).json({
+      message: error.message
+    });
+
+  }
+
+};
+
+/*
+--------------------------------
+GET USER DETAILS
+--------------------------------
+*/
+
+exports.getUserDetails = async (req, res) => {
+
+  try {
+
+    const userId = req.params.id;
+
+    // USER PROFILE
+    const user = await User.findById(userId).select("-password");
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found"
+      });
+    }
+
+    // USER TRANSACTIONS
+    const transactions = await Transaction.find({
+      user: userId
+    }).sort({ date: -1 });
+
+    // TOTAL INCOME
+    const incomeResult = await Transaction.aggregate([
+      { $match: { user: user._id, type: "income" } },
+      {
+        $group: {
+          _id: null,
+          total: { $sum: "$amount" }
+        }
+      }
+    ]);
+
+    // TOTAL EXPENSE
+    const expenseResult = await Transaction.aggregate([
+      { $match: { user: user._id, type: "expense" } },
+      {
+        $group: {
+          _id: null,
+          total: { $sum: "$amount" }
+        }
+      }
+    ]);
+
+    const totalIncome = incomeResult.length ? incomeResult[0].total : 0;
+    const totalExpense = expenseResult.length ? expenseResult[0].total : 0;
+
+    res.json({
+      user,
+      transactions,
+      totalIncome,
+      totalExpense
+    });
+
+  } catch (error) {
+
+    console.error(error);
+
+    res.status(500).json({
+      message: "Server Error"
+    });
+
+  }
+
+};
+
+/*
+--------------------------------
+TOP 5 SPENDING USERS
+--------------------------------
+*/
+
+exports.topSpendingUsers = async (req, res) => {
+
+  try {
+
+    const data = await Transaction.aggregate([
+
+      // sirf expense transactions
+      {
+        $match: { type: "expense" }
+      },
+
+      // user wise total spending
+      {
+        $group: {
+          _id: "$user",
+          totalSpent: { $sum: "$amount" }
+        }
+      },
+
+      // user details join
+      {
+        $lookup: {
+          from: "users",
+          localField: "_id",
+          foreignField: "_id",
+          as: "user"
+        }
+      },
+
+      {
+        $unwind: "$user"
+      },
+
+      // fields select
+      {
+        $project: {
+          name: "$user.name",
+          email: "$user.email",
+          totalSpent: 1
+        }
+      },
+
+      // highest spending
+      {
+        $sort: { totalSpent: -1 }
+      },
+
+      // top 5
+      {
+        $limit: 5
+      }
+
     ]);
 
     res.json(data);
