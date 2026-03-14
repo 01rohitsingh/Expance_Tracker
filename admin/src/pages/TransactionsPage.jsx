@@ -4,13 +4,12 @@ import { FaTrash } from "react-icons/fa";
 import { useOutletContext } from "react-router-dom";
 
 import API from "../services/adminApi";
-import { cardAnimation } from "../utils/animations";
+import { cardAnimation, iconAnimation, buttonAnimation } from "../utils/animations";
 
 function TransactionsPage() {
   const [transactions, setTransactions] = useState([]);
   const [filter, setFilter] = useState("all");
 
-  // ⭐ global search from Navbar
   const { search } = useOutletContext();
 
   // fetch all transactions
@@ -54,30 +53,35 @@ function TransactionsPage() {
 
       {/* FILTER BUTTONS */}
       <div className="flex flex-wrap gap-3 mb-6">
-        <button
+        <motion.button
+          {...buttonAnimation}
           onClick={() => setFilter("all")}
           className={`px-4 py-2 rounded text-sm md:text-base ${
             filter === "all" ? "bg-blue-500 text-white" : "bg-gray-200"
           }`}
         >
           All
-        </button>
-        <button
+        </motion.button>
+
+        <motion.button
+          {...buttonAnimation}
           onClick={() => setFilter("income")}
           className={`px-4 py-2 rounded text-sm md:text-base ${
             filter === "income" ? "bg-green-500 text-white" : "bg-gray-200"
           }`}
         >
           Income
-        </button>
-        <button
+        </motion.button>
+
+        <motion.button
+          {...buttonAnimation}
           onClick={() => setFilter("expense")}
           className={`px-4 py-2 rounded text-sm md:text-base ${
             filter === "expense" ? "bg-red-500 text-white" : "bg-gray-200"
           }`}
         >
           Expense
-        </button>
+        </motion.button>
       </div>
 
       {/* TRANSACTIONS GRID */}
@@ -91,12 +95,17 @@ function TransactionsPage() {
               {...cardAnimation}
               className="bg-white p-5 md:p-6 rounded-xl shadow relative hover:shadow-lg transition"
             >
-              <FaTrash
+              <motion.div
+                {...iconAnimation}
+                className="absolute top-4 right-4 cursor-pointer text-red-500 hover:text-red-700"
                 onClick={() => deleteTransaction(t._id)}
-                className="absolute top-4 right-4 text-red-500 cursor-pointer hover:text-red-700"
-              />
+              >
+                <FaTrash />
+              </motion.div>
+
               <h2 className="text-lg md:text-xl font-bold">{t.user?.name || "Unknown"}</h2>
               <p className="text-lg font-semibold mt-2">₹{t.amount}</p>
+
               <span
                 className={`inline-block mt-2 px-3 py-1 rounded-full text-sm ${
                   t.type === "income" ? "bg-green-100 text-green-600" : "bg-red-100 text-red-600"
@@ -104,6 +113,7 @@ function TransactionsPage() {
               >
                 {t.type}
               </span>
+
               <p className="text-gray-500 mt-2 text-sm">
                 {t.date ? new Date(t.date).toLocaleDateString() : "N/A"}
               </p>
