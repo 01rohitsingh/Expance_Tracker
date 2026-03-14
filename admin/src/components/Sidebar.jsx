@@ -1,74 +1,102 @@
 import { NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
-import { FaChartPie, FaUsers, FaMoneyBill } from "react-icons/fa";
+import { FaChartPie, FaUsers, FaMoneyBill, FaUserSlash } from "react-icons/fa";
 
 function Sidebar({ sidebarOpen, setSidebarOpen }) {
+
   const handleLogout = () => {
     localStorage.removeItem("token");
-    window.location.href = "/admin/login"; // redirects on logout
+    window.location.href = "/admin/login";
   };
 
   return (
     <>
       {/* Overlay for mobile */}
       <div
-        className={`fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden transition-opacity ${
-          sidebarOpen ? "opacity-100 visible" : "opacity-0 invisible"
-        }`}
+        className={`fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden transition-opacity ${sidebarOpen ? "opacity-100 visible" : "opacity-0 invisible"
+          }`}
         onClick={() => setSidebarOpen(false)}
       ></div>
 
-      {/* Sidebar panel (fixed) */}
+      {/* Sidebar */}
       <aside
-        className={`fixed z-50 top-0 left-0 h-screen w-64 bg-gray-900 text-white transform transition-transform ${
-          sidebarOpen ? "translate-x-0" : "-translate-x-full"
-        } md:translate-x-0 p-6 flex flex-col justify-between`}
+        className={`fixed z-50 top-0 left-0 h-screen w-64 bg-gray-900 text-white transform transition-transform ${sidebarOpen ? "translate-x-0" : "-translate-x-full"
+          } md:translate-x-0 p-6 flex flex-col justify-between`}
       >
-        <div>
-          {/* Logo */}
-          <h2 className="text-3xl md:text-4xl font-bold mb-10">FinTrack</h2>
 
-          {/* Nav Links */}
+        <div>
+
+          {/* Logo */}
+          <h2 className="text-3xl md:text-4xl font-bold mb-10">
+            FinTrack
+          </h2>
+
+          {/* Navigation */}
           <nav className="space-y-4">
+
+            {/* Dashboard */}
             <motion.div whileHover={{ x: 5 }}>
               <NavLink
                 to="/admin/dashboard"
                 className={({ isActive }) =>
-                  `flex items-center gap-3 p-3 md:p-4 rounded transition ${
-                    isActive ? "bg-gray-700" : "hover:bg-gray-700"
+                  `flex items-center gap-3 p-3 md:p-4 rounded transition ${isActive ? "bg-gray-700" : "hover:bg-gray-700"
                   }`
                 }
               >
                 <FaChartPie className="text-lg md:text-2xl" />
-                <span className="text-base md:text-lg font-medium">Dashboard</span>
+                <span className="text-base md:text-lg font-medium">
+                  Dashboard
+                </span>
               </NavLink>
             </motion.div>
 
+            {/* Users */}
             <motion.div whileHover={{ x: 5 }}>
               <NavLink
                 to="/admin/users"
                 className={({ isActive }) =>
-                  `flex items-center gap-3 p-3 md:p-4 rounded transition ${
-                    isActive ? "bg-gray-700" : "hover:bg-gray-700"
+                  `flex items-center gap-3 p-3 md:p-4 rounded transition ${isActive ? "bg-gray-700" : "hover:bg-gray-700"
                   }`
                 }
               >
                 <FaUsers className="text-lg md:text-2xl" />
-                <span className="text-base md:text-lg font-medium">Users</span>
+                <span className="text-base md:text-lg font-medium">
+                  Users
+                </span>
               </NavLink>
             </motion.div>
 
+
+
+            {/* Transactions */}
             <motion.div whileHover={{ x: 5 }}>
               <NavLink
                 to="/admin/transactions"
                 className={({ isActive }) =>
-                  `flex items-center gap-3 p-3 md:p-4 rounded transition ${
-                    isActive ? "bg-gray-700" : "hover:bg-gray-700"
+                  `flex items-center gap-3 p-3 md:p-4 rounded transition ${isActive ? "bg-gray-700" : "hover:bg-gray-700"
                   }`
                 }
               >
                 <FaMoneyBill className="text-lg md:text-2xl" />
-                <span className="text-base md:text-lg font-medium">Transactions</span>
+                <span className="text-base md:text-lg font-medium">
+                  Transactions
+                </span>
+              </NavLink>
+            </motion.div>
+            
+            {/* Blocked Users */}
+            <motion.div whileHover={{ x: 5 }}>
+              <NavLink
+                to="/admin/blocked-users"
+                className={({ isActive }) =>
+                  `flex items-center gap-3 p-3 md:p-4 rounded transition ${isActive ? "bg-gray-700" : "hover:bg-gray-700"
+                  }`
+                }
+              >
+                <FaUserSlash className="text-lg md:text-2xl" />
+                <span className="text-base md:text-lg font-medium">
+                  Blocked Users
+                </span>
               </NavLink>
             </motion.div>
           </nav>
@@ -83,6 +111,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
         >
           Logout
         </motion.button>
+
       </aside>
     </>
   );
