@@ -3,7 +3,6 @@ import { useNavigate, useOutletContext } from "react-router-dom";
 import { motion } from "framer-motion";
 import { FaUsers, FaMoneyBillWave, FaArrowUp, FaArrowDown } from "react-icons/fa";
 
-import AnalyticsChart from "../components/AnalyticsChart";
 import CategoryPieChart from "../components/CategoryPieChart";
 import PieChartAnalytics from "../components/PieChartAnalytics";
 import TopSpendingChart from "../components/TopSpendingChart";
@@ -14,7 +13,7 @@ import { cardAnimation } from "../utils/animations";
 function Dashboard() {
 
   const navigate = useNavigate();
-  const { search } = useOutletContext();
+  const { search = "" } = useOutletContext();
 
   const [data, setData] = useState({
     totalUsers: 0,
@@ -23,20 +22,19 @@ function Dashboard() {
     totalExpense: 0
   });
 
-  const [chartData, setChartData] = useState([]);
   const [categoryData, setCategoryData] = useState([]);
   const [topUsers, setTopUsers] = useState([]);
   const [recentTransactions, setRecentTransactions] = useState([]);
-
   const [loading, setLoading] = useState(true);
 
   /*
-  -----------------------------------
+  ------------------------------
   FETCH DASHBOARD DATA
-  -----------------------------------
+  ------------------------------
   */
 
   const fetchDashboard = useCallback(async () => {
+
     try {
 
       const res = await API.get("/dashboard");
@@ -48,41 +46,14 @@ function Dashboard() {
       navigate("/admin/login");
 
     }
+
   }, [navigate]);
 
 
   /*
-  -----------------------------------
-  FETCH MONTHLY ANALYTICS
-  -----------------------------------
-  */
-
-  const fetchAnalytics = async () => {
-
-    try {
-
-      const res = await API.get("/analytics");
-
-      const formatted = res.data.map(item => ({
-        month: `M${item._id}`,
-        income: item.totalIncome,
-        expense: item.totalExpense
-      }));
-
-      setChartData(formatted);
-
-    } catch (error) {
-
-      console.log(error);
-
-    }
-  };
-
-
-  /*
-  -----------------------------------
+  ------------------------------
   FETCH CATEGORY ANALYTICS
-  -----------------------------------
+  ------------------------------
   */
 
   const fetchCategoryAnalytics = async () => {
@@ -97,13 +68,14 @@ function Dashboard() {
       console.log(error);
 
     }
+
   };
 
 
   /*
-  -----------------------------------
+  ------------------------------
   FETCH TOP SPENDING USERS
-  -----------------------------------
+  ------------------------------
   */
 
   const fetchTopUsers = async () => {
@@ -124,13 +96,14 @@ function Dashboard() {
       console.log(error);
 
     }
+
   };
 
 
   /*
-  -----------------------------------
-  FETCH RECENT TRANSACTIONS (6)
-  -----------------------------------
+  ------------------------------
+  FETCH RECENT TRANSACTIONS
+  ------------------------------
   */
 
   const fetchRecentTransactions = async () => {
@@ -139,7 +112,6 @@ function Dashboard() {
 
       const res = await API.get("/transactions");
 
-      // latest 6
       setRecentTransactions(res.data.slice(0, 6));
 
     } catch (error) {
@@ -147,13 +119,14 @@ function Dashboard() {
       console.log(error);
 
     }
+
   };
 
 
   /*
-  -----------------------------------
+  ------------------------------
   LOAD ALL DATA
-  -----------------------------------
+  ------------------------------
   */
 
   useEffect(() => {
@@ -163,40 +136,53 @@ function Dashboard() {
     if (!token) {
 
       navigate("/admin/login");
+      return;
 
-    } else {
+    }
 
-      const loadData = async () => {
+    const loadData = async () => {
 
-        await fetchDashboard();
-        await fetchAnalytics();
-        await fetchCategoryAnalytics();
-        await fetchTopUsers();
-        await fetchRecentTransactions();
+      try {
+
+        await Promise.all([
+          fetchDashboard(),
+          fetchCategoryAnalytics(),
+          fetchTopUsers(),
+          fetchRecentTransactions()
+        ]);
+
+      } catch (error) {
+
+        console.log(error);
+
+      } finally {
 
         setLoading(false);
 
-      };
+      }
 
-      loadData();
+    };
 
-    }
+    loadData();
 
   }, [fetchDashboard, navigate]);
 
 
   /*
-  -----------------------------------
+  ------------------------------
   SEARCH FILTER
-  -----------------------------------
+  ------------------------------
   */
 
-  const filteredTransactions = recentTransactions.filter(t =>
+  const filteredTransactions = recentTransactions.filter(t => {
 
-    t?.user?.name?.toLowerCase().includes(search.toLowerCase()) ||
-    t?.type?.toLowerCase().includes(search.toLowerCase())
+    const name = t?.user?.name?.toLowerCase() || "";
+    const type = t?.type?.toLowerCase() || "";
+    const query = search.toLowerCase();
 
-  );
+    return name.includes(query) || type.includes(query);
+
+  });
 
 
   return (
@@ -222,20 +208,15 @@ function Dashboard() {
             <motion.div
               {...cardAnimation}
               onClick={() => navigate("/admin/users")}
-              className="bg-white p-6 md:p-8 rounded-xl shadow flex items-center justify-between cursor-pointer"
+              className="bg-white p-6 rounded-xl shadow flex items-center justify-between cursor-pointer"
             >
 
               <div>
-                <h3 className="text-gray-500 text-sm md:text-base">
-                  Total Users
-                </h3>
-
-                <p className="text-2xl md:text-3xl font-bold">
-                  {data.totalUsers}
-                </p>
+                <h3 className="text-gray-500 text-sm">Total Users</h3>
+                <p className="text-3xl font-bold">{data.totalUsers}</p>
               </div>
 
-              <FaUsers className="text-blue-500 text-3xl md:text-4xl" />
+              <FaUsers className="text-blue-500 text-4xl" />
 
             </motion.div>
 
@@ -243,77 +224,61 @@ function Dashboard() {
             <motion.div
               {...cardAnimation}
               onClick={() => navigate("/admin/transactions")}
-              className="bg-white p-6 md:p-8 rounded-xl shadow flex items-center justify-between cursor-pointer"
+              className="bg-white p-6 rounded-xl shadow flex items-center justify-between cursor-pointer"
             >
 
               <div>
-                <h3 className="text-gray-500 text-sm md:text-base">
-                  Transactions
-                </h3>
-
-                <p className="text-2xl md:text-3xl font-bold">
-                  {data.totalTransactions}
-                </p>
+                <h3 className="text-gray-500 text-sm">Transactions</h3>
+                <p className="text-3xl font-bold">{data.totalTransactions}</p>
               </div>
 
-              <FaMoneyBillWave className="text-green-500 text-3xl md:text-4xl" />
+              <FaMoneyBillWave className="text-green-500 text-4xl" />
 
             </motion.div>
 
 
             <motion.div
               {...cardAnimation}
-              className="bg-white p-6 md:p-8 rounded-xl shadow flex items-center justify-between"
+              className="bg-white p-6 rounded-xl shadow flex items-center justify-between"
             >
 
               <div>
-                <h3 className="text-gray-500 text-sm md:text-base">
-                  Income
-                </h3>
-
-                <p className="text-2xl md:text-3xl font-bold text-green-600">
+                <h3 className="text-gray-500 text-sm">Income</h3>
+                <p className="text-3xl font-bold text-green-600">
                   ₹{data.totalIncome}
                 </p>
               </div>
 
-              <FaArrowUp className="text-green-500 text-3xl md:text-4xl" />
+              <FaArrowUp className="text-green-500 text-4xl" />
 
             </motion.div>
 
 
             <motion.div
               {...cardAnimation}
-              className="bg-white p-6 md:p-8 rounded-xl shadow flex items-center justify-between"
+              className="bg-white p-6 rounded-xl shadow flex items-center justify-between"
             >
 
               <div>
-                <h3 className="text-gray-500 text-sm md:text-base">
-                  Expense
-                </h3>
-
-                <p className="text-2xl md:text-3xl font-bold text-red-600">
+                <h3 className="text-gray-500 text-sm">Expense</h3>
+                <p className="text-3xl font-bold text-red-600">
                   ₹{data.totalExpense}
                 </p>
               </div>
 
-              <FaArrowDown className="text-red-500 text-3xl md:text-4xl" />
+              <FaArrowDown className="text-red-500 text-4xl" />
 
             </motion.div>
 
-          </div>
-
-
-          {/* MONTHLY ANALYTICS */}
-
-          <div className="mt-8 bg-white p-6 md:p-8 rounded-xl shadow">
-            <AnalyticsChart data={chartData} />
           </div>
 
 
           {/* TOP SPENDING USERS */}
 
-          <div className="mt-8 bg-white p-6 md:p-8 rounded-xl shadow">
+          <div className="mt-8 bg-white p-6 rounded-xl shadow">
+
             <TopSpendingChart data={topUsers} />
+
           </div>
 
 
@@ -335,7 +300,7 @@ function Dashboard() {
 
           <div className="mt-8">
 
-            <h2 className="text-xl md:text-2xl font-semibold mb-4">
+            <h2 className="text-2xl font-semibold mb-4">
               Recent Transactions
             </h2>
 
@@ -372,7 +337,9 @@ function Dashboard() {
                   </div>
 
                   <div className="text-gray-400 text-sm">
-                    {t.date ? new Date(t.date).toLocaleDateString() : ""}
+                    {t.date
+                      ? new Date(t.date).toLocaleDateString()
+                      : ""}
                   </div>
 
                 </motion.div>
@@ -390,6 +357,7 @@ function Dashboard() {
     </div>
 
   );
+
 }
 
 export default Dashboard;
