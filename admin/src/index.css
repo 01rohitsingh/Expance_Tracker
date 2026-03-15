@@ -1,3 +1,24 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Recharts focus border remove */
+.recharts-sector:focus {
+  outline: none !important;
+}
+
+.recharts-wrapper:focus {
+  outline: none !important;
+}
+
+.recharts-layer:focus {
+  outline: none !important;
+}
+
+.recharts-surface:focus {
+  outline: none !important;
+}
+
+svg:focus {
+  outline: none !important;
+}

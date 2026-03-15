@@ -8,28 +8,29 @@ function AdminLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="flex min-h-screen bg-gray-100">
+    <div className="flex h-screen bg-gray-100 overflow-hidden">
 
-      {/* Sidebar (fixed) */}
+      {/* Sidebar */}
       <Sidebar
         sidebarOpen={sidebarOpen}
         setSidebarOpen={setSidebarOpen}
       />
 
-      {/* Main Content */}
+      {/* Main Section */}
       <div className="flex flex-col flex-1 md:ml-64">
-        {/* md:ml-64 = leave space for sidebar on tablet/PC only */}
 
-        {/* Navbar */}
-        <Navbar
-          search={search}
-          setSearch={setSearch}
-          sidebarOpen={sidebarOpen}
-          setSidebarOpen={setSidebarOpen}
-        />
+        {/* Navbar (Fixed) */}
+        <div className="fixed top-0 left-0 md:left-64 right-0 z-40">
+          <Navbar
+            search={search}
+            setSearch={setSearch}
+            sidebarOpen={sidebarOpen}
+            setSidebarOpen={setSidebarOpen}
+          />
+        </div>
 
-        {/* Page Content */}
-        <main className="p-4 sm:p-6 md:p-8 flex-1 overflow-y-auto">
+        {/* Scrollable Content */}
+        <main className="flex-1 overflow-y-auto pt-20 p-6">
           <Outlet context={{ search }} />
         </main>
 

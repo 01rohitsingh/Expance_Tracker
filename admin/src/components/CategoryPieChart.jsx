@@ -10,7 +10,7 @@ import {
 
 const COLORS = ["#2563eb", "#16a34a", "#dc2626", "#f59e0b", "#9333ea"];
 
-// Format numbers
+// format numbers
 const formatAmount = (num) => {
   if (num >= 1e6) return (num / 1e6).toFixed(1) + "M";
   if (num >= 1e5) return (num / 1e5).toFixed(1) + "L";
@@ -73,14 +73,13 @@ function CategoryPieChart({ data = [] }) {
               innerRadius={55}
               paddingAngle={3}
               animationDuration={1200}
+              activeShape={false}
+              activeIndex={-1}
             >
-
               {formatted.map((entry, index) => (
                 <Cell
                   key={index}
                   fill={COLORS[index % COLORS.length]}
-                  stroke="#fff"
-                  strokeWidth={2}
                 />
               ))}
 
@@ -97,6 +96,7 @@ function CategoryPieChart({ data = [] }) {
             </Pie>
 
             <Tooltip
+              cursor={false}
               formatter={(value) => [
                 `₹${formatAmount(value)}`,
                 "Spending"

@@ -10,77 +10,129 @@ import {
   Cell
 } from "recharts";
 
-// Gradient colors for bars
+// bar colors
 const colors = ["#ef4444", "#f97316", "#f59e0b", "#10b981", "#3b82f6"];
 
 function TopSpendingChart({ data }) {
-  // Sort descending
+
+  // sort highest spending
   const sortedData = [...data].sort((a, b) => b.spending - a.spending);
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8 }}
-      className="bg-white rounded-2xl shadow-lg p-6 w-full"
+      transition={{ duration: 0.7 }}
+      className="bg-white rounded-2xl shadow-md p-6 w-full border border-gray-100"
     >
+
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-lg md:text-xl font-semibold">💰 Top Spending Users</h2>
-        <span className="text-xs text-gray-400">Analytics</span>
+
+        <h2 className="text-lg md:text-xl font-semibold flex items-center gap-2">
+          💰 Top Spending Users
+        </h2>
+
+        <span className="text-xs text-gray-400">
+          Analytics
+        </span>
+
       </div>
 
       {/* Chart */}
-      <div className="w-full h-[300px] md:h-[360px]">
+      <div className="w-full h-[320px] bg-white">
+
         <ResponsiveContainer width="100%" height="100%">
+
           <BarChart
             data={sortedData}
-            margin={{ top: 10, right: 20, left: 0, bottom: 5 }}
+            margin={{ top: 10, right: 30, left: -10, bottom: 0 }}
+            style={{ background: "transparent" }}
           >
-            <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
-            <XAxis dataKey="name" tick={{ fontSize: 12 }} />
-            <YAxis tick={{ fontSize: 12 }} />
+
+            {/* Grid */}
+            <CartesianGrid
+              strokeDasharray="4 4"
+              stroke="#e5e7eb"
+              vertical={false}
+            />
+
+            {/* X Axis */}
+            <XAxis
+              dataKey="name"
+              tick={{ fontSize: 13 }}
+              axisLine={false}
+              tickLine={false}
+            />
+
+            {/* Y Axis */}
+            <YAxis
+              tick={{ fontSize: 13 }}
+              axisLine={false}
+              tickLine={false}
+            />
+
+            {/* Tooltip */}
             <Tooltip
               formatter={(value) => [`₹${value}`, "Spending"]}
               contentStyle={{
+                background: "#fff",
                 borderRadius: "10px",
-                border: "none",
+                border: "1px solid #eee",
                 boxShadow: "0 6px 20px rgba(0,0,0,0.08)"
               }}
             />
+
+            {/* Bars */}
             <Bar
               dataKey="spending"
-              radius={[12, 12, 0, 0]}
-              barSize={50}
-              isAnimationActive={true}
-              animationDuration={1000}
+              radius={[10, 10, 0, 0]}
+              barSize={45}
+              animationDuration={900}
             >
+
               {sortedData.map((entry, index) => (
+
                 <Cell
                   key={`cell-${index}`}
                   fill={colors[index % colors.length]}
                 />
+
               ))}
+
             </Bar>
+
           </BarChart>
+
         </ResponsiveContainer>
+
       </div>
 
       {/* Ranking Cards */}
-      <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+      <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+
         {sortedData.map((u, i) => (
+
           <motion.div
             key={i}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.1, duration: 0.5 }}
-            className="bg-gray-50 p-4 rounded-xl shadow flex flex-col items-center justify-center"
+            whileHover={{ scale: 1.05 }}
+            className="bg-gray-50 border border-gray-100 p-4 rounded-xl shadow-sm text-center"
           >
-            <p className="text-sm font-semibold">#{i + 1} {u.name}</p>
-            <p className="text-red-500 font-bold">₹{u.spending}</p>
+
+            <p className="text-sm font-semibold text-gray-700">
+              #{i + 1} {u.name}
+            </p>
+
+            <p className="text-lg font-bold text-red-500 mt-1">
+              ₹{u.spending}
+            </p>
+
           </motion.div>
+
         ))}
+
       </div>
+
     </motion.div>
   );
 }
