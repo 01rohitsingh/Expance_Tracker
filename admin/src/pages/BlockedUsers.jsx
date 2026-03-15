@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { FaUserCheck } from "react-icons/fa";
 import { useOutletContext } from "react-router-dom";
+import Swal from "sweetalert2";
+import { toast } from "react-toastify";
 
 import API from "../services/adminApi";
 import {
@@ -14,7 +16,6 @@ function BlockedUsers() {
 
   const [users, setUsers] = useState([]);
 
-  // ⭐ Search from navbar
   const { search } = useOutletContext();
 
   /*
@@ -28,16 +29,17 @@ function BlockedUsers() {
 
       const res = await API.get("/users");
 
-      // only blocked users
       const blocked = res.data.filter(user => user.isActive === false);
 
       setUsers(blocked);
 
     } catch (error) {
+
       console.log(error);
+      toast.error("Failed to fetch users");
+
     }
   };
-
 
   /*
   -----------------------------------
@@ -47,28 +49,41 @@ function BlockedUsers() {
 
   const unblockUser = async (id) => {
 
-    const confirm = window.confirm("Unblock this user?");
+    const result = await Swal.fire({
+      title: "Unblock User?",
+      text: "User will be able to login again!",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#16a34a",
+      confirmButtonText: "Yes, Unblock",
+    });
 
-    if (!confirm) return;
+    if (result.isConfirmed) {
 
-    try {
+      try {
 
-      await API.put(`/unblock-user/${id}`);
+        await API.put(`/unblock-user/${id}`);
 
-      fetchUsers();
+        toast("User unblocked successfully", {
+          type: "success",
+          icon: "✅"
+        });
 
-    } catch (error) {
+        fetchUsers();
 
-      console.log(error);
+      } catch (error) {
+
+        console.log(error);
+        toast.error("Unblock failed");
+
+      }
 
     }
   };
 
-
   useEffect(() => {
     fetchUsers();
   }, []);
-
 
   /*
   -----------------------------------
@@ -81,7 +96,6 @@ function BlockedUsers() {
     user.email?.toLowerCase().includes(search.toLowerCase())
   );
 
-
   return (
 
     <div className="w-full">
@@ -89,7 +103,6 @@ function BlockedUsers() {
       <h1 className="text-3xl md:text-4xl font-bold mb-6">
         Blocked Users
       </h1>
-
 
       {/* USERS GRID */}
 
@@ -138,20 +151,17 @@ function BlockedUsers() {
 
               </div>
 
-
               {/* ROLE */}
 
               <p className="text-blue-500 text-sm md:text-base mt-2">
                 Role: {user.role}
               </p>
 
-
               {/* STATUS */}
 
               <p className="text-red-600 font-semibold mt-1">
                 Blocked
               </p>
-
 
               {/* UNBLOCK BUTTON */}
 

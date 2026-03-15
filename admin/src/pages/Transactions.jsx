@@ -2,35 +2,31 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { FaTrash } from "react-icons/fa";
 import { useOutletContext } from "react-router-dom";
+import Swal from "sweetalert2";
+import { toast } from "react-toastify";
 
 import API from "../services/adminApi";
 import { cardAnimation } from "../utils/animations";
 
 function Transactions() {
+
   const [transactions, setTransactions] = useState([]);
   const [filter, setFilter] = useState("all");
 
-  // ⭐ global search from Navbar
   const { search } = useOutletContext();
 
+  // ---------------- FETCH TRANSACTIONS ----------------
   const fetchTransactions = async () => {
     try {
+
       const res = await API.get("/transactions");
       setTransactions(res.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
-  const deleteTransaction = async (id) => {
-    const confirmDelete = window.confirm("Delete this transaction?");
-    if (!confirmDelete) return;
-
-    try {
-      await API.delete(`/transaction/${id}`);
-      fetchTransactions();
     } catch (error) {
+
       console.error(error);
+      toast.error("Failed to fetch transactions");
+
     }
   };
 
@@ -38,7 +34,43 @@ function Transactions() {
     fetchTransactions();
   }, []);
 
-  // ------------------------- FILTER + SEARCH -------------------------
+  // ---------------- DELETE TRANSACTION ----------------
+  const deleteTransaction = async (id) => {
+
+    const result = await Swal.fire({
+      title: "Delete Transaction?",
+      text: "This transaction will be permanently deleted!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#dc2626",
+      confirmButtonText: "Yes, Delete",
+    });
+
+    if (result.isConfirmed) {
+
+      try {
+
+        await API.delete(`/transaction/${id}`);
+
+        toast("Transaction deleted successfully", {
+          type: "error",
+          icon: "🗑️"
+        });
+
+        fetchTransactions();
+
+      } catch (error) {
+
+        console.error(error);
+        toast.error("Delete failed");
+
+      }
+
+    }
+
+  };
+
+  // ---------------- FILTER + SEARCH ----------------
   const filteredTransactions = transactions
     .filter((t) => filter === "all" || t.type === filter)
     .filter((t) =>
@@ -48,13 +80,17 @@ function Transactions() {
 
   return (
     <div className="w-full">
-      <h1 className="text-3xl md:text-4xl font-bold mb-6">Transactions</h1>
+
+      <h1 className="text-3xl md:text-4xl font-bold mb-6">
+        Transactions
+      </h1>
 
       {/* FILTER BUTTONS */}
       <div className="flex flex-wrap gap-3 mb-6">
+
         <button
           onClick={() => setFilter("all")}
-          className={`px-4 py-2 md:px-5 md:py-3 rounded text-sm md:text-base ${
+          className={`px-4 py-2 md:px-5 md:py-3 rounded ${
             filter === "all"
               ? "bg-blue-500 text-white"
               : "bg-gray-200 hover:bg-gray-300"
@@ -65,7 +101,7 @@ function Transactions() {
 
         <button
           onClick={() => setFilter("income")}
-          className={`px-4 py-2 md:px-5 md:py-3 rounded text-sm md:text-base ${
+          className={`px-4 py-2 md:px-5 md:py-3 rounded ${
             filter === "income"
               ? "bg-green-500 text-white"
               : "bg-gray-200 hover:bg-gray-300"
@@ -76,7 +112,7 @@ function Transactions() {
 
         <button
           onClick={() => setFilter("expense")}
-          className={`px-4 py-2 md:px-5 md:py-3 rounded text-sm md:text-base ${
+          className={`px-4 py-2 md:px-5 md:py-3 rounded ${
             filter === "expense"
               ? "bg-red-500 text-white"
               : "bg-gray-200 hover:bg-gray-300"
@@ -84,23 +120,31 @@ function Transactions() {
         >
           Expense
         </button>
+
       </div>
 
       {/* TRANSACTIONS GRID */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+
         {filteredTransactions.length === 0 ? (
+
           <p className="text-gray-500 text-base md:text-lg">
             No transactions found
           </p>
+
         ) : (
+
           filteredTransactions.map((t) => (
+
             <motion.div
               key={t._id}
               {...cardAnimation}
               className="bg-white p-5 md:p-6 rounded-xl shadow relative hover:shadow-lg transition"
             >
+
               {/* DELETE ICON */}
               <FaTrash
+                title="Delete Transaction"
                 onClick={() => deleteTransaction(t._id)}
                 className="absolute top-4 right-4 text-red-500 text-lg md:text-2xl cursor-pointer hover:text-red-700"
               />
@@ -117,7 +161,7 @@ function Transactions() {
 
               {/* TYPE */}
               <span
-                className={`inline-block mt-2 px-3 py-1 md:px-4 md:py-2 rounded-full text-sm md:text-base font-medium ${
+                className={`inline-block mt-2 px-3 py-1 rounded-full text-sm font-medium ${
                   t.type === "income"
                     ? "bg-green-100 text-green-600"
                     : "bg-red-100 text-red-600"
@@ -130,10 +174,15 @@ function Transactions() {
               <p className="text-gray-500 mt-2 text-sm md:text-base">
                 {t.date ? new Date(t.date).toLocaleDateString() : "N/A"}
               </p>
+
             </motion.div>
+
           ))
+
         )}
+
       </div>
+
     </div>
   );
 }
