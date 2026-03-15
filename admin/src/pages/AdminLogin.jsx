@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../services/adminApi";
+import { toast } from "react-toastify";
 
 function AdminLogin() {
+
+  console.log(import.meta.env.VITE_API_URL);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -22,14 +25,13 @@ function AdminLogin() {
 
       localStorage.setItem("token", res.data.token);
 
-      alert("Admin Login Successful");
+      toast.success("Admin Login Successful");
 
-      // ✅ Correct redirect
       navigate("/admin/dashboard");
 
     } catch (error) {
 
-      alert(error.response?.data?.message || "Login failed");
+      toast.error(error.response?.data?.message || "Login failed");
 
     }
 

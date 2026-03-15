@@ -9,6 +9,10 @@ import UserDetails from "./pages/UserDetails";
 import BlockedUsers from "./pages/BlockedUsers";
 import AdminLogin from "./pages/AdminLogin";
 
+/* ADD THIS */
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 function App() {
 
   return (
@@ -39,6 +43,17 @@ function App() {
         </Route>
 
       </Routes>
+
+      {/* ADD THIS */}
+      <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        theme="colored"
+        newestOnTop
+        closeOnClick
+        pauseOnHover
+        style={{ zIndex: 9999 }}
+      />
 
     </BrowserRouter>
 

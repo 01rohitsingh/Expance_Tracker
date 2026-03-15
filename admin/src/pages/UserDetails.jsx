@@ -15,19 +15,19 @@ function UserDetails() {
   const [totalExpense, setTotalExpense] = useState(0);
 
   // ------------------------- FETCH USER DETAILS -------------------------
-  const fetchUserDetails = async () => {
-    try {
-      const res = await API.get(`/user-details/${id}`);
-      setUser(res.data.user);
-      setTransactions(res.data.transactions);
-      setTotalIncome(res.data.totalIncome);
-      setTotalExpense(res.data.totalExpense);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   useEffect(() => {
+    const fetchUserDetails = async () => {
+      try {
+        const res = await API.get(`/user-details/${id}`);
+        setUser(res.data.user);
+        setTransactions(res.data.transactions);
+        setTotalIncome(res.data.totalIncome);
+        setTotalExpense(res.data.totalExpense);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
     fetchUserDetails();
   }, [id]);
 

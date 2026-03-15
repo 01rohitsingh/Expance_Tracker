@@ -2,12 +2,20 @@ import axios from "axios";
 
 /*
 -------------------------------------
+GET BASE URL FROM ENV
+-------------------------------------
+*/
+
+const BASE_URL = import.meta.env.VITE_API_URL;
+
+/*
+-------------------------------------
 AXIOS INSTANCE
 -------------------------------------
 */
 
 const API = axios.create({
-  baseURL: "http://localhost:8000/api/admin",
+  baseURL: `${BASE_URL}/api/admin`,
   headers: {
     "Content-Type": "application/json"
   }
@@ -45,7 +53,7 @@ API.interceptors.response.use(
   (response) => response,
   (error) => {
 
-    // ⭐ अगर token invalid हो जाए
+    // अगर token invalid हो जाए
     if (error.response && error.response.status === 401) {
 
       localStorage.removeItem("token");
